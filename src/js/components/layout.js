@@ -3,6 +3,7 @@ import React from "react";
 import Footer from "./footer";
 import Header from "./header";
 import Request from 'superagent'
+import YouTube from 'react-youtube'
 
 export default class Layout extends React.Component {
   constructor() {
@@ -11,9 +12,20 @@ export default class Layout extends React.Component {
       movie: [],
       ratings: []
     };
+    this.opts = {
+      height: '720',
+      width: '1080',
+      playerVars: {
+        autoplay: 1
+      }
+    };
   }
 
   componentWillMount() {
+    console.log(document.getElementById("app").offsetWidth)
+    console.log(screen.width)
+    this.opts.width = screen.width*0.8;
+    this.opts.height = this.opts.width/16*9;
     this.changeMovie();
   }
 
@@ -28,21 +40,23 @@ export default class Layout extends React.Component {
         var trailer_url = movie["trailers"][i]["url"]
       }
       var split_str = 'watch?v=';
-      var embedded_link = "http://www.youtube.com/embed/"+trailer_url.slice(trailer_url.indexOf(split_str)+split_str.length)+"?autoplay=1";
-      console.log(embedded_link);
       this.setState({
         movie: movie,
         ratings: ratings,
-        trailer: embedded_link
+        youtube_id: trailer_url.slice(trailer_url.indexOf(split_str)+split_str.length)
       });
     });
   }
 
   render() {
     return (
-      <div>
-        <Header changeMovie={this.changeMovie.bind(this)} movie={this.state.movie} ratings={this.state.ratings} trailer={this.state.trailer}/>
-        <Footer />
+      <div class="main">
+        <YouTube
+          videoId={this.state.youtube_id}
+          opts={this.opts}
+          onEnd={this.changeMovie.bind(this)}
+        />
+        <Header changeMovie={this.changeMovie.bind(this)} movie={this.state.movie} ratings={this.state.ratings}/>
       </div>
     );
   }

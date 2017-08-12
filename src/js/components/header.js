@@ -9,9 +9,9 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <div>
-        <Movie movie={this.props.movie} ratings={this.props.ratings} trailer={this.props.trailer}/>
-        <button onClick={this.handleChange.bind(this)}>Get movie</button>
+      <div class="textArea">
+        <Movie movie={this.props.movie} ratings={this.props.ratings}/>
+        <button onClick={this.handleChange.bind(this)} class="btn btn-primary">Get movie</button>
       </div>
     );
   }
