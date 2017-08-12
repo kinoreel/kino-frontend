@@ -1,0 +1,24 @@
+html, body {
+    height: 100%;
+}
+
+body { 
+	background: #6b717a !important;
+	color: white;
+}
+#app {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.textArea{
+	margin-top: 0px;
+	padding: 5px;
+	background-image: linear-gradient(0deg, #6b717a, black);
+}
+.main{
+	margin-top: 0px;
+	padding-top: 5px;
+	background: black;
+}
