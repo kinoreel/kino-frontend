@@ -3,7 +3,7 @@ html, body {
 }
 
 body { 
-	background: #6b717a !important;
+	background: black !important;
 	color: white;
 }
 #app {
@@ -12,13 +12,87 @@ body {
     justify-content: center;
     align-items: center;
 }
-.textArea{
-	margin-top: 0px;
-	padding: 5px;
-	background-image: linear-gradient(0deg, #6b717a, black);
+.movieTitle{
+	margin-top: 12px;
+    font-family: Josefin Sans;
+    display:inline-block;
+}
+.streams{
+    font-family: Josefin Sans;
+    padding :5px;
+
+}
+.ratings{
+    font-family: Josefin Sans;
+    padding :5px;
+    display:inline-block;
+}
+.extra{
+    font-family: Josefin Sans;
+    padding :5px;
+}
+.rating{
+    display:inline-block;
+	padding-right: 10px;
+}
+.stream{
+    display:inline-block;
+	padding-right: 10px;    
 }
 .main{
-	margin-top: 0px;
-	padding-top: 5px;
+	margin-top: 30px;
+	padding-top: 30px;
 	background: black;
+}
+.video{
+	padding-top: 25px;    
+}
+.footer{
+    margin: 30px;   
+}
+.nextButton{
+    float: right;
+    margin-top: 35px;
+    margin-right: 15px;
+    border-radius: 0px;
+    background-color: Transparent;
+    border-style: solid;
+    border-color: white;
+}
+.nextButton:focus {outline:0 !important;
+                   box-shadow: none;
+                   color: white;
+}
+.nextButton:hover {outline:0 !important;
+                   color: white;
+                   box-shadow: none;
+                   border-width: 2px;
+}
+.moreInfoSeperator{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+}
+.downArrow{
+    border: solid white;
+    border-width: 0 1px 1px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(90deg);
+    -webkit-transform: rotate(45deg);
+}
+.upArrow{
+    border: solid white;
+    border-width: 1px 0 0 1px;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(90deg);
+    -webkit-transform: rotate(45deg);
+}
+.downArrow:hover {
+    border-width: 0 2px 2px 0;
+}
+.upArrow:hover {
+    border-width: 2px 0 0 2px;
 }

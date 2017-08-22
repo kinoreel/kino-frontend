@@ -3,21 +3,39 @@ import React from "react";
 
 export default class Ratings extends React.Component {
   render() {
-    var blah = { rotten :this.props.ratings.rotten };
+    
+    // Set default ratings
+    var ratings = {
+      rotten:'~',
+      imdb:'~',
+      metascore:'~'
+    };
+
+    // Loop through movie ratings, and write score
+    // to movie object if it exists. 
+    for (var i = 0; i < this.props.ratings.length; i++) {
+      if ( this.props.ratings[i].source == 'rotten tomatoes') {
+        ratings.rotten = this.props.ratings[i].rating
+      } else if ( this.props.ratings[i].source == 'imdb' ) {
+        ratings.imdb = this.props.ratings[i].rating
+      } else if ( this.props.ratings[i].source == 'metascore' ) {
+        ratings.metascore = this.props.ratings[i].rating;
+      };
+    };
     
     return (
       <div class="ratings">
         <div class="rating"> 
           <span> Rotten.img </span>
-          <span> -{blah.rotten}</span>
+          <span> -{ratings.rotten}</span>
         </div> 
         <div class="rating"> 
           <span> IMDB.img</span>
-          <span> - {this.props.ratings.imdb}</span>
+          <span> - {ratings.imdb}</span>
         </div> 
         <div class="rating"> 
           <span> Meta.img </span>
-          <span> - {this.props.ratings.metascore}</span>
+          <span> - {ratings.metascore}</span>
         </div> 
       </div>
     );
