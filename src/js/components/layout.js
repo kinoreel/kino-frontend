@@ -65,7 +65,7 @@ export default class Layout extends React.Component {
         setTimeout(() => {
           loader.outerHTML = ''
         }, 1000)
-      }, 3000)
+      }, 500)
     }
   }
 
