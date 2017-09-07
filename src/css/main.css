@@ -1,24 +1,168 @@
 html, body {
     height: 100%;
+    //overflow:hidden;
 }
 
 body { 
-	background: #6b717a !important;
+	background: black !important;
 	color: white;
 }
 #app {
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.textArea{
-	margin-top: 0px;
-	padding: 5px;
-	background-image: linear-gradient(0deg, #6b717a, black);
+.loader{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+}
+.loaderTitle{
+    font-family: serif;
+    font-size: 50px;
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity 3s ease-in-out;
+    -moz-transition: opacity 3s ease-in-out;
+    -ms-transition: opacity 3s ease-in-out;
+    -o-transition: opacity 3s ease-in-out;
+}
+.loaderTitle.hiddenTitle{
+    opacity: 0;
+}
+.loaded {
+    display: none;
 }
 .main{
-	margin-top: 0px;
-	padding-top: 5px;
 	background: black;
 }
+.video{
+	padding-top: 40px;  
+}
+.movieTitle{
+    font-family: Josefin Sans;
+    display:inline-block;
+}
+.nextButton{
+    float: right;
+    margin-top: 15px;
+    margin-right: 15px;
+    border-radius: 0px;
+    background-color: Transparent;
+    border-style: solid;
+    border-color: white;
+}
+.nextButton:focus {outline:0 !important;
+                   box-shadow: none;
+                   color: white;
+}
+.nextButton:hover {outline:0 !important;
+                   color: white;
+                   box-shadow: none;
+                   border-width: 2px;
+}
+.streams{
+    font-family: Josefin Sans;
+    padding :5px;
+
+}
+.ratings{
+    font-family: Josefin Sans;
+    padding :5px;
+    display:inline-block;
+}
+.extra{
+    font-family: Josefin Sans;
+    padding :5px;
+}
+.rating{
+    display:inline-block;
+	padding-right: 10px;
+}
+.stream{
+    display:inline-block;
+	padding-right: 10px;    
+}
+
+.moreInfoSeperator{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+}
+.downArrow{
+    border: solid white;
+    border-width: 0 1px 1px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(90deg);
+    -webkit-transform: rotate(45deg);
+}
+.upArrow{
+    border: solid white;
+    border-width: 1px 0 0 1px;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(90deg);
+    -webkit-transform: rotate(45deg);
+}
+.downArrow:hover{
+    border-width: 0 2px 2px 0;
+}
+.upArrow:hover {
+    border-width: 2px 0 0 2px;
+}
+hr{
+    border: none;
+    height: 1px;
+    color: white;
+    background-color: white;
+}
+hr:hover{
+    height:2px
+}   
+.checkContainer{
+    width:300px;
+    height: 100px;
+    overflow-y: scroll; 
+    direction:rtl;
+    position: relative;
+    width: 100%;
+}
+.checkDiv{
+    direction: ltr;
+    margin: auto;
+    padding-left: 3px;
+}
+.checkInput{
+   	-webkit-appearance: none;
+    border:1px solid;
+    color:white;
+    cursor:pointer;
+    height: 10px;
+    width:10px; 
+    position: relative;
+    outline:0;
+}
+.checkInput:checked:after {
+	content: 'x';
+	font-size: 10px;
+	color: white;
+    position:absolute;
+    outline:0;
+}
+
+.checkSpan{
+    padding-left: 3px;
+    font-size: 10px;
+}
+.filterTitle{
+    font-family: Josefin Sans;
+    letter-spacing:1px;
+}
+
+
+
+
