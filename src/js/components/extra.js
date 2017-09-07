@@ -29,10 +29,11 @@ export class ExtraInfo extends React.Component {
     return (
       <div>
         <div class="moreInfoSeperator" onClick={this.onClick.bind(this)}>
-          <i  class={this.state.infoVisible ? "upArrow": "downArrow"} ></i>
+          <hr width="200"></hr>
+          <i class={this.state.infoVisible ? "upArrow": "downArrow"} ></i>
+          <hr width="200"></hr>
         </div>
-        { this.state.infoVisible ? <Info extra={this.props.extra}/> : null
-        }
+        { this.state.infoVisible ? <Info extra={this.props.extra}/> : null }
       </div>
        
     );
