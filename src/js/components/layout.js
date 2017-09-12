@@ -5,9 +5,10 @@ import Movie from "./movie";
 import Ratings from "./ratings";
 import Streams from "./streams";
 import {Filters} from "./filters";
-import {ExtraInfo} from "./extra";
+import {Info} from "./extra";
 import Request from 'superagent'
 import YouTube from 'react-youtube'
+import ExtraInfo from './info.js'
 
 
 export default class Layout extends React.Component {
@@ -18,14 +19,19 @@ export default class Layout extends React.Component {
       ratings: [],
       streams: [],
       extra: [],
-      stream: ['iTunes', 'YouTube', 'GooglePlay'],
-      language: ['English', 'French', 'Italian', 'German', 'Danish', 'Greek', 'Sweedish', 'Finnish', 'Spanish'],
-      genre: ['Horror', 'Action', 'Comedy', 'Romance', 'Musical', 'Superhero'],
-      filters: {
-        streams: "All", 
-        language: "All",
-        genre: "All"
-      }
+      filtered: { 
+        streams : [], 
+        genre: [],
+        languages : [],
+        released : {
+            earliest:'',
+            latest:''
+        },
+        rated : {
+            earliest:'',
+            latest:''
+        }
+      },
     };    
                 
     this.opts = {
@@ -65,11 +71,14 @@ export default class Layout extends React.Component {
         setTimeout(() => {
           loader.outerHTML = ''
         }, 1000)
-      }, 500)
+      }, 3000)
     }
   }
-
+  
   changeMovie() {
+    
+    console.log(this.state.filtered);
+
     var url = "http://api.kino-project.tech/movies/random_movie/";
     Request.get(url).then((response) => {
       var movie = JSON.parse(response["text"]);
@@ -89,7 +98,7 @@ export default class Layout extends React.Component {
       var trailer_url = movie["trailers"][0]["url"]
 
       var split_str = 'watch?v=';
-
+      
       this.setState({
         movie: movie,
         ratings: ratings,
@@ -110,14 +119,16 @@ export default class Layout extends React.Component {
           onEnd={this.changeMovie.bind(this)}
         />
         <div class="info">
+          <button onClick={this.changeMovie.bind(this)} class="btn nextButton">Next Movie</button>
           <div class="mainInfo">
             <Movie movie={this.state.movie} />
-            <button onClick={this.changeMovie.bind(this)} class="btn nextButton">Next Movie</button>
+            <Ratings ratings={this.state.ratings} />
+            <Streams streams={this.state.streams} />
+            <Info extra={this.state.extra} />
           </div>
-          <Ratings ratings={this.state.ratings} />
-          <Streams streams={this.state.streams} />
-          <ExtraInfo extra={this.state.extra} />
-          <Filters/>
+          <div class="mainInfo">
+            <Filters filtered={this.state.filtered}/>
+          </div>
         </div>
       </div>
     );

@@ -43,7 +43,6 @@ body {
 }
 .movieTitle{
     font-family: Josefin Sans;
-    display:inline-block;
 }
 .nextButton{
     float: right;
@@ -123,6 +122,10 @@ hr{
 hr:hover{
     height:2px
 }   
+.filterTitle{
+    font-family: Josefin Sans;
+    letter-spacing:1px;
+}
 .checkContainer{
     width:300px;
     height: 100px;
@@ -134,7 +137,7 @@ hr:hover{
 .checkDiv{
     direction: ltr;
     margin: auto;
-    padding-left: 3px;
+    padding-left: 16px;
 }
 .checkInput{
    	-webkit-appearance: none;
@@ -153,16 +156,95 @@ hr:hover{
     position:absolute;
     outline:0;
 }
-
 .checkSpan{
-    padding-left: 3px;
+    padding-left: 5px;
     font-size: 10px;
 }
-.filterTitle{
-    font-family: Josefin Sans;
-    letter-spacing:1px;
+
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: black;
+} 
+::-webkit-scrollbar-thumb {
+    background-color: white;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    color:black;
+}
+.checkboxFilters{
+    display: inline-block;
+    padding-right: 30px;    
 }
 
+input[type=range] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 100%; /* Specific width is required for Firefox. */
+  background: transparent; /* Otherwise white in Chrome */
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+input[type=range]:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+/* Special styling for WebKit/Blink */
+input[type=range]::-webkit-slider-thumb {
+  height: 15px;
+  width: 4px;
+  background: white;
+  position: relative;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100px;
+  height: 4px;
+  cursor: pointer;
+  background: white;
+  position: relative;
+}
 
-
-
+.rangeDiv{
+    direction: ltr;
+    margin: auto;
+    position: relative;
+}
+.rangeInput {
+    position: absolute;
+    padding-top: 2px;
+}
+.rangeContainer{
+    width:500px;
+    height: 100px;
+    overflow-y: scroll; 
+    direction:rtl;
+    position: relative;
+    width: 100%;
+    padding-left: 12px;
+}
+.ranges{
+    display: inline-block;
+    width: 300px;
+    position: relative;
+}
+.rangeFilters{
+    display: block;
+    position: relative;
+}
+.rangeValues{
+    font-family: Josefin Sans;
+    letter-spacing:1px;
+    font-size:15px;
+}
+.rangeKey{
+    font-family: Josefin Sans;
+    letter-spacing:1px;
+    font-size:10px;
+}
+.checkboxes{
+    display: inline-block;
+    position: relative;
+}
+.allFilters{
+    position: absolute;
+}
