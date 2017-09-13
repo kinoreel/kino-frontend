@@ -15,6 +15,8 @@ export default class Layout extends React.Component {
   constructor() {
     super();
     this.state = {
+      filtervisible: true,
+      infovisible: false,
       movie: [],
       ratings: [],
       streams: [],
@@ -71,7 +73,7 @@ export default class Layout extends React.Component {
         setTimeout(() => {
           loader.outerHTML = ''
         }, 1000)
-      }, 3000)
+      }, 300)
     }
   }
   
@@ -109,7 +111,12 @@ export default class Layout extends React.Component {
     });
   }
   //
-
+  toggleFilters () {
+    this.setState({filtervisible: !this.state.filtervisible});
+    this.setState({infovisible: ! this.state.infovisible});
+  };
+  
+    
   render() {
     return (
       <div id="main" class="main loaded">
@@ -118,16 +125,21 @@ export default class Layout extends React.Component {
           opts={this.opts}
           onEnd={this.changeMovie.bind(this)}
         />
-        <div class="info">
-          <button onClick={this.changeMovie.bind(this)} class="btn nextButton">Next Movie</button>
-          <div class="mainInfo">
-            <Movie movie={this.state.movie} />
-            <Ratings ratings={this.state.ratings} />
-            <Streams streams={this.state.streams} />
-            <Info extra={this.state.extra} />
+        <div>           
+          <div>
+            <button onClick={this.changeMovie.bind(this)} class="btn nextButton">N</button>
+            <button onClick={this.toggleFilters.bind(this)} class="btn nextButton">S</button>
           </div>
           <div class="mainInfo">
-            <Filters filtered={this.state.filtered}/>
+            <div class="infoBox">
+              { this.state.infovisible ? <Movie movie={this.state.movie} /> : null }
+              { this.state.infovisible ? <Ratings ratings={this.state.ratings} /> : null }
+              { this.state.infovisible ? <Streams streams={this.state.streams} /> : null }
+              { this.state.infovisible ? <Info extra={this.state.extra} /> : null }
+            </div>
+            <div>
+              { this.state.filtervisible ? <Filters filtered={this.state.filtered}/> : null }
+            </div>
           </div>
         </div>
       </div>
