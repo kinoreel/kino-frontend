@@ -26,17 +26,14 @@ export default class Ratings extends React.Component {
     return (
       <div class="ratings">
         <div class="rating"> 
-          <span> Rotten Tomatoes -  </span>
-          <span> {ratings.rotten}</span>
+          <span>ROTTON TOMATOES</span>
+          <span>{ratings.rotten}</span>
         </div> 
         <div class="rating"> 
-          <span> IMDB -  </span>
-          <span> {ratings.imdb}</span>
+          <span>IMDB</span>
+          <span>{ratings.imdb}</span>
         </div> 
-        <div class="rating"> 
-          <span> Metasore  - </span>
-          <span> {ratings.metascore}</span>
-        </div> 
+
       </div>
     );
   }

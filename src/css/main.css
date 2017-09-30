@@ -1,6 +1,6 @@
 html, body {
     height: 100%;
-    //overflow:hidden;
+    overflow:hidden;
 }
 
 body { 
@@ -12,18 +12,20 @@ body {
     justify-content: center;
     align-items: center;
 }
+/**
+* LOADER SCREEN
+*/
 .loader{
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: red;
+    background-color: #d10c0c;
 }
 .loaderTitle{
     font-family: serif;
     font-size: 50px;
     opacity: 1;
-    visibility: visible;
     -webkit-transition: opacity 3s ease-in-out;
     -moz-transition: opacity 3s ease-in-out;
     -ms-transition: opacity 3s ease-in-out;
@@ -37,20 +39,69 @@ body {
 }
 .main{
 	background: black;
+    width: 100%;
+    height: 100%;
 }
 .video{
-	padding-top: 40px;  
+    position:absolute;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+}
+
+.mainInfo{
+    position: absolute;
+    height: 35%;
+    width:100%;
+    bottom: 0px;
+    left: 0px;
+    padding-left: 80px;
+    padding-right: 100px;
+    padding-bottom: 80px;
 }
 .movieTitle{
     font-family: Josefin Sans;
     display: block;
+    padding-left: 95px;
+    height:46%;
+    position: absolute;
+    bottom: 0px;
+    font-size: 50px
+    
+}
+.info{
+    position: absolute;
+    height: 94%;
+    width: 100%;
+    opacity:0;
+    -webkit-transition: opacity 2s ease;
+    -moz-transition: opacity 2s ease;
+    -ms-transition: opacity 2s ease;
+    -o-transition: opacity 2s ease;
+    -webkit-transition-delay: 5s; /* Safari */
+    transition-delay: 5s;
+    pointer-events:none;
+
+
+}
+.info.shown{
+    opacity:1;
+    -webkit-transition: opacity 0.1s ease;
+    -moz-transition: opacity 0.1s ease;
+    -ms-transition: opacity 0.1s ease;
+    -o-transition: opacity 0.1s ease;
+}
+.kinoButtons{
+    padding-right: 100px;
+    padding-top: 50px;
+    position:absolute;
+    top: 0 px;
+    right: 0px;
 }
 .nextButton{
     height: 40px;
     width: 40px;
-    float: right;
-    margin-top: 15px;
-    margin-right: 15px;
+    margin: 10px;
     border-radius: 0px;
     background-color: Transparent;
     border-style: solid;
@@ -58,6 +109,11 @@ body {
     border-width: 3px;
     border-radius: 50%;
 
+}
+.buttonIcon{
+    position:relative;
+    left:-7px;
+    top:-1px;
 }
 .nextButton:focus {outline:0 !important;
                    box-shadow: none;
@@ -69,33 +125,64 @@ body {
                    border-width: 3px;
 }
 .infoBox{
-    padding-top:40px; 
     padding-left:20px; 
+    height: 10%;
 }
-
 .streams{
     font-family: Josefin Sans;
-    padding :5px;
-
+    float: right;
 }
 .ratings{
     font-family: Josefin Sans;
-    padding :5px;
+    letter-spacing:1px;
     display:inline-block;
-}
-.extra{
-    font-family: Josefin Sans;
-    padding :5px;
+    padding-bottom: 20px;
 }
 .rating{
+    font-size:15px;
     display:inline-block;
-	padding-right: 10px;
+	padding-right: 30px;
+    width: 240px; 
+    padding-bottom: 3px;
+}
+.rating span{
+    display: block;
 }
 .stream{
+    font-family: Josefin Sans;
+    letter-spacing:1px;
     display:inline-block;
-	padding-right: 10px;    
+	padding-right: 10px;
+    width: 160px; 
+    text-align: right;
+    pointer-events:auto;
 }
-
+.stream a:hover {
+    text-decoration: underline;
+}
+.stream a {
+   color: white;
+   text-decoration: none; 
+   background-color: none;   
+   display:block;
+   padding-bottom: 3px;
+}
+.stream span {
+   padding-left: 0px;
+   position:relative;
+} 
+.extra p{
+    margin-bottom: 7px;
+}
+.tag {
+   font-family: Josefin Sans;
+   letter-spacing:2px;
+   font-size: 11px; 
+   padding-right: 10px;   
+}
+.infoText {
+  font-size: 13px;
+}
 ::-webkit-scrollbar {
     width: 6px;
     background-color: black;
@@ -111,7 +198,16 @@ input[type=range] {
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
   width: 100%; /* Specific width is required for Firefox. */
   background: transparent; /* Otherwise white in Chrome */
+
+
 }
+button{
+    pointer-events:auto;
+}
+input{
+    pointer-events:auto;
+}
+
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
 }
@@ -135,11 +231,13 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 input[type="checkbox"]:focus{
     outline:0;
+
 }
 .filters{
-    padding-top:40px; 
-    padding-left:20px; 
-    
+    padding-left:20px;
+}
+.filters.hidden{
+    opacity:0;
 }
 .filterTitle{
     font-family: Josefin Sans;
@@ -155,8 +253,10 @@ input[type="checkbox"]:focus{
 }
 .range{
     display: block;
-    width: 300px;
-    padding-bottom:35px;
+    width: 420px;
+    padding-bottom:55px;
+    pointer-events:auto;
+
 }
 .rangeDisplay{
     padding-left:16px;
@@ -184,7 +284,7 @@ input[type="checkbox"]:focus{
 }
 .checkbox{
     display: inline-block;
-    padding-right: 40px;  
+    padding-right: 100px;  
     margin-top: 0px;    
 }
 .checkContainer{
