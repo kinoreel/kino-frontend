@@ -29,8 +29,8 @@ export class Checkbox extends React.Component{
       <div class="checkDiv">
         <label>
            <input class="checkInput" type="checkbox" checked={this.state.checked} value={this.props.value} onChange={this.hangleChange.bind(this)}/>
+           <span class="checkSpan">{this.props.value}</span>
         </label> 
-        <span class="checkSpan">{this.props.value}</span>
       </div>
     );
   }
@@ -69,11 +69,11 @@ export class RangeSlider extends React.Component{
 
   render() {
     return (
-      <div class="rangeDiv">
-        <span class="rangeKey">FROM: </span>
-        <span class="rangeValues">{this.props.filtered["from"]} </span>
-        <span class="rangeKey"> TO: </span>
-        <span class="rangeValues">{this.props.filtered["to"]}  </span>
+       <div class="rangeDisplay">
+          <span class="rangeKey">FROM: </span>
+          <span class="rangeValues">{this.props.filtered["from"]} </span>
+          <span class="rangeKey"> TO: </span>
+          <span class="rangeValues">{this.props.filtered["to"]}  </span>
         <input 
           type="range" 
           class = "rangeInput"
@@ -90,7 +90,7 @@ export class RangeSlider extends React.Component{
           id="value2"
           onChange={this.handleChange.bind(this)}
           step={this.props.step}/>
-          </div>
+       </div>
     );
   }
 };  
@@ -100,18 +100,18 @@ export class Filters extends React.Component {
     
   render() {     
     return (
-      <div class="allFilters">
+      <div class="filters">
         <div class="checkboxes">
-          <div class="checkboxFilters">
-            <p class='filterTitle'> STREAMS </p>
+          <div class="checkbox">
+            <span class='filterTitle'> STREAMS </span>
             <div class="checkContainer">
               <Checkbox value="YouTube" filtered={this.props.filtered.streams}/>
               <Checkbox value="GooglePlay" filtered={this.props.filtered.streams}/>
               <Checkbox value="iTunes" filtered={this.props.filtered.streams}/>
             </div>
           </div>
-          <div class="checkboxFilters">
-            <p class='filterTitle'> LANGUAGES </p>
+          <div class="checkbox">
+            <span class='filterTitle'> LANGUAGES </span>
             <div class="checkContainer">
               <Checkbox value="English" filtered={this.props.filtered.languages}/>
               <Checkbox value="German" filtered={this.props.filtered.languages}/>
@@ -125,8 +125,8 @@ export class Filters extends React.Component {
               <Checkbox value="Norweigen" filtered={this.props.filtered.languages}/>
             </div>
           </div>    
-          <div class="checkboxFilters">
-            <p class='filterTitle'> GENRES </p>
+          <div class="checkbox">
+            <span class='filterTitle'> GENRES </span>
             <div class="checkContainer">
               <Checkbox value="Comedy" filtered={this.props.filtered.languages}/>
               <Checkbox value="Horror" filtered={this.props.filtered.languages}/>
@@ -146,18 +146,14 @@ export class Filters extends React.Component {
             </div>
           </div> 
         </div>
-        <div class="ranges">        
-          <div class="rangeFilters">
-            <p class='filterTitle'> RELEASED </p>
-            <div class="rangeContainer">
-              <RangeSlider value1="2012" value2="2017" max="2017" min="1950" step="1"  filtered={this.props.filtered.released} />
-            </div>          
+        <div class="ranges">  
+          <div class="range">
+          <p class='filterTitle'> RELEASED </p>
+            <RangeSlider value1="2012" value2="2017" max="2017" min="1950" step="1"  filtered={this.props.filtered.released} />
           </div>
-          <div class="rangeFilters">
-            <p class='filterTitle'> RATED </p>
-            <div class="rangeContainer">
-              <RangeSlider value1="5.5" value2="10.0" max="10" min="0" step="0.1" filtered={this.props.filtered.rated} />
-            </div>          
+          <p class='filterTitle'> RATED </p>
+          <div class="range">
+            <RangeSlider value1="5.5" value2="10.0" max="10" min="0" step="0.1" filtered={this.props.filtered.rated} />
           </div>
         </div>
      </div>       

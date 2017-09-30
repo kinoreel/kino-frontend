@@ -46,8 +46,8 @@ export default class Streams extends React.Component {
     if (streams.googleplay_url != "~") {
       googleplay = (
         <div class="stream">
-          <a href={streams.googleplay_url } target="_blank"> Googleplay.img </a>
-          <span> - £ {streams.googleplay_price} </span>
+          <a href={streams.googleplay_url } target="_blank"> GOOGLEPLAY </a>
+          <span> {streams.googleplay_price} </span>
         </div>
       )
     } else {
@@ -60,8 +60,8 @@ export default class Streams extends React.Component {
     if (this.props.streams.youtube_url != "~") {
       youtube = (
         <div class="stream">
-          <a href={streams.youtube_url} target="_blank"> YouTube.img  </a>
-          <span> - £ {streams.youtube_price} </span>
+          <a href={streams.youtube_url} target="_blank"> YOUTUBE  </a>
+          <span> {streams.youtube_price} </span>
         </div>
       )
     } else {
@@ -74,8 +74,8 @@ export default class Streams extends React.Component {
     if (this.props.streams.itunes_url != "~") {
       itunes = (
         <div class="stream">
-          <a href={streams.itunes_url} target="_blank"> iTunes.img </a>
-          <span> - £ {streams.itunes_price} </span>
+          <a href={streams.itunes_url} target="_blank"> ITUNES </a>
+          <span> {streams.itunes_price} </span>
         </div>
       )
     } else {
