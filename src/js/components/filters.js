@@ -1,162 +1,58 @@
 import React from "react";
+import {CheckboxTable} from "./checkboxes";
+import {RangeSlider} from "./ranges";
 
-export class Checkbox extends React.Component{
-    
-  constructor() {
-    super();
-    this.state = { 
-      checked: true
-    };
-  }
+export default class Filters extends React.Component{
 
-  hangleChange(){
-    // If the item is currently checked, then it 
-    // is being unchecked. So we add it to the list 
-    // of unwanted items.
-    if (this.state.checked) {
-      this.props.filtered.push( this.props.value )
-    // Otherwise, it is being checked so we remove it 
-    // from the list of unwanted items.
-    } else {
-      this.props.filtered.splice( this.props.filtered.indexOf(this.props.value), 1 );
-    }
-    // Swap check status.  
-    this.setState({checked: !this.state.checked})
- };
-  
+  renderCheckbox = (title, filters) => {
+    return(
+      <div class="checkboxDiv">
+        <span class='filterTitle'> {title.toUpperCase()} </span>
+        < CheckboxTable
+              filters={filters}
+              CheckboxTable={title}
+              toggle={this.props.toggle}
+        />
+      </div>
+  )}
+
+  renderRange = (title, filter, range_type, start, end, min, max, step, updateRange ) => {
+    return (
+      <div class= "rangeDiv">
+        <p class='filterTitle'> {title.toUpperCase()}</p>
+        <RangeSlider start={start} end={end} min={min} max={max} step={step} rangeType={range_type}
+            range={filter} updateRange={updateRange}
+        />
+      </div>
+  )}
+
   render() {
     return (
-      <div class="checkDiv">
-        <label>
-           <input class="checkInput" type="checkbox" checked={this.state.checked} value={this.props.value} onChange={this.hangleChange.bind(this)}/>
-           <span class="checkSpan">{this.props.value}</span>
-        </label> 
+      <div class='filters'>
+        <div class="checkboxes">
+          {this.renderCheckbox("streams", this.props.filters.streams)}
+          {this.renderCheckbox("languages", this.props.filters.languages)}
+          {this.renderCheckbox("genres", this.props.filters.genres)}
+        </div>
+        <div class="ranges">
+          <div class="leftRanges">
+            {this.renderRange("released", this.props.filters.released, "released"
+                             , this.props.filters.released.min, this.props.filters.released.max
+                             , "1950", "2017", "1", this.props.updateRange)}
+            {this.renderRange("runtime", this.props.filters.runtime, "runtime"
+                             , this.props.filters.runtime.min, this.props.filters.runtime.max
+                             , "20", "180", "1", this.props.updateRange)}
+          </div>
+          <div class="rightRanges">
+            {this.renderRange("imdb", this.props.filters.imdb, "imdb"
+                             , this.props.filters.imdb.min, this.props.filters.imdb.max
+                             , "0", "10", "0.1", this.props.updateRange)}
+            {this.renderRange("rotten tomatoes", this.props.filters.rottentomatoes, "rottentomatoes"
+                             , this.props.filters.rottentomatoes.min, this.props.filters.rottentomatoes.max
+                             , "0", "100", "1", this.props.updateRange)}
+          </div>
+        </div>
       </div>
     );
   }
-};  
-
-export class RangeSlider extends React.Component{
-  constructor() {
-    super();
-    this.state = { 
-      value1: '',
-      value2: '',
-    }; 
-  }
-  
-  componentWillMount() {
-    this.setState({value1: this.props.value1});
-    this.setState({value2: this.props.value2});
-    this.props.filtered["from"] = this.props.value1;
-    this.props.filtered["to"] = this.props.value2;
-  }
-    
-  handleChange(event) {
-    if (event.target.id == "value1" ) {
-      this.setState({value1: event.target.value})
-      this.props.filtered["from"] = Math.min(event.target.value,this.state.value2) 
-      this.props.filtered["to"] = Math.max(event.target.value,this.state.value2)
-    } else {
-      this.setState({value2: event.target.value})
-      this.props.filtered["from"] = Math.min(this.state.value1, event.target.value) 
-      this.props.filtered["to"] = Math.max(this.state.value1, event.target.value)
-    }
-
-    
-    console.log(event)
-  }
-
-  render() {
-    return (
-       <div class="rangeDisplay">
-          <span class="rangeKey">FROM: </span>
-          <span class="rangeValues">{this.props.filtered["from"]} </span>
-          <span class="rangeKey"> TO: </span>
-          <span class="rangeValues">{this.props.filtered["to"]}  </span>
-        <input 
-          type="range" 
-          class = "rangeInput"
-          min={this.props.min} max={this.props.max}
-          value={this.state.value1} 
-          id = "value1"
-          onChange={this.handleChange.bind(this)}
-          step={this.props.step}/>
-        <input
-          type="range" 
-          class = "rangeInput"
-          min={this.props.min} max={this.props.max}
-          value={this.state.value2} 
-          id="value2"
-          onChange={this.handleChange.bind(this)}
-          step={this.props.step}/>
-       </div>
-    );
-  }
-};  
-
-            
-export class Filters extends React.Component {
-    
-  render() {     
-    return (
-      <div class="filters">
-        <div class="checkboxes">
-          <div class="checkbox">
-            <span class='filterTitle'> STREAMS </span>
-            <div class="checkContainer">
-              <Checkbox value="YouTube" filtered={this.props.filtered.streams}/>
-              <Checkbox value="GooglePlay" filtered={this.props.filtered.streams}/>
-              <Checkbox value="iTunes" filtered={this.props.filtered.streams}/>
-            </div>
-          </div>
-          <div class="checkbox">
-            <span class='filterTitle'> LANGUAGES </span>
-            <div class="checkContainer">
-              <Checkbox value="English" filtered={this.props.filtered.languages}/>
-              <Checkbox value="German" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Sweedish" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Korean" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Japanese" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Spanish" filtered={this.props.filtered.languages}/>
-              <Checkbox value="French" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Russian" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Dannish" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Norweigen" filtered={this.props.filtered.languages}/>
-            </div>
-          </div>    
-          <div class="checkbox">
-            <span class='filterTitle'> GENRES </span>
-            <div class="checkContainer">
-              <Checkbox value="Comedy" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Horror" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Drama" filtered={this.props.filtered.languages}/>
-              <Checkbox value="War" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Western" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Action" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Foreign" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Thriller" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Film Noir" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Documentary" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Romance" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Science Fiction" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Musical" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Fantasy" filtered={this.props.filtered.languages}/>
-              <Checkbox value="Gangster" filtered={this.props.filtered.languages}/>
-            </div>
-          </div> 
-        </div>
-        <div class="ranges">  
-          <div class="range">
-          <p class='filterTitle'> RELEASED </p>
-            <RangeSlider value1="2012" value2="2017" max="2017" min="1950" step="1"  filtered={this.props.filtered.released} />
-          </div>
-          <p class='filterTitle'> RATED </p>
-          <div class="range">
-            <RangeSlider value1="5.5" value2="10.0" max="10" min="0" step="0.1" filtered={this.props.filtered.rated} />
-          </div>
-        </div>
-     </div>       
-    );
-  }
-}
+};
