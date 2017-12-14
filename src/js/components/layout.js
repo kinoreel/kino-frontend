@@ -123,6 +123,34 @@ export default class Layout extends React.Component {
 
   componentWillMount(){
     this.nextMovie();
+    this.removeLoaderTitle();
+  }
+
+  componentDidMount(){
+    this.removeLoader()
+  }
+
+  removeLoaderTitle() {
+    const loaderTitle = document.getElementById('loaderTitle')
+    if(loaderTitle){
+        setTimeout(() => {
+            loaderTitle.classList.add('hiddenTitle')
+        }, 200)
+    }
+  }
+
+  removeLoader () {
+    const loader = document.getElementById('loader')
+    const main = document.getElementById('main')
+    if(main){
+      setTimeout(() => {
+        main.classList.remove('hidden')
+        loader.classList.add('hidden')
+        setTimeout(() => {
+          loader.outerHTML = ''
+        }, 1000)
+      }, 2250)
+    }
   }
 
   renderMovie = ( movie ) => {
@@ -246,7 +274,7 @@ export default class Layout extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id='main' class='main hidden'>
         <Trailer trailer={this.state.trailer}
                  end={this.changeMovie}
                  lockSkin={this.lockSkin}

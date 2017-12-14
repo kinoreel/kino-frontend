@@ -2,9 +2,35 @@
   position: relative;
   height: 100%;
   width: 100%;
-	background: black !important;
-	color: white;
+  background: black !important;
+  color: white;
   overflow:hidden;
+}
+.loader{
+    position:absolute;
+    height: 100%;
+    width:100%;
+    background-color: #BD1F1F;
+}
+.loaderTitle{
+    font-family: serif;
+    font-size: 100px;
+    position:absolute;
+    transform: translateX(-50%) translateY(-50%);
+    top: 50%;
+    left: 50%;
+    color:white;
+    opacity: 1;
+    -webkit-transition: opacity 2s ease-in-out;
+    -moz-transition: opacity 2s ease-in-out;
+    -ms-transition: opacity 2s ease-in-out;
+    -o-transition: opacity 2s ease-in-out;
+}
+.loaderTitle.hiddenTitle{
+    opacity: 0;
+}
+.hidden {
+    display: none;
 }
 .video{
   position:fixed;
