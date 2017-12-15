@@ -276,7 +276,7 @@ export default class Layout extends React.Component {
     return (
       <div id='main' class='main'>
         <Trailer trailer={this.state.trailer}
-                 end={this.changeMovie}
+                 end={this.nextMovie}
                  lockSkin={this.lockSkin}
                  unlockSkin={this.unlockSkin}
                  hideSkin={this.hideSkin}
