@@ -135,7 +135,7 @@ export default class Layout extends React.Component {
     if(loaderTitle){
         setTimeout(() => {
             loaderTitle.classList.add('hiddenTitle')
-        }, 200)
+        }, 4000)
     }
   }
 
@@ -144,12 +144,11 @@ export default class Layout extends React.Component {
     const main = document.getElementById('main')
     if(main){
       setTimeout(() => {
-        main.classList.remove('hidden')
         loader.classList.add('hidden')
         setTimeout(() => {
           loader.outerHTML = ''
         }, 1000)
-      }, 2250)
+      }, 4000)
     }
   }
 
@@ -187,6 +186,7 @@ export default class Layout extends React.Component {
       this.renderMovie(movie_data)
       this.addToWatched(movie_data.imdb_id)
     });
+
   }
 
   removeFromWatched = () => {
@@ -274,7 +274,7 @@ export default class Layout extends React.Component {
 
   render() {
     return (
-      <div id='main' class='main hidden'>
+      <div id='main' class='main'>
         <Trailer trailer={this.state.trailer}
                  end={this.changeMovie}
                  lockSkin={this.lockSkin}
@@ -282,7 +282,7 @@ export default class Layout extends React.Component {
                  hideSkin={this.hideSkin}
                  showSkin={this.showSkin}
         />
-        <div id="skin" class="Skin" onMouseMove={this.mouseMove.bind(this)}>
+        <div id="skin" class="Skin shown" onMouseMove={this.mouseMove.bind(this)}>
           <Skin
               next={this.nextMovie}
               previous={this.previousMovie}
