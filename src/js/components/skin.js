@@ -24,6 +24,7 @@ export default class Skin extends React.Component {
         <div class="LeftInfo" >
           < Ratings ratings={this.props.ratings}/>
           < MovieInfo
+              year={this.props.year}
               runtime={this.props.runtime}
               language={this.props.language}
               director={this.props.director}
@@ -53,7 +54,7 @@ export default class Skin extends React.Component {
     return (
       <div>
         < Buttons search={this.toggleSearch} next={this.props.next} previous={this.props.previous}/>
-        <h1 class="Title">{this.props.title}</h1>
+        <h1 class="Title">{this.props.title} {this.props.imdb_id}</h1>
         <div class='Info'>
           {!this.state.searchVisible ? this.renderInfo() : null}
           {this.state.searchVisible ? this.renderFilters() : null}

@@ -13,8 +13,10 @@ export default class Layout extends React.Component {
     this.state = {
       skinLocked: false,
       watched: [],
+      imdb_id: null,
       title: null,
       language: null,
+      year: null,
       runtime: null,
       writer: null,
       director: null,
@@ -158,20 +160,24 @@ export default class Layout extends React.Component {
     var streams = movie.streams;
     var title = movie.title;
     var language = movie.lang;
+    var year = movie.year;
     var runtime = movie.runtime;
     var writer = movie.writer;
     var director = movie.director;
     var trailer = movie.trailer;
+    var imdb_id = movie.imdb_id;
 
     this.setState({
       title: title,
       language: language,
+      year: year,
       runtime: runtime,
       writer: writer,
       director: director,
       trailer: trailer,
       ratings: ratings,
       streams: streams,
+      imdb_id: imdb_id,
     });
   }
 
@@ -287,6 +293,8 @@ export default class Layout extends React.Component {
               next={this.nextMovie}
               previous={this.previousMovie}
               title={this.state.title}
+              imdb_id={this.state.imdb_id}
+              year={this.state.year}
               runtime={this.state.runtime}
               language={this.state.language}
               director={this.state.director}
