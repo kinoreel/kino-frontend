@@ -156,21 +156,61 @@ export default class Layout extends React.Component {
 
   renderMovie = ( movie ) => {
 
-    var ratings = movie.ratings;
-    var streams = movie.streams;
+    var ratings = {
+        rottentomatoes: null,
+        imdb: null,
+    };
+
+    for (var i = 0; i < movie.ratings.length; i++){
+       if (movie.ratings[i].source == 'rotten tomatoes') {
+           ratings.rottentomatoes = movie.ratings[i]["rating"]
+       } else if (movie.ratings[i].source == 'imdb') {
+           ratings.imdb = movie.ratings[i]["rating"]
+       }
+    }
+
+    var streams = {
+        youtube: {
+          url: null,
+          price: null
+        },
+        itunes: {
+          url: null,
+          price: null
+        },
+        googleplay: {
+          url: null,
+          price: null
+        }
+      }
+
+    for (var i = 0; i < movie.streams.length; i++){
+
+       if (movie.streams[i].source == 'GooglePlay') {
+           streams.googleplay.price = movie.streams[i]["price"]
+           streams.googleplay.url = movie.streams[i]["url"]
+       } else if (movie.streams[i].source == 'YouTube') {
+           streams.youtube.price = movie.streams[i]["price"]
+           streams.youtube.url = movie.streams[i]["url"]
+       } else if (movie.streams[i].source == 'iTunes' && movie.streams[i].purchase_type == 'rental') {
+           streams.itunes.price = movie.streams[i]["price"]
+           streams.itunes.url = movie.streams[i]["url"]
+       }
+    }
+
     var title = movie.title;
-    var language = movie.lang;
-    var year = movie.year;
+    var language = movie.orig_language;
+    var released = movie.released.substr(0, 4);
     var runtime = movie.runtime;
     var writer = movie.writer;
     var director = movie.director;
-    var trailer = movie.trailer;
     var imdb_id = movie.imdb_id;
+    var trailer = movie.trailer;
 
     this.setState({
       title: title,
       language: language,
-      year: year,
+      released: released,
       runtime: runtime,
       writer: writer,
       director: director,
@@ -185,8 +225,12 @@ export default class Layout extends React.Component {
     this.state.watched.push(imdb_id)
   }
 
+  removeFromWatched = () => {
+    this.state.watched.splice(this.state.watched.length-1, 1);
+  }
+
   nextMovie = () => {
-    var url = "http://127.0.0.1:8000/movies/api/v1.0/get_movies" //"http://api.kino-project.tech/movies/random_movie/";
+    var url = "http://api.kino-project.tech/movies/random_movie/";
     Request.get(url).then((response) => {
       var movie_data = JSON.parse(response["text"]);
       this.renderMovie(movie_data)
@@ -195,18 +239,13 @@ export default class Layout extends React.Component {
 
   }
 
-  removeFromWatched = () => {
-    this.state.watched.splice(this.state.watched.length-1, 1);
-  }
-
   previousMovie = () => {
     const imdb_id = this.state.watched[this.state.watched.length - 1]
     if (typeof imdb_id == "undefined") {
-      console.log(imdb_id)
+      var url = "http://api.kino-project.tech/movies/random_movie/"
     } else {
-      console.log('new')
+      var url = "http://api.kino-project.tech/movies/random_movie/"
     }
-    var url = "http://127.0.0.1:8000/movies/api/v1.0/get_movies" //"http://api.kino-project.tech/movies/random_movie/";
     Request.get(url).then((response) => {
       var movie_data = JSON.parse(response["text"]);
       this.renderMovie(movie_data)
@@ -294,7 +333,7 @@ export default class Layout extends React.Component {
               previous={this.previousMovie}
               title={this.state.title}
               imdb_id={this.state.imdb_id}
-              year={this.state.year}
+              released={this.state.released}
               runtime={this.state.runtime}
               language={this.state.language}
               director={this.state.director}

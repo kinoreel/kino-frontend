@@ -24,7 +24,7 @@ export default class Skin extends React.Component {
         <div class="LeftInfo" >
           < Ratings ratings={this.props.ratings}/>
           < MovieInfo
-              year={this.props.year}
+              released={this.props.released}
               runtime={this.props.runtime}
               language={this.props.language}
               director={this.props.director}
