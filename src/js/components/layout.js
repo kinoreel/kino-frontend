@@ -256,7 +256,17 @@ export default class Layout extends React.Component {
       if (streams.length > 0) {
           stream = 'source=' + streams.join(',')
       }
-      // missing to_year, from_year, languages, stream from list
+      var genres = [];
+      for (var i = 0; i < this.state.filters.genres.length; i++) {
+          if (this.state.filters.genres[i]['checked'] == true) {
+              genres.push(this.state.filters.genres[i]['value'])
+          }
+      }
+      var genre;
+      if (v.length > 0) {
+          genre = 'source=' + genres.join(',')
+      }
+      // missing to_year, from_year, languages, streams, genres from list
       var url_params = [rotten_min, rotten_max, imdb_max, imdb_min].join('&')
 
       return url_params
