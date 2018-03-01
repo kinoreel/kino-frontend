@@ -263,7 +263,7 @@ export default class Layout extends React.Component {
           }
       }
       var genre;
-      if (v.length > 0) {
+      if (genres.length > 0) {
           genre = 'source=' + genres.join(',')
       }
       // missing to_year, from_year, languages, streams, genres from list
