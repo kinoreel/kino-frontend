@@ -274,7 +274,7 @@ export default class Layout extends React.Component {
 
   nextMovie = () => {
     var url_params = this.get_url_params()
-    var url = "http://api.kino-project.tech/movies/random_movie?" + url_params
+    var url = "https://api.kino-project.tech/movies/random_movie/?" + url_params
     console.log(url)
     Request.get(url).then((response) => {
       var movie_data = JSON.parse(response["text"]);
@@ -287,9 +287,9 @@ export default class Layout extends React.Component {
     const imdb_id = this.state.watched[this.state.watched.length - 1]
     if (typeof imdb_id == "undefined") {
         var url_params = this.get_url_params()
-        var url = "http://api.kino-project.tech/movies/random_movie?" + url_params
+        var url = "https://api.kino-project.tech/movies/random_movie/?" + url_params
     } else {
-        var url = "http://api.kino-project.tech/movies/random_movie?imdb_id=" + imdb_id
+        var url = "https://api.kino-project.tech/movies/random_movie/?imdb_id=" + imdb_id
     }
     Request.get(url).then((response) => {
       var movie_data = JSON.parse(response["text"]);
