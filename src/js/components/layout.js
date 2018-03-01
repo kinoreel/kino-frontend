@@ -229,22 +229,57 @@ export default class Layout extends React.Component {
     this.state.watched.splice(this.state.watched.length-1, 1);
   }
 
+  get_url_params = () => {
+      var rotten_min = 'rotten_min=' + this.state.filters.rottentomatoes.min;
+      var rotten_max = 'rotten_max=' + this.state.filters.rottentomatoes.max;
+      var imdb_max = 'imdb_min=' + this.state.filters.imdb.min;
+      var imdb_min = 'imdb_max=' + this.state.filters.imdb.max;
+      var from_year = 'from_year=' + this.state.filters.released.min;
+      var to_year = 'to_year=' + this.state.filters.released.max;
+      var languages = [];
+      for (var i = 0; i < this.state.filters.languages.length; i++) {
+          if (this.state.filters.languages[i]['checked'] == true) {
+              languages.push(this.state.filters.languages[i]['value'])
+          }
+      }
+      var language;
+      if (languages.length > 0) {
+          language = 'language=' + languages.join(',')
+      }
+      var streams = [];
+      for (var i = 0; i < this.state.filters.streams.length; i++) {
+          if (this.state.filters.streams[i]['checked'] == true) {
+              streams.push(this.state.filters.streams[i]['value'])
+          }
+      }
+      var stream;
+      if (streams.length > 0) {
+          stream = 'source=' + streams.join(',')
+      }
+      // missing to_year, from_year, languages, stream from list
+      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min].join('&')
+
+      return url_params
+  }
+
   nextMovie = () => {
-    var url = "http://api.kino-project.tech/movies/random_movie/";
+    var url_params = this.get_url_params()
+    var url = "http://api.kino-project.tech/movies/random_movie?" + url_params
+    console.log(url)
     Request.get(url).then((response) => {
       var movie_data = JSON.parse(response["text"]);
       this.renderMovie(movie_data)
       this.addToWatched(movie_data.imdb_id)
     });
-
   }
 
   previousMovie = () => {
     const imdb_id = this.state.watched[this.state.watched.length - 1]
     if (typeof imdb_id == "undefined") {
-      var url = "http://api.kino-project.tech/movies/random_movie/"
+        var url_params = this.get_url_params()
+        var url = "http://api.kino-project.tech/movies/random_movie?" + url_params
     } else {
-      var url = "http://api.kino-project.tech/movies/random_movie/"
+        var url = "http://api.kino-project.tech/movies/random_movie?imdb_id=" + imdb_id
     }
     Request.get(url).then((response) => {
       var movie_data = JSON.parse(response["text"]);
