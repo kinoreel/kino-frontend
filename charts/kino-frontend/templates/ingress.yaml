@@ -21,7 +21,7 @@ spec:
       http:
         paths:
           - path: /
-            frontend:
+            backend:
               serviceName: {{ $serviceName }}
               servicePort: {{ $servicePort }}
     {{- end -}}
