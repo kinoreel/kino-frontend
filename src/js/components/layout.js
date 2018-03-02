@@ -1,11 +1,7 @@
 import React from "react";
 
-import Footer from "./footer";
-import Movie from "./movie";
-import Ratings from "./ratings";
-import Streams from "./streams";
-import {Filters} from "./filters";
-import Extra from "./extra";
+import Trailer from "./trailer";
+import Skin from "./skin";
 import Request from 'superagent'
 import YouTube from 'react-youtube'
 
@@ -13,228 +9,387 @@ import YouTube from 'react-youtube'
 export default class Layout extends React.Component {
   constructor() {
     super();
+
     this.state = {
-      ispaused: false,
-      ishover: false,
-      isfullscreen: false,
-      filtervisible: false,
-      infovisible: true,
-      movie: [],
-      ratings: [],
-      streams: [],
-      extra: [],
-      filtered: { 
-        streams : [], 
-        genre: [],
-        languages : [],
-        released : {
-            earliest:'',
-            latest:''
+      skinLocked: false,
+      watched: [],
+      imdb_id: null,
+      title: null,
+      language: null,
+      year: null,
+      runtime: null,
+      writer: null,
+      director: null,
+      trailer: null,
+      ratings: {
+        rottentomatoes: null,
+        imdb: null,
+      },
+      streams: {
+        youtube: {
+          url: null,
+          price: null
         },
-        rated : {
-            earliest:'',
-            latest:''
+        itunes: {
+          url: null,
+          price: null
+        },
+        googleplay: {
+          url: null,
+          price: null
         }
       },
-    };    
-                
-    this.opts = {
-      height: '0',
-      width: '0',
-      playerVars: { // https://developers.google.com/youtube/player_parameters
-        autoplay: 1,
-        color: 'white',
-        controls: 1,
-        fs: 0,
-        iv_load_policy: 3, //Remove annotations
-        modestbranding: 1, //Remove youtube_logo
-        rel: 0, // Remove recommended videos
-        showinfo: 0 // Hide youtube information like title
+      filters: {
+        streams: [
+          {
+            value: "GooglePlay",
+            checked: true
+          },{
+            value: "YouTube",
+            checked: true
+          },{
+            value: "iTunes",
+            checked: true
+          },
+        ],
+        languages: [
+          {
+            value: "English",
+            checked: true
+          },{
+            value: "French",
+            checked: true
+          },{
+            value: "Spanish",
+            checked: true
+          },{
+            value: "Danish",
+            checked: true
+          },{
+            value: "Korean",
+            checked: true
+          },{
+            value: "English",
+            checked: true
+          },{
+            value: "French",
+            checked: true
+          },{
+            value: "Spanish",
+            checked: true
+          },{
+            value: "Danish",
+            checked: true
+          },{
+            value: "Korean",
+            checked: true
+          }
+        ],
+        genres: [
+          {
+            value: "Horror",
+            checked: true
+          },{
+            value: "Action",
+            checked: true
+          },{
+            value: "Comedy",
+            checked: true
+          },{
+            value: "Drama",
+            checked: true
+          },{
+            value: "Thriller",
+            checked: true
+          }
+        ],
+        released: {
+          'min': "2012",
+          'max': "2018",
+        },
+        runtime: {
+          'min': "20",
+          'max': "180",
+        },
+        imdb: {
+          'min': "7.5",
+          'max': "10",
+        },
+        rottentomatoes: {
+          'min': "75",
+          'max': "100",
+        },
       }
-    };
+    }
+  };
+
+  componentWillMount(){
+    this.nextMovie();
+    this.removeLoaderTitle();
   }
 
-  componentWillMount() {
-    this.opts.width = screen.width;
-    this.opts.height = screen.height;
+  componentDidMount(){
+    this.removeLoader()
+  }
+
+  removeLoaderTitle() {
     const loaderTitle = document.getElementById('loaderTitle')
     if(loaderTitle){
         setTimeout(() => {
             loaderTitle.classList.add('hiddenTitle')
-        }, 200)
+        }, 4000)
     }
-    this.changeMovie();
   }
-  
-  componentDidMount(){
+
+  removeLoader () {
     const loader = document.getElementById('loader')
     const main = document.getElementById('main')
     if(main){
       setTimeout(() => {
-        loader.classList.add('loaded')
-        main.classList.remove('loaded')
+        loader.classList.add('hidden')
         setTimeout(() => {
           loader.outerHTML = ''
         }, 1000)
-      }, 2000)
+      }, 4000)
     }
   }
-  
-  changeMovie() {
-    
 
-    var url = "http://api.kino-project.tech/movies/random_movie/";
-    Request.get(url).then((response) => {
-      var movie = JSON.parse(response["text"]);
-      
-      var ratings = movie.ratings;  
-      
-      var streams = movie.streams;
-      
-      // Extra
-      var extra = { 
-        language: movie.orig_language.toUpperCase(),
-        released: movie.released,
-        runtime: movie.runtime,
-        writer: 'Robert Manteghi',
-        director: 'Ted Johansson',
-        cast: 'Denise Furlong, Someone Else, One More Person'
-      }        
-        
-      
-      // Trailer
-      var trailer_url = movie["trailers"][0]["url"]
+  renderMovie = ( movie ) => {
 
-      var split_str = 'watch?v=';
-      
-      this.setState({
-        movie: movie,
-        ratings: ratings,
-        streams: streams,
-        extra: extra,
-        youtube_id: trailer_url.slice(trailer_url.indexOf(split_str)+split_str.length)
-      });
+    var ratings = {
+        rottentomatoes: null,
+        imdb: null,
+    };
+
+    for (var i = 0; i < movie.ratings.length; i++){
+       if (movie.ratings[i].source == 'rotten tomatoes') {
+           ratings.rottentomatoes = movie.ratings[i]["rating"]
+       } else if (movie.ratings[i].source == 'imdb') {
+           ratings.imdb = movie.ratings[i]["rating"]
+       }
+    }
+
+    var streams = {
+        youtube: {
+          url: null,
+          price: null
+        },
+        itunes: {
+          url: null,
+          price: null
+        },
+        googleplay: {
+          url: null,
+          price: null
+        }
+      }
+
+    for (var i = 0; i < movie.streams.length; i++){
+
+       if (movie.streams[i].source == 'GooglePlay') {
+           streams.googleplay.price = movie.streams[i]["price"]
+           streams.googleplay.url = movie.streams[i]["url"]
+       } else if (movie.streams[i].source == 'YouTube') {
+           streams.youtube.price = movie.streams[i]["price"]
+           streams.youtube.url = movie.streams[i]["url"]
+       } else if (movie.streams[i].source == 'iTunes' && movie.streams[i].purchase_type == 'rental') {
+           streams.itunes.price = movie.streams[i]["price"]
+           streams.itunes.url = movie.streams[i]["url"]
+       }
+    }
+
+    var title = movie.title;
+    var language = movie.orig_language;
+    var released = movie.released.substr(0, 4);
+    var runtime = movie.runtime;
+    var writer = movie.writer;
+    var director = movie.director;
+    var imdb_id = movie.imdb_id;
+    var trailer = movie.trailer;
+
+    this.setState({
+      title: title,
+      language: language,
+      released: released,
+      runtime: runtime,
+      writer: writer,
+      director: director,
+      trailer: trailer,
+      ratings: ratings,
+      streams: streams,
+      imdb_id: imdb_id,
     });
   }
-  //
-  toggleFilters () {
-    var filter = document.getElementById('filters')
-    if (!this.state.filtervisible){
-      filter.classList.remove('hidden') 
-      this.setState({filtervisible: true});
-      console.log('filter is visible')
-    } else {
-      filter.classList.add('hidden')      
-      console.log('filter is NOT visible')
-      this.setState({filtervisible: false});
-    }      
-    this.setState({infovisible: ! this.state.infovisible});
-  };
-  
-  _onMouseMove() {
-      const info = document.getElementById('info')      
-      info.classList.add('shown')
-      setTimeout(() => {
-          if (this.state.ispaused==false && this.state.ishover==false) {
-             info.classList.remove('shown')
-             console.log('bye')
-          }
-      }, 100)
-  };
-  
-  videoPaused() {
-      const info = document.getElementById('info')
-      this.setState({ispaused: true});
-      info.classList.add('shown')
-    }
-    
-  videoPlayed() {
-      const info = document.getElementById('info')
-      this.setState({ispaused: false});
-      setTimeout(() => {
-          info.classList.remove('shown')
-      }, 8000)
-    }
-  
-  _fullscreen() {
-    var elem = document.getElementById('main');
-        // ## The below if statement seems to work better ## if ((document.fullScreenElement && document.fullScreenElement !== null) || (document.msfullscreenElement && document.msfullscreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
-    if ((document.fullScreenElement !== undefined && document.fullScreenElement === null) || (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || (document.mozFullScreen !== undefined && !document.mozFullScreen) || (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
-        if (elem.requestFullScreen) {
-            elem.requestFullScreen();
-        } else if (elem.mozRequestFullScreen) {
-            elem.mozRequestFullScreen();
-        } else if (elem.webkitRequestFullScreen) {
-            elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-        } else if (elem.msRequestFullscreen) {
-            elem.msRequestFullscreen();
-        }
-    } else {
-        if (document.cancelFullScreen) {
-            document.cancelFullScreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }
-    }
+
+  addToWatched = (imdb_id) => {
+    this.state.watched.push(imdb_id)
   }
 
-  _onMouseEnter() {
-      const info = document.getElementById('info')
-      this.setState({ishover: true});
-      info.classList.add('shown')
-  };  
-
-  _onMouseLeave() {
-      const info = document.getElementById('info')
-      this.setState({ishover: false});
-      setTimeout(() => {
-          if (this.state.ispaused==false && this.state.ishover==false) {
-             info.classList.remove('shown')
-          }
-      }, 8000)
-  };  
-  
-  buttonHover(){
-      info.classList.add('shown')
+  removeFromWatched = () => {
+    this.state.watched.splice(this.state.watched.length-1, 1);
   }
-    
+
+  get_url_params = () => {
+      var rotten_min = 'rotten_min=' + this.state.filters.rottentomatoes.min;
+      var rotten_max = 'rotten_max=' + this.state.filters.rottentomatoes.max;
+      var imdb_max = 'imdb_min=' + this.state.filters.imdb.min;
+      var imdb_min = 'imdb_max=' + this.state.filters.imdb.max;
+      var from_year = 'from_year=' + this.state.filters.released.min;
+      var to_year = 'to_year=' + this.state.filters.released.max;
+      var languages = [];
+      for (var i = 0; i < this.state.filters.languages.length; i++) {
+          if (this.state.filters.languages[i]['checked'] == true) {
+              languages.push(this.state.filters.languages[i]['value'])
+          }
+      }
+      var language;
+      if (languages.length > 0) {
+          language = 'language=' + languages.join(',')
+      }
+      var streams = [];
+      for (var i = 0; i < this.state.filters.streams.length; i++) {
+          if (this.state.filters.streams[i]['checked'] == true) {
+              streams.push(this.state.filters.streams[i]['value'])
+          }
+      }
+      var stream;
+      if (streams.length > 0) {
+          stream = 'source=' + streams.join(',')
+      }
+      var genres = [];
+      for (var i = 0; i < this.state.filters.genres.length; i++) {
+          if (this.state.filters.genres[i]['checked'] == true) {
+              genres.push(this.state.filters.genres[i]['value'])
+          }
+      }
+      var genre;
+      if (genres.length > 0) {
+          genre = 'source=' + genres.join(',')
+      }
+      // missing to_year, from_year, languages, streams, genres from list
+      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min].join('&')
+
+      return url_params
+  }
+
+  nextMovie = () => {
+    var url_params = this.get_url_params()
+    var url = "https://api.kino-project.tech/movies/random_movie/?" + url_params
+    console.log(url)
+    Request.get(url).then((response) => {
+      var movie_data = JSON.parse(response["text"]);
+      this.renderMovie(movie_data)
+      this.addToWatched(movie_data.imdb_id)
+    });
+  }
+
+  previousMovie = () => {
+    const imdb_id = this.state.watched[this.state.watched.length - 1]
+    if (typeof imdb_id == "undefined") {
+        var url_params = this.get_url_params()
+        var url = "https://api.kino-project.tech/movies/random_movie/?" + url_params
+    } else {
+        var url = "https://api.kino-project.tech/movies/random_movie/?imdb_id=" + imdb_id
+    }
+    Request.get(url).then((response) => {
+      var movie_data = JSON.parse(response["text"]);
+      this.renderMovie(movie_data)
+      this.removeFromWatched()
+    });
+  }
+
+  showSkin = () => {
+    const skin = document.getElementById('skin')
+    skin.classList.add('shown')
+    document.body.style.cursor = 'default';
+  }
+
+  hideSkin = () => {
+    const skinLocked = this.state.skinLocked
+    this.timeout = setTimeout(function() {
+      if (!skinLocked) {
+        const skin = document.getElementById('skin')
+        skin.classList.remove('shown')
+        document.body.style.cursor = 'none';
+      }
+    }, 4000)
+  }
+
+  lockSkin = () => {
+    this.setState({skinLocked: true})
+  }
+
+  unlockSkin = () => {
+    this.setState({skinLocked: false})
+  }
+
+  mouseMove() {
+    this.showSkin()
+    clearTimeout(this.timeout);
+    this.hideSkin()
+  }
+
+  toggle = (checkboxTable, value) => {
+    const filters = Object.assign({}, this.state.filters);
+    this.state.filters[checkboxTable].map(function(a) {
+      if ( a.value == value ) {
+          a.checked = !a.checked
+      }
+    })
+    this.setState({filters});
+  }
+
+  toggleAll = checkboxTable => {
+    // Copy our object
+    const filters = Object.assign({}, this.state.filters);
+    // Check if any of the values are set to false
+    let allChecked = true
+    this.state.filters[checkboxTable].map(function(a) {
+      if ( a.checked == false ) {
+          allChecked = false
+      }
+    })
+    this.state.filters[checkboxTable].map(function(a) {
+      a.checked = !allChecked
+    })
+    // Reassign value
+    this.setState({filters});
+  }
+
+  updateRange = (rangeType, min, max) => {
+    // Copy our object
+    this.state.filters[rangeType].min = min
+    this.state.filters[rangeType].max = max
+  }
+
   render() {
     return (
-      <div id="main" class="main loaded"  onMouseMove={this._onMouseMove.bind(this)} >
-        <div class="videoContainer">
-          <YouTube class="video" 
-            videoId={this.state.youtube_id}
-            opts={this.opts}
-            onEnd={this.changeMovie.bind(this)}
-            onPause={this.videoPaused.bind(this)}
-            onPlay={this.videoPlayed.bind(this)}
-            />
-        </div>
-        <div class="info shown" id="info" >  
-          <div class="kinoButtons"  onMouseEnter={this._onMouseEnter.bind(this)} onMouseLeave={this._onMouseLeave.bind(this)}>     
-            <button onClick={this.toggleFilters.bind(this)} class="btn nextButton"> <i class="medium material-icons buttonIcon">search</i></button>
-            <button onClick={this._fullscreen.bind(this)} class="btn nextButton"><i class="large material-icons buttonIcon">fullscreen</i></button>
-            <button onClick={this.changeMovie.bind(this)} class="btn nextButton"><i class="large material-icons buttonIcon">navigate_next</i></button>
-          </div>
-          <div>
-             { this.state.infovisible ? <Movie movie={this.state.movie} /> : null }
-          </div>
-          <div class="mainInfo">
-            <div>
-              <div class="infoBox shown" id="infoBox">
-                { this.state.infovisible ? <Ratings ratings={this.state.ratings} /> : null }
-                { this.state.infovisible ? <Streams streams={this.state.streams} /> : null }
-                { this.state.infovisible ? <Extra extra={this.state.extra} /> : null }
-              </div>
-            </div>
-            <div id="filters" class="filters hidden">
-              <Filters filtered={this.state.filtered}/>
-            </div>
-          </div>
+      <div id='main' class='main'>
+        <Trailer trailer={this.state.trailer}
+                 end={this.nextMovie}
+                 lockSkin={this.lockSkin}
+                 unlockSkin={this.unlockSkin}
+                 hideSkin={this.hideSkin}
+                 showSkin={this.showSkin}
+        />
+        <div id="skin" class="Skin shown" onMouseMove={this.mouseMove.bind(this)}>
+          <Skin
+              next={this.nextMovie}
+              previous={this.previousMovie}
+              title={this.state.title}
+              imdb_id={this.state.imdb_id}
+              released={this.state.released}
+              runtime={this.state.runtime}
+              language={this.state.language}
+              director={this.state.director}
+              writer={this.state.writer}
+              streams={this.state.streams}
+              ratings={this.state.ratings}
+              filters={this.state.filters}
+              toggleAll={this.toggleAll}
+              toggle={this.toggle}
+              updateRange={this.updateRange}
+              />
         </div>
       </div>
     );
