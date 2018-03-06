@@ -1,0 +1,9 @@
+name: kino-frontend
+home: https://github.com/kinoreel/kino-frontend
+version: 0.1
+description: The frontend of the kino app
+sources:
+  - https://github.com/kinoreel/kino-frontend
+maintainers:
+  - name: Robert Manteghi
+    email: unruffled.nightingale@gmail.com
