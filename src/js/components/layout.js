@@ -23,8 +23,9 @@ export default class Layout extends React.Component {
 
     this.state = {
       skinLocked: false,
-      skinHidden: false,
+      skinShown: false,
       videoPlayer: null,
+      videoHidden: true,
       videoPaused: false,
       watched: [],
       imdb_id: null,
@@ -236,7 +237,9 @@ export default class Layout extends React.Component {
       streams: streams,
       imdb_id: imdb_id,
       movieInfo: movie,
+      videoHidden: false
     });
+
   }
 
   addToWatched = (imdb_id) => {
@@ -291,6 +294,7 @@ export default class Layout extends React.Component {
   }
 
   nextMovie = () => {
+    this.setState({videoHidden: true})
     var url_params = this.get_url_params()
     var url = "https://api.kino-project.tech/movies/random_movie/?" + url_params
     console.log(url)
@@ -302,6 +306,7 @@ export default class Layout extends React.Component {
   }
 
   previousMovie = () => {
+    this.setState({videoHidden: true})
     const imdb_id = this.state.watched[this.state.watched.length - 1]
     if (typeof imdb_id == "undefined") {
         var url_params = this.get_url_params()
@@ -403,6 +408,7 @@ export default class Layout extends React.Component {
   }
 
   togglePlayingVideo = () => {
+     console.log(this.state.videoHidden)
      if (this.state.videoPaused) {
          this.playVideo()
      } else {
@@ -413,7 +419,7 @@ export default class Layout extends React.Component {
   render() {
     return (
       <div id='main' class='main'>
-        <YouTube id="video" class="video"
+        <YouTube id="video" className={this.state.videoHidden ? "video" : "video shown"}
          videoId={this.state.trailer}
          opts={this.opts}
          onReady={this.onReady.bind(this)}
