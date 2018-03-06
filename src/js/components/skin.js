@@ -7,15 +7,16 @@ import Filters from "./filters";
 
 export default class Skin extends React.Component {
 
-  constructor() {
-   super();
-   this.state = {
-     searchVisible : false
-   }
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchHidden : true,
+    }
   }
 
   toggleSearch = () => {
-    this.setState({searchVisible: !this.state.searchVisible})
+    this.setState({searchHidden: !this.state.searchHidden})
+    console.log(this.props.movieInfo)
   }
 
   renderInfo(){
@@ -56,8 +57,8 @@ export default class Skin extends React.Component {
         < Buttons search={this.toggleSearch} next={this.props.next} previous={this.props.previous}/>
         <h1 class="Title">{this.props.title} {this.props.imdb_id}</h1>
         <div class='Info'>
-          {!this.state.searchVisible ? this.renderInfo() : null}
-          {this.state.searchVisible ? this.renderFilters() : null}
+          {this.state.searchHidden ? this.renderInfo() : null}
+          {!this.state.searchHidden ? this.renderFilters() : null}
         </div>
       </div>
     );

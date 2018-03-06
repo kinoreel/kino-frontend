@@ -1,6 +1,4 @@
 import React from "react";
-
-import Trailer from "./trailer";
 import Skin from "./skin";
 import Request from 'superagent'
 import YouTube from 'react-youtube'
@@ -10,9 +8,24 @@ export default class Layout extends React.Component {
   constructor() {
     super();
 
+    this.opts = {
+      playerVars: { // https://developers.google.com/youtube/player_parameters
+        autoplay: 1,
+        color: 'white',
+        controls: 1,
+        fs: 0,
+        iv_load_policy: 3, //Remove annotations
+        modestbranding: 1, //Remove youtube_logo
+        rel: 0, // Remove recommended videos
+        showinfo: 0 // Hide youtube information like title
+      }
+    }
+
     this.state = {
       skinLocked: false,
       skinHidden: false,
+      videoPlayer: null,
+      videoPaused: false,
       watched: [],
       imdb_id: null,
       title: null,
@@ -22,6 +35,7 @@ export default class Layout extends React.Component {
       writer: null,
       director: null,
       trailer: null,
+      api_data: null,
       ratings: {
         rottentomatoes: null,
         imdb: null,
@@ -157,6 +171,8 @@ export default class Layout extends React.Component {
 
   renderMovie = ( movie ) => {
 
+    this.setState({videoPaused: false})
+
     var ratings = {
         rottentomatoes: null,
         imdb: null,
@@ -219,6 +235,7 @@ export default class Layout extends React.Component {
       ratings: ratings,
       streams: streams,
       imdb_id: imdb_id,
+      movieInfo: movie,
     });
   }
 
@@ -359,17 +376,55 @@ export default class Layout extends React.Component {
     this.state.filters[rangeType].max = max
   }
 
+  onReady = (event) => {
+    this.setState({
+      player: event.target,
+    });
+  }
+
+  videoPaused = () => {
+    this.lockSkin()
+    this.showSkin()
+  }
+
+  videoPlayed = () => {
+    this.unlockSkin()
+    this.hideSkin()
+  }
+
+  pauseVideo = () => {
+    this.setState({videoPaused: true})
+    this.state.player.pauseVideo();
+  }
+
+  playVideo = () => {
+    this.setState({videoPaused: false})
+    this.state.player.playVideo();
+  }
+
+  togglePlayingVideo = () => {
+     if (this.state.videoPaused) {
+         this.playVideo()
+     } else {
+         this.pauseVideo()
+     }
+  }
+
   render() {
     return (
       <div id='main' class='main'>
-        <Trailer trailer={this.state.trailer}
-                 end={this.nextMovie}
-                 lockSkin={this.lockSkin}
-                 unlockSkin={this.unlockSkin}
-                 hideSkin={this.hideSkin}
-                 showSkin={this.showSkin}
+        <YouTube id="video" class="video"
+         videoId={this.state.trailer}
+         opts={this.opts}
+         onReady={this.onReady.bind(this)}
+         onEnd={this.nextMovie.bind(this)}
+         onPause={this.videoPaused.bind(this)}
+         onPlay={this.videoPlayed.bind(this)}
         />
-        <div id="skin" className={this.state.skinShown ? "Skin shown" : "Skin"} onMouseMove={this.mouseMove.bind(this)}>
+        <div id="skin" className={this.state.skinShown ? "Skin shown" : "Skin"}
+             onMouseMove={this.mouseMove.bind(this)}
+             onClick={this.togglePlayingVideo.bind(this)}
+             >
           <Skin
               next={this.nextMovie}
               previous={this.previousMovie}
@@ -386,6 +441,7 @@ export default class Layout extends React.Component {
               toggleAll={this.toggleAll}
               toggle={this.toggle}
               updateRange={this.updateRange}
+              movieInfo={this.state.movieInfo}
               />
         </div>
       </div>

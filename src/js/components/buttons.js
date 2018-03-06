@@ -2,6 +2,10 @@ import React from "react";
 
 export default class Buttons extends React.Component {
 
+   stopPropagation = (e) => {
+      e.stopPropagation();
+   }
+
   fullscreen() {
     var elem = document.getElementById('app');
 
@@ -31,7 +35,7 @@ export default class Buttons extends React.Component {
   render() {
 
     return (
-      <div class="ButtonsDiv">
+      <div class="ButtonsDiv" onClick={this.stopPropagation.bind(this)}>
         <button class="Buttons" onClick={this.props.previous}><i class="large material-icons buttonIcon">navigate_before</i></button>
         <button class="Buttons" onClick={this.props.search}> <i class="medium material-icons buttonIcon">search</i></button>
         <button class="Buttons" onClick={this.fullscreen.bind(this)}><i class="large material-icons buttonIcon">fullscreen</i></button>
