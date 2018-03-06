@@ -12,6 +12,7 @@ export default class Layout extends React.Component {
 
     this.state = {
       skinLocked: false,
+      skinHidden: false,
       watched: [],
       imdb_id: null,
       title: null,
@@ -299,17 +300,13 @@ export default class Layout extends React.Component {
   }
 
   showSkin = () => {
-    const skin = document.getElementById('skin')
-    skin.classList.add('shown')
-    document.body.style.cursor = 'default';
+    this.setState({skinShown: true})
   }
 
   hideSkin = () => {
-    const skinLocked = this.state.skinLocked
-    this.timeout = setTimeout(function() {
-      if (!skinLocked) {
-        const skin = document.getElementById('skin')
-        skin.classList.remove('shown')
+    this.timeout = setTimeout(() => {
+      if (!this.state.skinLocked) {
+        this.setState({skinShown: false})
         document.body.style.cursor = 'none';
       }
     }, 4000)
@@ -372,7 +369,7 @@ export default class Layout extends React.Component {
                  hideSkin={this.hideSkin}
                  showSkin={this.showSkin}
         />
-        <div id="skin" class="Skin shown" onMouseMove={this.mouseMove.bind(this)}>
+        <div id="skin" className={this.state.skinShown ? "Skin shown" : "Skin"} onMouseMove={this.mouseMove.bind(this)}>
           <Skin
               next={this.nextMovie}
               previous={this.previousMovie}
