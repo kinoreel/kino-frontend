@@ -21,7 +21,7 @@ export default class Skin extends React.Component {
 
   renderInfo(){
     return(
-      <div>
+      <div className={this.props.videoHidden ? "info2 hidden" : "info2"}>
         <div class="LeftInfo" >
           < Ratings ratings={this.props.ratings}/>
           < MovieInfo
@@ -55,7 +55,7 @@ export default class Skin extends React.Component {
     return (
       <div>
         < Buttons search={this.toggleSearch} next={this.props.next} previous={this.props.previous}/>
-        <h1 class="Title">{this.props.title} {this.props.imdb_id}</h1>
+        <h1 className={this.props.videoHidden ? "Title hidden" : "Title"}>{this.props.title} {this.props.imdb_id}</h1>
         <div class='Info'>
           {this.state.searchHidden ? this.renderInfo() : null}
           {!this.state.searchHidden ? this.renderFilters() : null}

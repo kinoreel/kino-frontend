@@ -2,6 +2,7 @@ import React from "react";
 import Skin from "./skin";
 import Request from 'superagent'
 import YouTube from 'react-youtube'
+import Spinner from 'react-spinner-material';
 
 
 export default class Layout extends React.Component {
@@ -416,17 +417,36 @@ export default class Layout extends React.Component {
      }
   }
 
-  render() {
-    return (
-      <div id='main' class='main'>
-        <YouTube id="video" className={this.state.videoHidden ? "video" : "video shown"}
+  renderVideo(){
+    return(
+       <YouTube id="video" className="video"
          videoId={this.state.trailer}
          opts={this.opts}
          onReady={this.onReady.bind(this)}
          onEnd={this.nextMovie.bind(this)}
          onPause={this.videoPaused.bind(this)}
          onPlay={this.videoPlayed.bind(this)}
-        />
+       />
+    )
+  }
+
+  renderSpinner() {
+   return(
+     <Spinner className="spinner"
+        size={100}
+        spinnerColor={"#333"}
+        spinnerWidth={10}
+        visible={true} />
+     )
+  }
+
+  render() {
+    return (
+      <div id='main' class='main'>
+        <div className="videoContainer">
+          {!this.state.videoHidden ? this.renderVideo() : null}
+          {this.state.videoHidden ? this.renderSpinner() : null}
+        </div>
         <div id="skin" className={this.state.skinShown ? "Skin shown" : "Skin"}
              onMouseMove={this.mouseMove.bind(this)}
              onClick={this.togglePlayingVideo.bind(this)}
@@ -448,6 +468,7 @@ export default class Layout extends React.Component {
               toggle={this.toggle}
               updateRange={this.updateRange}
               movieInfo={this.state.movieInfo}
+              videoHidden={this.state.videoHidden}
               />
         </div>
       </div>

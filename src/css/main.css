@@ -37,16 +37,17 @@ loader.hidden {
   position:fixed;
   width: 100%;
   height: 100%;
-  opacity: 0;
-  color: black;
 }
-.video.shown{
-  opacity:1;
-  cursor: default;
-  -webkit-transition: opacity 0.1s ease;
-  -moz-transition: opacity 0.1s ease;
-  -ms-transition: opacity 0.1s ease;
-  -o-transition: opacity 0.1s ease;
+.spinner{
+  position: absolute;
+  top:42%;
+  left:45%;
+}
+.videoContainer{
+  position:fixed;
+  width: 100%;
+  height: 100%;
+  background-color: black;
 }
 .Skin{
   position: fixed;
@@ -103,6 +104,10 @@ loader.hidden {
   position: fixed;
   bottom:42%;
   left: 8%;
+  opacity: 1;
+}
+.hidden{
+   opacity: 0;
 }
 .Info{
   display:block;
@@ -110,6 +115,17 @@ loader.hidden {
   bottom: 8%;
   width: 100%;
   height: 32%;
+}
+}
+.info2{
+  opacity: 1;
+}
+.info2.hidden{
+  opacity: 0;
+  -webkit-transition: opacity 2s ease;
+  -moz-transition: opacity 2s ease;
+  -ms-transition: opacity 2s ease;
+  -o-transition: opacity 2s ease;
 }
 .LeftInfo{
   display:inline-block; 
