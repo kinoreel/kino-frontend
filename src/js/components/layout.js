@@ -23,7 +23,6 @@ export default class Layout extends React.Component {
     }
 
     this.state = {
-      skinLocked: false,
       skinShown: false,
       videoPlayer: null,
       videoHidden: true,
@@ -173,8 +172,6 @@ export default class Layout extends React.Component {
 
   renderMovie = ( movie ) => {
 
-    this.setState({videoPaused: false})
-
     var ratings = {
         rottentomatoes: null,
         imdb: null,
@@ -226,6 +223,9 @@ export default class Layout extends React.Component {
     var imdb_id = movie.imdb_id;
     var trailer = movie.trailer;
 
+    this.state.player.unMute()
+
+
     this.setState({
       title: title,
       language: language,
@@ -237,8 +237,7 @@ export default class Layout extends React.Component {
       ratings: ratings,
       streams: streams,
       imdb_id: imdb_id,
-      movieInfo: movie,
-      videoHidden: false
+      movie: movie,
     });
 
   }
@@ -295,10 +294,9 @@ export default class Layout extends React.Component {
   }
 
   nextMovie = () => {
-    this.setState({videoHidden: true})
+    this.hideVideo()
     var url_params = this.get_url_params()
     var url = "https://api.kino-project.tech/movies/random_movie/?" + url_params
-    console.log(url)
     Request.get(url).then((response) => {
       var movie_data = JSON.parse(response["text"]);
       this.renderMovie(movie_data)
@@ -307,7 +305,7 @@ export default class Layout extends React.Component {
   }
 
   previousMovie = () => {
-    this.setState({videoHidden: true})
+    this.hideVideo()
     const imdb_id = this.state.watched[this.state.watched.length - 1]
     if (typeof imdb_id == "undefined") {
         var url_params = this.get_url_params()
@@ -320,33 +318,6 @@ export default class Layout extends React.Component {
       this.renderMovie(movie_data)
       this.removeFromWatched()
     });
-  }
-
-  showSkin = () => {
-    this.setState({skinShown: true})
-  }
-
-  hideSkin = () => {
-    this.timeout = setTimeout(() => {
-      if (!this.state.skinLocked) {
-        this.setState({skinShown: false})
-        document.body.style.cursor = 'none';
-      }
-    }, 4000)
-  }
-
-  lockSkin = () => {
-    this.setState({skinLocked: true})
-  }
-
-  unlockSkin = () => {
-    this.setState({skinLocked: false})
-  }
-
-  mouseMove() {
-    this.showSkin()
-    clearTimeout(this.timeout);
-    this.hideSkin()
   }
 
   toggle = (checkboxTable, value) => {
@@ -388,44 +359,61 @@ export default class Layout extends React.Component {
     });
   }
 
-  videoPaused = () => {
-    this.lockSkin()
-    this.showSkin()
+  onPlay = () => {
+    console.log('playing')
+    this.showSkin();
+    this.setState({
+      videoPaused: false,
+      videoHidden: false,
+    })
   }
 
-  videoPlayed = () => {
-    this.unlockSkin()
-    this.hideSkin()
-  }
-
-  pauseVideo = () => {
+  onPause = () => {
+    this.showSkin();
     this.setState({videoPaused: true})
-    this.state.player.pauseVideo();
   }
 
-  playVideo = () => {
-    this.setState({videoPaused: false})
-    this.state.player.playVideo();
+  hideVideo = () => {
+    this.setState({videoHidden: true})
+    try {
+      this.state.player.mute()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   togglePlayingVideo = () => {
-     console.log(this.state.videoHidden)
      if (this.state.videoPaused) {
-         this.playVideo()
+         console.log(this.state.videoPaused)
+         console.log('playing')
+         this.state.player.playVideo();
      } else {
-         this.pauseVideo()
+         console.log('paused')
+         console.log(this.state.videoPaused)
+         this.state.player.pauseVideo();
      }
+  }
+
+  showSkin = () => {
+    clearTimeout(this.skinTimeout);
+    this.setState({skinShown: true})
+    this.skinTimeout = setTimeout(() => {
+      if (!this.state.videoPaused) {
+        this.setState({skinShown: false})
+        document.body.style.cursor = 'none';
+      }
+    }, 4000)
   }
 
   renderVideo(){
     return(
-       <YouTube id="video" className="video"
+       <YouTube id="video" className={this.state.videoHidden ? "video hidden" : "video"}
          videoId={this.state.trailer}
          opts={this.opts}
          onReady={this.onReady.bind(this)}
+         onPlay={this.onPlay.bind(this)}
+         onPause={this.onPause.bind(this)}
          onEnd={this.nextMovie.bind(this)}
-         onPause={this.videoPaused.bind(this)}
-         onPlay={this.videoPlayed.bind(this)}
        />
     )
   }
@@ -434,7 +422,7 @@ export default class Layout extends React.Component {
    return(
      <Spinner className="spinner"
         size={100}
-        spinnerColor={"#333"}
+        spinnerColor={"#ffffff"}
         spinnerWidth={10}
         visible={true} />
      )
@@ -444,14 +432,16 @@ export default class Layout extends React.Component {
     return (
       <div id='main' class='main'>
         <div className="videoContainer">
-          {!this.state.videoHidden ? this.renderVideo() : null}
+          {this.renderVideo()}
           {this.state.videoHidden ? this.renderSpinner() : null}
         </div>
-        <div id="skin" className={this.state.skinShown ? "Skin shown" : "Skin"}
-             onMouseMove={this.mouseMove.bind(this)}
+        <div id="skin"
+             className={this.state.skinShown ? "Skin shown" : "Skin"}
+             onMouseMove={this.showSkin.bind(this)}
              onClick={this.togglePlayingVideo.bind(this)}
              >
           <Skin
+              showSkin={this.showSkin}
               next={this.nextMovie}
               previous={this.previousMovie}
               title={this.state.title}
@@ -467,7 +457,7 @@ export default class Layout extends React.Component {
               toggleAll={this.toggleAll}
               toggle={this.toggle}
               updateRange={this.updateRange}
-              movieInfo={this.state.movieInfo}
+              movie={this.state.movie}
               videoHidden={this.state.videoHidden}
               />
         </div>

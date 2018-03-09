@@ -120,13 +120,6 @@ loader.hidden {
 .info2{
   opacity: 1;
 }
-.info2.hidden{
-  opacity: 0;
-  -webkit-transition: opacity 2s ease;
-  -moz-transition: opacity 2s ease;
-  -ms-transition: opacity 2s ease;
-  -o-transition: opacity 2s ease;
-}
 .LeftInfo{
   display:inline-block; 
   width:50%;
