@@ -40,14 +40,26 @@ loader.hidden {
 }
 .spinner{
   position: absolute;
-  top:42%;
+  top:40%;
   left:45%;
+}
+.noMovie{
+  font-family: Josefin Sans;
+  letter-spacing:1px;
+  font-size: 16px;
+  position:absolute;
+  transform: translateX(-50%) translateY(-50%);
+  top: 40%;
+  left: 50%;
 }
 .videoContainer{
   position:fixed;
   width: 100%;
   height: 100%;
   background-color: black;
+}
+.hidden{
+   opacity: 0;
 }
 .Skin{
   position: fixed;
@@ -105,9 +117,6 @@ loader.hidden {
   bottom:42%;
   left: 8%;
   opacity: 1;
-}
-.hidden{
-   opacity: 0;
 }
 .Info{
   display:block;

@@ -16,7 +16,7 @@ export default class Skin extends React.Component {
 
   toggleSearch = () => {
     this.setState({searchHidden: !this.state.searchHidden});
-    this.props.showSkin();
+    this.props.hideSkin();
   }
 
   renderInfo(){
@@ -45,6 +45,7 @@ export default class Skin extends React.Component {
         < Filters filters={this.props.filters}
             toggle={this.props.toggle}
             toggleAll={this.props.toggleAll}
+            allFiltersChecked={this.props.allFiltersChecked}
             updateRange={this.props.updateRange}
         />
       </div>

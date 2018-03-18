@@ -12,6 +12,9 @@ export default class Layout extends React.Component {
     // Production namespace = https://api.kino-project.tech
     this.namespace = 'http://localhost:8000'
 
+    this.last_seen = []
+    this.watched = [],
+
     this.opts = {
       playerVars: { // https://developers.google.com/youtube/player_parameters
         autoplay: 1,
@@ -26,11 +29,12 @@ export default class Layout extends React.Component {
     }
 
     this.state = {
-      skinShown: false,
-      videoPlayer: null,
+      skinHidden: true,
+      spinnerHidden: true,
+      noMovieFoundHidden: true,
       videoHidden: true,
+      videoPlayer: null,
       videoPaused: false,
-      watched: [],
       imdb_id: null,
       title: null,
       language: null,
@@ -124,7 +128,7 @@ export default class Layout extends React.Component {
         ],
         released: {
           'min': "2000",
-          'max': "2018",
+          'max': "2014",
         },
         runtime: {
           'min': "20",
@@ -173,80 +177,11 @@ export default class Layout extends React.Component {
     }
   }
 
-  renderMovie = ( movie ) => {
+  /**
+  * GET DATA FUNCTIONS
+  */
 
-    var ratings = {
-        rottentomatoes: null,
-        imdb: null,
-    };
-
-    for (var i = 0; i < movie.ratings.length; i++){
-       if (movie.ratings[i].source == 'rotten tomatoes') {
-           ratings.rottentomatoes = movie.ratings[i]["rating"]
-       } else if (movie.ratings[i].source == 'imdb') {
-           ratings.imdb = movie.ratings[i]["rating"]
-       }
-    }
-
-    var streams = {
-        youtube: {
-          url: null,
-          price: null
-        },
-        itunes: {
-          url: null,
-          price: null
-        },
-        googleplay: {
-          url: null,
-          price: null
-        }
-      }
-
-    for (var i = 0; i < movie.streams.length; i++){
-
-       if (movie.streams[i].source == 'GooglePlay') {
-           streams.googleplay.price = movie.streams[i]["price"]
-           streams.googleplay.url = movie.streams[i]["url"]
-       } else if (movie.streams[i].source == 'YouTube') {
-           streams.youtube.price = movie.streams[i]["price"]
-           streams.youtube.url = movie.streams[i]["url"]
-       } else if (movie.streams[i].source == 'iTunes' && movie.streams[i].purchase_type == 'rental') {
-           streams.itunes.price = movie.streams[i]["price"]
-           streams.itunes.url = movie.streams[i]["url"]
-       }
-    }
-
-    var title = movie.title;
-    var language = movie.orig_language;
-    var released = movie.released.substr(0, 4);
-    var runtime = movie.runtime;
-    var writer = movie.writer;
-    var director = movie.director;
-    var imdb_id = movie.imdb_id;
-    var trailer = movie.trailer;
-
-    if (this.state.player){
-        this.state.player.unMute()
-    }
-
-    this.setState({
-      title: title,
-      language: language,
-      released: released,
-      runtime: runtime,
-      writer: writer,
-      director: director,
-      trailer: trailer,
-      ratings: ratings,
-      streams: streams,
-      imdb_id: imdb_id,
-      movie: movie,
-    });
-
-  }
-
-  get_url_params = () => {
+  getUrlParameters = () => {
       var rotten_min = 'rotten_min=' + this.state.filters.rottentomatoes.min;
       var rotten_max = 'rotten_max=' + this.state.filters.rottentomatoes.max;
       var imdb_max = 'imdb_min=' + this.state.filters.imdb.min;
@@ -283,139 +218,130 @@ export default class Layout extends React.Component {
       if (genres.length > 0) {
           genre = 'genre=' + genres.join(',')
       }
+
+      var seen = 'seen=' + this.watched.join(',')
       // missing to_year, from_year, languages, streams, genres from list
-      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min, to_year, from_year, language, stream, genre].join('&')
+      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min, to_year, from_year, language, stream, genre, seen].join('&')
 
       return url_params
   }
 
-  nextMovie = () => {
-    if (this.state.player) {
-        this.hideVideo()
+
+  // Sets the current state with data in movie
+  setMovieData = ( movie ) => {
+
+    // Get ratings rom movie
+    var ratings = { rottentomatoes: null, imdb: null };
+
+    for (var i = 0; i < movie.ratings.length; i++){
+       if (movie.ratings[i].source == 'rotten tomatoes') {
+           ratings.rottentomatoes = movie.ratings[i]["rating"]
+       } else if (movie.ratings[i].source == 'imdb') {
+           ratings.imdb = movie.ratings[i]["rating"]
+       }
     }
-    var url_params = this.get_url_params()
-    var url = this.namespace + "/movies/random_movie/?" + url_params
-    console.log(url)
-    Request.get(url).then((response) => {
-      var movie_data = JSON.parse(response["text"]);
-      if (movie_data=="No data found"){
-          this.renderNoMovieFound()
-      }
-      console.log(movie_data)
-      this.renderMovie(movie_data)
-      this.addToWatched(movie_data.imdb_id)
+
+    // Get streams from movie
+    var streams = {
+      youtube: {url: null, price: null},
+      itunes: {url: null, price: null},
+      googleplay: {url: null, price: null}
+    }
+
+    for (var i = 0; i < movie.streams.length; i++){
+
+       if (movie.streams[i].source == 'GooglePlay') {
+           streams.googleplay.price = movie.streams[i]["price"]
+           streams.googleplay.url = movie.streams[i]["url"]
+       } else if (movie.streams[i].source == 'YouTube') {
+           streams.youtube.price = movie.streams[i]["price"]
+           streams.youtube.url = movie.streams[i]["url"]
+       } else if (movie.streams[i].source == 'iTunes' && movie.streams[i].purchase_type == 'rental') {
+           streams.itunes.price = movie.streams[i]["price"]
+           streams.itunes.url = movie.streams[i]["url"]
+       }
+    }
+
+    var director = movie.director;
+    var writer = movie.writer;
+
+    this.setState({
+      title: movie.title,
+      language: movie.language,
+      released: movie.released,
+      runtime: movie.runtime,
+      writer: movie.writer,
+      director: director,
+      trailer: movie.trailer,
+      ratings: ratings,
+      streams: streams,
+      imdb_id: movie.imdb_id,
     });
-  }
 
-  renderNoMovieFound() {
-      console.log('No data found')
-  }
-
-  previousMovie = () => {
-    const imdb_id = this.state.watched[this.state.watched.length - 2]
-    if (typeof imdb_id == "undefined") {
-        console.log("next")
-        this.nextMovie()
-    } else {
-        this.hideVideo()
-        console.log("previous")
-        var url = this.namespace+"/movies/imdb_id/?imdb_id=" + imdb_id
-        console.log(url)
-        Request.get(url).then((response) => {
-          var movie_data = JSON.parse(response["text"]);
-          console.log(movie_data)
-          this.renderMovie(movie_data)
-          this.removeFromWatched()
-        });
-    }
   }
 
   addToWatched = (imdb_id) => {
-    this.state.watched.push(imdb_id)
-  }
-
-  removeFromWatched = () => {
-    this.state.watched.splice(this.state.watched.length-2, 2);
-  }
-
-  toggle = (checkboxTable, value) => {
-    const filters = Object.assign({}, this.state.filters);
-    this.state.filters[checkboxTable].map(function(a) {
-      if ( a.value == value ) {
-          a.checked = !a.checked
-      }
-    })
-    this.setState({filters});
-  }
-
-  toggleAll = checkboxTable => {
-    // Copy our object
-    const filters = Object.assign({}, this.state.filters);
-    // Check if any of the values are set to false
-    let allChecked = true
-    this.state.filters[checkboxTable].map(function(a) {
-      if ( a.checked == false ) {
-          allChecked = false
-      }
-    })
-    this.state.filters[checkboxTable].map(function(a) {
-      a.checked = !allChecked
-    })
-    // Reassign value
-    this.setState({filters});
-  }
-
-  updateRange = (rangeType, min, max) => {
-    // Copy our object
-    this.state.filters[rangeType].min = min
-    this.state.filters[rangeType].max = max
-  }
-
-  onReady = (event) => {
-    this.setState({
-      player: event.target,
-    });
-  }
-
-  onPlay = () => {
-    this.showSkin();
-    this.setState({
-      videoPaused: false,
-      videoHidden: false,
-    })
-  }
-
-  onPause = () => {
-    this.showSkin();
-    this.setState({videoPaused: true})
-  }
-
-  hideVideo = () => {
-    this.setState({videoHidden: true})
-    try {
-      this.state.player.mute()
-    } catch (error) {
+    if (!this.watched.includes(imdb_id)) {
+        this.watched.push(imdb_id)
     }
   }
 
-  togglePlayingVideo = () => {
-     if (this.state.videoPaused) {
-         this.state.player.playVideo();
-     } else {
-         this.state.player.pauseVideo();
-     }
+  addToLastSeen = (imdb_id) => {
+    if (!this.last_seen.includes(imdb_id)) {
+        this.last_seen.push(imdb_id)
+    }
   }
 
-  showSkin = () => {
-    clearTimeout(this.skinTimeout);
-    this.setState({skinShown: true})
-    this.skinTimeout = setTimeout(() => {
-      if (!this.state.videoPaused) {
-        this.setState({skinShown: false})
-        document.body.style.cursor = 'none';
-      }
-    }, 4000)
+  removeFromLastSeen = () => {
+    this.last_seen.splice(this.last_seen.length-2, 2);
   }
+
+  nextMovie = () => {
+    this.hideVideo()
+    this.hideNoMovieFound()
+    this.showSpinner()
+    var url_params = this.getUrlParameters()
+    var url = this.namespace + "/movies/random_movie/?" + url_params
+    // Request the data
+    Request.get(url).then((response) => {
+      var movie_data = JSON.parse(response["text"]);
+      if (movie_data=="No data found"){
+        this.showNoMovieFound()
+        this.hideSpinner()
+      } else {
+        this.setMovieData(movie_data)
+        this.addToWatched(movie_data.imdb_id)
+        this.addToLastSeen(movie_data.imdb_id)
+      }
+    });
+  }
+
+  previousMovie = () => {
+    const imdb_id = this.last_seen[this.last_seen.length - 2]
+    if (typeof imdb_id == "undefined") {
+      this.nextMovie()
+    } else {
+      this.hideVideo()
+      this.hideNoMovieFound()
+      this.showSpinner()
+      var url = this.namespace+"/movies/imdb_id/?imdb_id=" + imdb_id
+      Request.get(url).then((response) => {
+        var movie_data = JSON.parse(response["text"]);
+        this.setMovieData(movie_data)
+        this.removeFromLastSeen()
+      });
+    }
+  }
+
+  /**
+  * RENDER FUNCTIONS
+  *
+  * These functions control the rendering and visibility of the four states on our web page. These are:
+  * - VIDEO PLAYER
+  * - NO MOVIE FOUND
+  * - LOADING SPINNER
+  * - PLAYER SKIN
+  */
 
   renderVideo(){
     return(
@@ -430,6 +356,20 @@ export default class Layout extends React.Component {
     )
   }
 
+  hideVideo = () => {
+    this.setState({videoHidden: true})
+    if (this.state.player) {
+      this.state.player.mute()
+    }
+  }
+
+  showVideo = () => {
+    this.setState({videoHidden: false})
+    if (this.state.player) {
+      this.state.player.unMute()
+    }
+  }
+
   renderSpinner() {
    return(
      <Spinner className="spinner"
@@ -440,20 +380,153 @@ export default class Layout extends React.Component {
      )
   }
 
+  hideSpinner = () => {
+    this.setState({spinnerHidden: true})
+  }
+
+  showSpinner = () => {
+    this.setState({spinnerHidden: false})
+  }
+
+  renderNoMovieFound() {
+    return(
+      <p class="noMovie"> NO FILM FOUND THAT MATCHED THE SEARCH CRITERIA </p>
+    )
+  }
+
+  hideNoMovieFound = () => {
+    this.setState({noMovieFoundHidden: true})
+  }
+
+  showNoMovieFound = () => {
+    this.setState({noMovieFoundHidden: false})
+  }
+
+  hideSkin = () => {
+    clearTimeout(this.skinTimeout);
+    this.setState({skinHidden: false})
+    this.skinTimeout = setTimeout(() => {
+      if (!this.state.videoPaused) {
+        this.setState({skinHidden: true})
+        document.body.style.cursor = 'none';
+      }
+    }, 4000)
+  }
+
+  /**
+  * PLAYER FUNCTIONS
+  *
+  * These functions are for the video player and control what
+  * happens when actions are performed when the player is paused, played, etc.
+  */
+
+  // Sets the state of player once it has loaded so we can control it via the YouTube player API
+  onReady = (event) => {
+    this.setState({
+      player: event.target,
+    });
+  }
+
+  // When the video plays, show the skin, and set video as shown and playing
+  onPlay = () => {
+    this.hideSkin();
+    this.hideSpinner();
+    this.showVideo();
+    this.setState({
+      videoPaused: false,
+    })
+  }
+
+  // When video is paused, show skin, and set video as paused.
+  onPause = () => {
+    this.hideSkin();
+    this.setState({videoPaused: true})
+  }
+
+  // Function that plays the video if it paused and pauses the video if it is playing
+  togglePlayingVideo = () => {
+     if (this.state.videoPaused) {
+         this.state.player.playVideo();
+     } else {
+         this.state.player.pauseVideo();
+     }
+  }
+
+  /**
+  * FILTER FUNCTIONS
+  *
+  * These functions set the state for the filters. They must be kept here as their state
+  * must be visible to function that gets data from the API.
+  * They are split into function controlling checkboxes and ranges.
+  */
+
+  /**
+  * CHECKBOX FUNCTIONS
+  */
+
+  // Toggles a filter based on filter_id (genres, streams, etc.)
+  // and the filter value.
+  toggle = (filter_id, value) => {
+    const filters = Object.assign({}, this.state.filters);
+    this.state.filters[filter_id].map(function(a) {
+      if ( a.value == value ) {
+          a.checked = !a.checked
+      }
+    })
+    this.setState({filters});
+  }
+
+  // Determines if all the values for filter are checked.
+  allFiltersChecked = (filter_id) => {
+    var all_checked = true
+    this.state.filters[filter_id].map(function(a) {
+      if ( !a.checked ) {
+          all_checked = false;
+      }
+    })
+    return all_checked
+  }
+
+  // Sets all filters to checked or unchecked
+  // If all filters checked, set all uncheck all filters.
+  // Otherwise set all filters to checked.
+  toggleAll = (filter_id) => {
+    const filters = Object.assign({}, this.state.filters);
+    var all_checked = this.allFiltersChecked(filter_id);
+    this.state.filters[filter_id].map(function(i) {
+       i.checked = !all_checked
+    })
+    // Reassign value
+    this.setState({filters});
+  }
+
+  /**
+  * RANGE FUNCTIONS
+  */
+
+  // Updates the range filter
+  updateRange = (range_id, min, max) => {
+    // Copy our object
+    this.state.filters[range_id].min = min
+    this.state.filters[range_id].max = max
+  }
+
+
   render() {
     return (
       <div id='main' class='main'>
         <div className="videoContainer">
           {this.renderVideo()}
-          {this.state.videoHidden ? this.renderSpinner() : null}
+          {this.state.spinnerHidden ? null : this.renderSpinner()}
+          {this.state.noMovieFoundHidden ? null : this.renderNoMovieFound()}
         </div>
         <div id="skin"
-             className={this.state.skinShown ? "Skin shown" : "Skin"}
-             onMouseMove={this.showSkin.bind(this)}
+             className={!this.state.skinHidden ? "Skin shown" : "Skin"}
+             onMouseMove={this.hideSkin.bind(this)}
              onClick={this.togglePlayingVideo.bind(this)}
              >
           <Skin
-              showSkin={this.showSkin}
+              hideSkin={this.hideSkin}
               next={this.nextMovie}
               previous={this.previousMovie}
               title={this.state.title}
@@ -467,6 +540,7 @@ export default class Layout extends React.Component {
               ratings={this.state.ratings}
               filters={this.state.filters}
               toggleAll={this.toggleAll}
+              allFiltersChecked={this.allFiltersChecked}
               toggle={this.toggle}
               updateRange={this.updateRange}
               movie={this.state.movie}
