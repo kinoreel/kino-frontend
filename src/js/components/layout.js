@@ -9,6 +9,9 @@ export default class Layout extends React.Component {
   constructor() {
     super();
 
+    // Production namespace = https://api.kino-project.tech
+    this.namespace = 'http://localhost:8000'
+
     this.opts = {
       playerVars: { // https://developers.google.com/youtube/player_parameters
         autoplay: 1,
@@ -120,7 +123,7 @@ export default class Layout extends React.Component {
           }
         ],
         released: {
-          'min': "2012",
+          'min': "2000",
           'max': "2018",
         },
         runtime: {
@@ -128,11 +131,11 @@ export default class Layout extends React.Component {
           'max': "180",
         },
         imdb: {
-          'min': "7.5",
+          'min': "5",
           'max': "10",
         },
         rottentomatoes: {
-          'min': "75",
+          'min': "10",
           'max': "100",
         },
       }
@@ -223,8 +226,9 @@ export default class Layout extends React.Component {
     var imdb_id = movie.imdb_id;
     var trailer = movie.trailer;
 
-    this.state.player.unMute()
-
+    if (this.state.player){
+        this.state.player.unMute()
+    }
 
     this.setState({
       title: title,
@@ -240,14 +244,6 @@ export default class Layout extends React.Component {
       movie: movie,
     });
 
-  }
-
-  addToWatched = (imdb_id) => {
-    this.state.watched.push(imdb_id)
-  }
-
-  removeFromWatched = () => {
-    this.state.watched.splice(this.state.watched.length-1, 1);
   }
 
   get_url_params = () => {
@@ -285,39 +281,61 @@ export default class Layout extends React.Component {
       }
       var genre;
       if (genres.length > 0) {
-          genre = 'source=' + genres.join(',')
+          genre = 'genre=' + genres.join(',')
       }
       // missing to_year, from_year, languages, streams, genres from list
-      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min].join('&')
+      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min, to_year, from_year, language, stream, genre].join('&')
 
       return url_params
   }
 
   nextMovie = () => {
-    this.hideVideo()
+    if (this.state.player) {
+        this.hideVideo()
+    }
     var url_params = this.get_url_params()
-    var url = "https://api.kino-project.tech/movies/random_movie/?" + url_params
+    var url = this.namespace + "/movies/random_movie/?" + url_params
+    console.log(url)
     Request.get(url).then((response) => {
       var movie_data = JSON.parse(response["text"]);
+      if (movie_data=="No data found"){
+          this.renderNoMovieFound()
+      }
+      console.log(movie_data)
       this.renderMovie(movie_data)
       this.addToWatched(movie_data.imdb_id)
     });
   }
 
+  renderNoMovieFound() {
+      console.log('No data found')
+  }
+
   previousMovie = () => {
-    this.hideVideo()
-    const imdb_id = this.state.watched[this.state.watched.length - 1]
+    const imdb_id = this.state.watched[this.state.watched.length - 2]
     if (typeof imdb_id == "undefined") {
-        var url_params = this.get_url_params()
-        var url = "https://api.kino-project.tech/movies/random_movie/?" + url_params
+        console.log("next")
+        this.nextMovie()
     } else {
-        var url = "https://api.kino-project.tech/movies/random_movie/?imdb_id=" + imdb_id
+        this.hideVideo()
+        console.log("previous")
+        var url = this.namespace+"/movies/imdb_id/?imdb_id=" + imdb_id
+        console.log(url)
+        Request.get(url).then((response) => {
+          var movie_data = JSON.parse(response["text"]);
+          console.log(movie_data)
+          this.renderMovie(movie_data)
+          this.removeFromWatched()
+        });
     }
-    Request.get(url).then((response) => {
-      var movie_data = JSON.parse(response["text"]);
-      this.renderMovie(movie_data)
-      this.removeFromWatched()
-    });
+  }
+
+  addToWatched = (imdb_id) => {
+    this.state.watched.push(imdb_id)
+  }
+
+  removeFromWatched = () => {
+    this.state.watched.splice(this.state.watched.length-2, 2);
   }
 
   toggle = (checkboxTable, value) => {
@@ -360,7 +378,6 @@ export default class Layout extends React.Component {
   }
 
   onPlay = () => {
-    console.log('playing')
     this.showSkin();
     this.setState({
       videoPaused: false,
@@ -378,18 +395,13 @@ export default class Layout extends React.Component {
     try {
       this.state.player.mute()
     } catch (error) {
-      console.log(error)
     }
   }
 
   togglePlayingVideo = () => {
      if (this.state.videoPaused) {
-         console.log(this.state.videoPaused)
-         console.log('playing')
          this.state.player.playVideo();
      } else {
-         console.log('paused')
-         console.log(this.state.videoPaused)
          this.state.player.pauseVideo();
      }
   }
