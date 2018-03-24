@@ -56,7 +56,7 @@ export default class Skin extends React.Component {
     return (
       <div>
         < Buttons search={this.toggleSearch} next={this.props.next} previous={this.props.previous}/>
-        <h1 className={!this.props.videoHidden ? "Title" : "Title hidden"}>{this.props.title} {this.props.imdb_id}</h1>
+        <h1 className={!this.props.videoHidden ? "Title" : "Title hidden"}>{this.props.title}</h1>
         <div class='Info'>
           {this.state.searchHidden ? this.renderInfo() : null}
           {!this.state.searchHidden ? this.renderFilters() : null}

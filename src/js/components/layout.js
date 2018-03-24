@@ -35,7 +35,6 @@ export default class Layout extends React.Component {
       videoHidden: true,
       videoPlayer: null,
       videoPaused: false,
-      imdb_id: null,
       title: null,
       language: null,
       year: null,
@@ -230,6 +229,8 @@ export default class Layout extends React.Component {
   // Sets the current state with data in movie
   setMovieData = ( movie ) => {
 
+    console.log(movie);
+
     // Get ratings rom movie
     var ratings = { rottentomatoes: null, imdb: null };
 
@@ -262,20 +263,36 @@ export default class Layout extends React.Component {
        }
     }
 
-    var director = movie.director;
-    var writer = movie.writer;
+    // Get director and writer from movie
+    var director = [];
+    var writer = [];
+    for (var i = 0; i < movie.persons.length; i++){
+      if (movie.persons[i].role == 'director') {
+        director.push(movie.persons[i]['fullname'])
+      } else if (movie.persons[i].role == 'writer') {
+        writer.push(movie.persons[i]['fullname'])
+      }
+    }
+
+    if (director.length > 3) {
+        director.length = 3;
+    }
+    director = director.join(', ');
+    if (writer.length > 3) {
+        writer.length = 3;
+    }
+    writer = writer.join(', ');
 
     this.setState({
       title: movie.title,
-      language: movie.language,
-      released: movie.released,
+      language: movie.orig_language,
+      released: movie.released.substring(0,4),
       runtime: movie.runtime,
-      writer: movie.writer,
+      writer: writer,
       director: director,
       trailer: movie.trailer,
       ratings: ratings,
       streams: streams,
-      imdb_id: movie.imdb_id,
     });
 
   }
@@ -530,7 +547,6 @@ export default class Layout extends React.Component {
               next={this.nextMovie}
               previous={this.previousMovie}
               title={this.state.title}
-              imdb_id={this.state.imdb_id}
               released={this.state.released}
               runtime={this.state.runtime}
               language={this.state.language}
