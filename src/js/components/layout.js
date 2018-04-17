@@ -59,6 +59,10 @@ export default class Layout extends React.Component {
         googleplay: {
           url: null,
           price: null
+        },
+        amazon: {
+          url: null,
+          price: null
         }
       },
       filters: {
@@ -72,7 +76,10 @@ export default class Layout extends React.Component {
           },{
             value: "iTunes",
             checked: true
-          },
+          },{
+            value: "Amazon",
+            checked: true
+          }
         ],
         languages: [
           {
@@ -222,6 +229,8 @@ export default class Layout extends React.Component {
       // missing to_year, from_year, languages, streams, genres from list
       var url_params = [rotten_min, rotten_max, imdb_max, imdb_min, to_year, from_year, language, stream, genre, seen].join('&')
 
+      console.log(seen);
+
       return url_params
   }
 
@@ -246,7 +255,8 @@ export default class Layout extends React.Component {
     var streams = {
       youtube: {url: null, price: null},
       itunes: {url: null, price: null},
-      googleplay: {url: null, price: null}
+      googleplay: {url: null, price: null},
+      amazon: {url: null, price: null}
     }
 
     for (var i = 0; i < movie.streams.length; i++){
@@ -260,6 +270,9 @@ export default class Layout extends React.Component {
        } else if (movie.streams[i].source == 'iTunes' && movie.streams[i].purchase_type == 'rental') {
            streams.itunes.price = movie.streams[i]["price"]
            streams.itunes.url = movie.streams[i]["url"]
+       } else if (movie.streams[i].source == 'Amazon' && movie.streams[i].purchase_type =='purchase' ){
+           streams.amazon.price = movie.streams[i]["price"]
+           streams.amazon.url = movie.streams[i]["url"]
        }
     }
 
@@ -282,6 +295,10 @@ export default class Layout extends React.Component {
         writer.length = 3;
     }
     writer = writer.join(', ');
+
+    if (movie.title == this.state.title) {
+        this.hideSpinner()
+    }
 
     this.setState({
       title: movie.title,
