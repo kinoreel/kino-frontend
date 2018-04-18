@@ -134,7 +134,7 @@ export default class Layout extends React.Component {
         ],
         released: {
           'min': "2000",
-          'max': "2014",
+          'max': "2018",
         },
         runtime: {
           'min': "20",
@@ -228,8 +228,6 @@ export default class Layout extends React.Component {
       var seen = 'seen=' + this.watched.join(',')
       // missing to_year, from_year, languages, streams, genres from list
       var url_params = [rotten_min, rotten_max, imdb_max, imdb_min, to_year, from_year, language, stream, genre, seen].join('&')
-
-      console.log(seen);
 
       return url_params
   }
