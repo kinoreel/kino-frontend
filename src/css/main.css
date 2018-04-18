@@ -114,7 +114,7 @@ loader.hidden {
   font-family: Josefin Sans;
   font-size: 3.8em;
   position: fixed;
-  bottom:42%;
+  bottom:48%;
   left: 8%;
   opacity: 1;
 }
@@ -123,7 +123,7 @@ loader.hidden {
   position: fixed;
   bottom: 8%;
   width: 100%;
-  height: 32%;
+  height: 38%;
 }
 }
 .info2{
@@ -161,8 +161,8 @@ loader.hidden {
   display:inline-block;
   font-family: Josefin Sans;
   letter-spacing:1px;
-  padding-right: 10px;
-  width: 160px; 
+  padding-right: 15px;
+  width: 160px;
 }
 .Stream a:hover {
   text-decoration: underline;
