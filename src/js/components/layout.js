@@ -89,19 +89,10 @@ export default class Layout extends React.Component {
             value: "French",
             checked: true
           },{
-            value: "Spanish",
-            checked: true
-          },{
-            value: "Danish",
-            checked: true
-          },{
             value: "Korean",
             checked: true
           },{
-            value: "English",
-            checked: true
-          },{
-            value: "French",
+            value: "Persian",
             checked: true
           },{
             value: "Spanish",
@@ -110,25 +101,85 @@ export default class Layout extends React.Component {
             value: "Danish",
             checked: true
           },{
-            value: "Korean",
+            value: "German",
             checked: true
-          }
+          },{
+            value: "Hebrew",
+            checked: true
+          },{
+            value: "Hungarian",
+            checked: true
+          },{
+            value: "Italian",
+            checked: true
+          },{
+            value: "Japanese",
+            checked: true
+          },{
+            value: "Portuguese",
+            checked: true
+          },{
+            value: "Romanian",
+            checked: true
+          },{
+            value: "Thai",
+            checked: true
+        }
         ],
         genres: [
           {
-            value: "Horror",
-            checked: true
-          },{
-            value: "Action",
-            checked: true
-          },{
-            value: "Comedy",
-            checked: true
-          },{
             value: "Drama",
             checked: true
           },{
-            value: "Thriller",
+            value: "Thriller"
+            checked: true
+          },{
+            value: "Comedy"
+            checked: true
+          },{
+            value: "Documentary"
+            checked: true
+          },{
+            value: "Adventure"
+            checked: true
+          },{
+            value: "Science Fiction"
+            checked: true
+          },{
+            value: "Animation"
+            checked: true
+          },{
+            value: "Romance"
+            checked: true
+          },{
+            value: "Horror"
+            checked: true
+          },{
+            value: "Mystery"
+            checked: true
+          },{
+            value: "Music"
+            checked: true
+          },{
+            value: "War"
+            checked: true
+          },{
+            value: "Action"
+            checked: true
+          },{
+            value: "Fantasy"
+            checked: true
+          },{
+            value: "History"
+            checked: true
+          },{
+            value: "Crime"
+            checked: true
+          },{
+            value: "Family"
+            checked: true
+          },{
+            value: "Western"
             checked: true
           }
         ],
