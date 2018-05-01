@@ -236,8 +236,6 @@ export default class Layout extends React.Component {
   // Sets the current state with data in movie
   setMovieData = ( movie ) => {
 
-    console.log(movie);
-
     // Get ratings rom movie
     var ratings = { rottentomatoes: null, imdb: null };
 
