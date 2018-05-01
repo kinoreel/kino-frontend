@@ -1,19 +1,40 @@
 import React from "react";
-
-import Trailer from "./trailer";
 import Skin from "./skin";
 import Request from 'superagent'
 import YouTube from 'react-youtube'
+import Spinner from 'react-spinner-material';
 
 
 export default class Layout extends React.Component {
   constructor() {
     super();
 
+    // Production namespace = https://api.kino-project.tech
+    this.namespace = 'http://localhost:8000'
+
+    this.last_seen = []
+    this.watched = [],
+
+    this.opts = {
+      playerVars: { // https://developers.google.com/youtube/player_parameters
+        autoplay: 1,
+        color: 'white',
+        controls: 1,
+        fs: 0,
+        iv_load_policy: 3, //Remove annotations
+        modestbranding: 1, //Remove youtube_logo
+        rel: 0, // Remove recommended videos
+        showinfo: 0 // Hide youtube information like title
+      }
+    }
+
     this.state = {
-      skinLocked: false,
-      watched: [],
-      imdb_id: null,
+      skinHidden: true,
+      spinnerHidden: true,
+      noMovieFoundHidden: true,
+      videoHidden: true,
+      videoPlayer: null,
+      videoPaused: false,
       title: null,
       language: null,
       year: null,
@@ -21,6 +42,7 @@ export default class Layout extends React.Component {
       writer: null,
       director: null,
       trailer: null,
+      api_data: null,
       ratings: {
         rottentomatoes: null,
         imdb: null,
@@ -37,6 +59,10 @@ export default class Layout extends React.Component {
         googleplay: {
           url: null,
           price: null
+        },
+        amazon: {
+          url: null,
+          price: null
         }
       },
       filters: {
@@ -50,7 +76,10 @@ export default class Layout extends React.Component {
           },{
             value: "iTunes",
             checked: true
-          },
+          },{
+            value: "Amazon",
+            checked: true
+          }
         ],
         languages: [
           {
@@ -104,7 +133,7 @@ export default class Layout extends React.Component {
           }
         ],
         released: {
-          'min': "2012",
+          'min': "2000",
           'max': "2018",
         },
         runtime: {
@@ -112,11 +141,11 @@ export default class Layout extends React.Component {
           'max': "180",
         },
         imdb: {
-          'min': "7.5",
+          'min': "5",
           'max': "10",
         },
         rottentomatoes: {
-          'min': "75",
+          'min': "10",
           'max': "100",
         },
       }
@@ -154,82 +183,11 @@ export default class Layout extends React.Component {
     }
   }
 
-  renderMovie = ( movie ) => {
+  /**
+  * GET DATA FUNCTIONS
+  */
 
-    var ratings = {
-        rottentomatoes: null,
-        imdb: null,
-    };
-
-    for (var i = 0; i < movie.ratings.length; i++){
-       if (movie.ratings[i].source == 'rotten tomatoes') {
-           ratings.rottentomatoes = movie.ratings[i]["rating"]
-       } else if (movie.ratings[i].source == 'imdb') {
-           ratings.imdb = movie.ratings[i]["rating"]
-       }
-    }
-
-    var streams = {
-        youtube: {
-          url: null,
-          price: null
-        },
-        itunes: {
-          url: null,
-          price: null
-        },
-        googleplay: {
-          url: null,
-          price: null
-        }
-      }
-
-    for (var i = 0; i < movie.streams.length; i++){
-
-       if (movie.streams[i].source == 'GooglePlay') {
-           streams.googleplay.price = movie.streams[i]["price"]
-           streams.googleplay.url = movie.streams[i]["url"]
-       } else if (movie.streams[i].source == 'YouTube') {
-           streams.youtube.price = movie.streams[i]["price"]
-           streams.youtube.url = movie.streams[i]["url"]
-       } else if (movie.streams[i].source == 'iTunes' && movie.streams[i].purchase_type == 'rental') {
-           streams.itunes.price = movie.streams[i]["price"]
-           streams.itunes.url = movie.streams[i]["url"]
-       }
-    }
-
-    var title = movie.title;
-    var language = movie.orig_language;
-    var released = movie.released.substr(0, 4);
-    var runtime = movie.runtime;
-    var writer = movie.writer;
-    var director = movie.director;
-    var imdb_id = movie.imdb_id;
-    var trailer = movie.trailer;
-
-    this.setState({
-      title: title,
-      language: language,
-      released: released,
-      runtime: runtime,
-      writer: writer,
-      director: director,
-      trailer: trailer,
-      ratings: ratings,
-      streams: streams,
-      imdb_id: imdb_id,
-    });
-  }
-
-  addToWatched = (imdb_id) => {
-    this.state.watched.push(imdb_id)
-  }
-
-  removeFromWatched = () => {
-    this.state.watched.splice(this.state.watched.length-1, 1);
-  }
-
-  get_url_params = () => {
+  getUrlParameters = () => {
       var rotten_min = 'rotten_min=' + this.state.filters.rottentomatoes.min;
       var rotten_max = 'rotten_max=' + this.state.filters.rottentomatoes.max;
       var imdb_max = 'imdb_min=' + this.state.filters.imdb.min;
@@ -264,74 +222,285 @@ export default class Layout extends React.Component {
       }
       var genre;
       if (genres.length > 0) {
-          genre = 'source=' + genres.join(',')
+          genre = 'genre=' + genres.join(',')
       }
+
+      var seen = 'seen=' + this.watched.join(',')
       // missing to_year, from_year, languages, streams, genres from list
-      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min].join('&')
+      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min, to_year, from_year, language, stream, genre, seen].join('&')
 
       return url_params
   }
 
+
+  // Sets the current state with data in movie
+  setMovieData = ( movie ) => {
+
+    console.log(movie);
+
+    // Get ratings rom movie
+    var ratings = { rottentomatoes: null, imdb: null };
+
+    for (var i = 0; i < movie.ratings.length; i++){
+       if (movie.ratings[i].source == 'rotten tomatoes') {
+           ratings.rottentomatoes = movie.ratings[i]["rating"]
+       } else if (movie.ratings[i].source == 'imdb') {
+           ratings.imdb = movie.ratings[i]["rating"]
+       }
+    }
+
+    // Get streams from movie
+    var streams = {
+      youtube: {url: null, price: null},
+      itunes: {url: null, price: null},
+      googleplay: {url: null, price: null},
+      amazon: {url: null, price: null}
+    }
+
+    for (var i = 0; i < movie.streams.length; i++){
+
+       if (movie.streams[i].source == 'GooglePlay') {
+           streams.googleplay.price = movie.streams[i]["price"]
+           streams.googleplay.url = movie.streams[i]["url"]
+       } else if (movie.streams[i].source == 'YouTube') {
+           streams.youtube.price = movie.streams[i]["price"]
+           streams.youtube.url = movie.streams[i]["url"]
+       } else if (movie.streams[i].source == 'iTunes' && movie.streams[i].purchase_type == 'rental') {
+           streams.itunes.price = movie.streams[i]["price"]
+           streams.itunes.url = movie.streams[i]["url"]
+       } else if (movie.streams[i].source == 'Amazon' && movie.streams[i].purchase_type =='purchase' ){
+           streams.amazon.price = movie.streams[i]["price"]
+           streams.amazon.url = movie.streams[i]["url"]
+       }
+    }
+
+    // Get director and writer from movie
+    var director = [];
+    var writer = [];
+    for (var i = 0; i < movie.persons.length; i++){
+      if (movie.persons[i].role == 'director') {
+        director.push(movie.persons[i]['fullname'])
+      } else if (movie.persons[i].role == 'writer') {
+        writer.push(movie.persons[i]['fullname'])
+      }
+    }
+
+    if (director.length > 3) {
+        director.length = 3;
+    }
+    director = director.join(', ');
+    if (writer.length > 3) {
+        writer.length = 3;
+    }
+    writer = writer.join(', ');
+
+    if (movie.title == this.state.title) {
+        this.hideSpinner()
+    }
+
+    this.setState({
+      title: movie.title,
+      language: movie.orig_language,
+      released: movie.released.substring(0,4),
+      runtime: movie.runtime,
+      writer: writer,
+      director: director,
+      trailer: movie.trailer,
+      ratings: ratings,
+      streams: streams,
+    });
+
+  }
+
+  addToWatched = (imdb_id) => {
+    if (!this.watched.includes(imdb_id)) {
+        this.watched.push(imdb_id)
+    }
+  }
+
+  addToLastSeen = (imdb_id) => {
+    if (!this.last_seen.includes(imdb_id)) {
+        this.last_seen.push(imdb_id)
+    }
+  }
+
+  removeFromLastSeen = () => {
+    this.last_seen.splice(this.last_seen.length-2, 2);
+  }
+
   nextMovie = () => {
-    var url_params = this.get_url_params()
-    var url = "https://api.kino-project.tech/movies/random_movie/?" + url_params
-    console.log(url)
+    this.hideVideo()
+    this.hideNoMovieFound()
+    this.showSpinner()
+    var url_params = this.getUrlParameters()
+    var url = this.namespace + "/movies/random_movie/?" + url_params
+    // Request the data
     Request.get(url).then((response) => {
       var movie_data = JSON.parse(response["text"]);
-      this.renderMovie(movie_data)
-      this.addToWatched(movie_data.imdb_id)
+      if (movie_data=="No data found"){
+        this.showNoMovieFound()
+        this.hideSpinner()
+      } else {
+        this.setMovieData(movie_data)
+        this.addToWatched(movie_data.imdb_id)
+        this.addToLastSeen(movie_data.imdb_id)
+      }
     });
   }
 
   previousMovie = () => {
-    const imdb_id = this.state.watched[this.state.watched.length - 1]
+    const imdb_id = this.last_seen[this.last_seen.length - 2]
     if (typeof imdb_id == "undefined") {
-        var url_params = this.get_url_params()
-        var url = "https://api.kino-project.tech/movies/random_movie/?" + url_params
+      this.nextMovie()
     } else {
-        var url = "https://api.kino-project.tech/movies/random_movie/?imdb_id=" + imdb_id
+      this.hideVideo()
+      this.hideNoMovieFound()
+      this.showSpinner()
+      var url = this.namespace+"/movies/imdb_id/?imdb_id=" + imdb_id
+      Request.get(url).then((response) => {
+        var movie_data = JSON.parse(response["text"]);
+        this.setMovieData(movie_data)
+        this.removeFromLastSeen()
+      });
     }
-    Request.get(url).then((response) => {
-      var movie_data = JSON.parse(response["text"]);
-      this.renderMovie(movie_data)
-      this.removeFromWatched()
-    });
   }
 
-  showSkin = () => {
-    const skin = document.getElementById('skin')
-    skin.classList.add('shown')
-    document.body.style.cursor = 'default';
+  /**
+  * RENDER FUNCTIONS
+  *
+  * These functions control the rendering and visibility of the four states on our web page. These are:
+  * - VIDEO PLAYER
+  * - NO MOVIE FOUND
+  * - LOADING SPINNER
+  * - PLAYER SKIN
+  */
+
+  renderVideo(){
+    return(
+       <YouTube id="video" className={this.state.videoHidden ? "video hidden" : "video"}
+         videoId={this.state.trailer}
+         opts={this.opts}
+         onReady={this.onReady.bind(this)}
+         onPlay={this.onPlay.bind(this)}
+         onPause={this.onPause.bind(this)}
+         onEnd={this.nextMovie.bind(this)}
+       />
+    )
+  }
+
+  hideVideo = () => {
+    this.setState({videoHidden: true})
+    if (this.state.player) {
+      this.state.player.mute()
+    }
+  }
+
+  showVideo = () => {
+    this.setState({videoHidden: false})
+    if (this.state.player) {
+      this.state.player.unMute()
+    }
+  }
+
+  renderSpinner() {
+   return(
+     <Spinner className="spinner"
+        size={100}
+        spinnerColor={"#ffffff"}
+        spinnerWidth={10}
+        visible={true} />
+     )
+  }
+
+  hideSpinner = () => {
+    this.setState({spinnerHidden: true})
+  }
+
+  showSpinner = () => {
+    this.setState({spinnerHidden: false})
+  }
+
+  renderNoMovieFound() {
+    return(
+      <p class="noMovie"> NO FILM FOUND THAT MATCHED THE SEARCH CRITERIA </p>
+    )
+  }
+
+  hideNoMovieFound = () => {
+    this.setState({noMovieFoundHidden: true})
+  }
+
+  showNoMovieFound = () => {
+    this.setState({noMovieFoundHidden: false})
   }
 
   hideSkin = () => {
-    const skinLocked = this.state.skinLocked
-    this.timeout = setTimeout(function() {
-      if (!skinLocked) {
-        const skin = document.getElementById('skin')
-        skin.classList.remove('shown')
+    clearTimeout(this.skinTimeout);
+    this.setState({skinHidden: false})
+    this.skinTimeout = setTimeout(() => {
+      if (!this.state.videoPaused) {
+        this.setState({skinHidden: true})
         document.body.style.cursor = 'none';
       }
     }, 4000)
   }
 
-  lockSkin = () => {
-    this.setState({skinLocked: true})
+  /**
+  * PLAYER FUNCTIONS
+  *
+  * These functions are for the video player and control what
+  * happens when actions are performed when the player is paused, played, etc.
+  */
+
+  // Sets the state of player once it has loaded so we can control it via the YouTube player API
+  onReady = (event) => {
+    this.setState({
+      player: event.target,
+    });
   }
 
-  unlockSkin = () => {
-    this.setState({skinLocked: false})
+  // When the video plays, show the skin, and set video as shown and playing
+  onPlay = () => {
+    this.hideSkin();
+    this.hideSpinner();
+    this.showVideo();
+    this.setState({
+      videoPaused: false,
+    })
   }
 
-  mouseMove() {
-    this.showSkin()
-    clearTimeout(this.timeout);
-    this.hideSkin()
+  // When video is paused, show skin, and set video as paused.
+  onPause = () => {
+    this.hideSkin();
+    this.setState({videoPaused: true})
   }
 
-  toggle = (checkboxTable, value) => {
+  // Function that plays the video if it paused and pauses the video if it is playing
+  togglePlayingVideo = () => {
+     if (this.state.videoPaused) {
+         this.state.player.playVideo();
+     } else {
+         this.state.player.pauseVideo();
+     }
+  }
+
+  /**
+  * FILTER FUNCTIONS
+  *
+  * These functions set the state for the filters. They must be kept here as their state
+  * must be visible to function that gets data from the API.
+  * They are split into function controlling checkboxes and ranges.
+  */
+
+  /**
+  * CHECKBOX FUNCTIONS
+  */
+
+  // Toggles a filter based on filter_id (genres, streams, etc.)
+  // and the filter value.
+  toggle = (filter_id, value) => {
     const filters = Object.assign({}, this.state.filters);
-    this.state.filters[checkboxTable].map(function(a) {
+    this.state.filters[filter_id].map(function(a) {
       if ( a.value == value ) {
           a.checked = !a.checked
       }
@@ -339,45 +508,60 @@ export default class Layout extends React.Component {
     this.setState({filters});
   }
 
-  toggleAll = checkboxTable => {
-    // Copy our object
-    const filters = Object.assign({}, this.state.filters);
-    // Check if any of the values are set to false
-    let allChecked = true
-    this.state.filters[checkboxTable].map(function(a) {
-      if ( a.checked == false ) {
-          allChecked = false
+  // Determines if all the values for filter are checked.
+  allFiltersChecked = (filter_id) => {
+    var all_checked = true
+    this.state.filters[filter_id].map(function(a) {
+      if ( !a.checked ) {
+          all_checked = false;
       }
     })
-    this.state.filters[checkboxTable].map(function(a) {
-      a.checked = !allChecked
+    return all_checked
+  }
+
+  // Sets all filters to checked or unchecked
+  // If all filters checked, set all uncheck all filters.
+  // Otherwise set all filters to checked.
+  toggleAll = (filter_id) => {
+    const filters = Object.assign({}, this.state.filters);
+    var all_checked = this.allFiltersChecked(filter_id);
+    this.state.filters[filter_id].map(function(i) {
+       i.checked = !all_checked
     })
     // Reassign value
     this.setState({filters});
   }
 
-  updateRange = (rangeType, min, max) => {
+  /**
+  * RANGE FUNCTIONS
+  */
+
+  // Updates the range filter
+  updateRange = (range_id, min, max) => {
     // Copy our object
-    this.state.filters[rangeType].min = min
-    this.state.filters[rangeType].max = max
+    this.state.filters[range_id].min = min
+    this.state.filters[range_id].max = max
   }
+
 
   render() {
     return (
       <div id='main' class='main'>
-        <Trailer trailer={this.state.trailer}
-                 end={this.nextMovie}
-                 lockSkin={this.lockSkin}
-                 unlockSkin={this.unlockSkin}
-                 hideSkin={this.hideSkin}
-                 showSkin={this.showSkin}
-        />
-        <div id="skin" class="Skin shown" onMouseMove={this.mouseMove.bind(this)}>
+        <div className="videoContainer">
+          {this.renderVideo()}
+          {this.state.spinnerHidden ? null : this.renderSpinner()}
+          {this.state.noMovieFoundHidden ? null : this.renderNoMovieFound()}
+        </div>
+        <div id="skin"
+             className={!this.state.skinHidden ? "Skin shown" : "Skin"}
+             onMouseMove={this.hideSkin.bind(this)}
+             onClick={this.togglePlayingVideo.bind(this)}
+             >
           <Skin
+              hideSkin={this.hideSkin}
               next={this.nextMovie}
               previous={this.previousMovie}
               title={this.state.title}
-              imdb_id={this.state.imdb_id}
               released={this.state.released}
               runtime={this.state.runtime}
               language={this.state.language}
@@ -387,8 +571,11 @@ export default class Layout extends React.Component {
               ratings={this.state.ratings}
               filters={this.state.filters}
               toggleAll={this.toggleAll}
+              allFiltersChecked={this.allFiltersChecked}
               toggle={this.toggle}
               updateRange={this.updateRange}
+              movie={this.state.movie}
+              videoHidden={this.state.videoHidden}
               />
         </div>
       </div>

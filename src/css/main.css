@@ -38,6 +38,29 @@ loader.hidden {
   width: 100%;
   height: 100%;
 }
+.spinner{
+  position: absolute;
+  top:40%;
+  left:45%;
+}
+.noMovie{
+  font-family: Josefin Sans;
+  letter-spacing:1px;
+  font-size: 16px;
+  position:absolute;
+  transform: translateX(-50%) translateY(-50%);
+  top: 40%;
+  left: 50%;
+}
+.videoContainer{
+  position:fixed;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+}
+.hidden{
+   opacity: 0;
+}
 .Skin{
   position: fixed;
   cursor:none;
@@ -91,15 +114,20 @@ loader.hidden {
   font-family: Josefin Sans;
   font-size: 3.8em;
   position: fixed;
-  bottom:42%;
+  bottom:48%;
   left: 8%;
+  opacity: 1;
 }
 .Info{
   display:block;
   position: fixed;
   bottom: 8%;
   width: 100%;
-  height: 32%;
+  height: 38%;
+}
+}
+.info2{
+  opacity: 1;
 }
 .LeftInfo{
   display:inline-block; 
@@ -133,8 +161,8 @@ loader.hidden {
   display:inline-block;
   font-family: Josefin Sans;
   letter-spacing:1px;
-  padding-right: 10px;
-  width: 160px; 
+  padding-right: 15px;
+  width: 160px;
 }
 .Stream a:hover {
   text-decoration: underline;

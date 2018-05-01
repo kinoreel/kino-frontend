@@ -7,20 +7,21 @@ import Filters from "./filters";
 
 export default class Skin extends React.Component {
 
-  constructor() {
-   super();
-   this.state = {
-     searchVisible : false
-   }
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchHidden : true,
+    }
   }
 
   toggleSearch = () => {
-    this.setState({searchVisible: !this.state.searchVisible})
+    this.setState({searchHidden: !this.state.searchHidden});
+    this.props.hideSkin();
   }
 
   renderInfo(){
     return(
-      <div>
+      <div className={!this.props.videoHidden ? "info2" : "info2 hidden"}>
         <div class="LeftInfo" >
           < Ratings ratings={this.props.ratings}/>
           < MovieInfo
@@ -44,6 +45,7 @@ export default class Skin extends React.Component {
         < Filters filters={this.props.filters}
             toggle={this.props.toggle}
             toggleAll={this.props.toggleAll}
+            allFiltersChecked={this.props.allFiltersChecked}
             updateRange={this.props.updateRange}
         />
       </div>
@@ -54,10 +56,10 @@ export default class Skin extends React.Component {
     return (
       <div>
         < Buttons search={this.toggleSearch} next={this.props.next} previous={this.props.previous}/>
-        <h1 class="Title">{this.props.title} {this.props.imdb_id}</h1>
+        <h1 className={!this.props.videoHidden ? "Title" : "Title hidden"}>{this.props.title}</h1>
         <div class='Info'>
-          {!this.state.searchVisible ? this.renderInfo() : null}
-          {this.state.searchVisible ? this.renderFilters() : null}
+          {this.state.searchHidden ? this.renderInfo() : null}
+          {!this.state.searchHidden ? this.renderFilters() : null}
         </div>
       </div>
     );

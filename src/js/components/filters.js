@@ -4,21 +4,27 @@ import {RangeSlider} from "./ranges";
 
 export default class Filters extends React.Component{
 
+   stopPropagation = (e) => {
+      e.stopPropagation();
+   }
+
   renderCheckbox = (title, filters) => {
     return(
-      <div class="checkboxDiv">
+      <div class="checkboxDiv" onClick={this.stopPropagation.bind(this)}>
         <span class='filterTitle'> {title.toUpperCase()} </span>
         < CheckboxTable
               filters={filters}
               CheckboxTable={title}
               toggle={this.props.toggle}
+              toggleAll={this.props.toggleAll}
+              allFiltersChecked={this.props.allFiltersChecked}
         />
       </div>
   )}
 
   renderRange = (title, filter, range_type, start, end, min, max, step, updateRange ) => {
     return (
-      <div class= "rangeDiv">
+      <div class= "rangeDiv" onClick={this.stopPropagation.bind(this)}>
         <p class='filterTitle'> {title.toUpperCase()}</p>
         <RangeSlider start={start} end={end} min={min} max={max} step={step} rangeType={range_type}
             range={filter} updateRange={updateRange}
