@@ -10,7 +10,7 @@ export default class Layout extends React.Component {
     super();
 
     // Production namespace = https://api.kino-project.tech
-    this.namespace = 'http://localhost:8000'
+    this.namespace = 'https://api.kino-project.tech'
 
     this.last_seen = []
     this.watched = [],
