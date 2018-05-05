@@ -131,55 +131,55 @@ export default class Layout extends React.Component {
             value: "Drama",
             checked: true
           },{
-            value: "Thriller"
+            value: "Thriller",
             checked: true
           },{
-            value: "Comedy"
+            value: "Comedy",
             checked: true
           },{
-            value: "Documentary"
+            value: "Documentary",
             checked: true
           },{
-            value: "Adventure"
+            value: "Adventure",
             checked: true
           },{
-            value: "Science Fiction"
+            value: "Science Fiction",
             checked: true
           },{
-            value: "Animation"
+            value: "Animation",
             checked: true
           },{
-            value: "Romance"
+            value: "Romance",
             checked: true
           },{
-            value: "Horror"
+            value: "Horror",
             checked: true
           },{
-            value: "Mystery"
+            value: "Mystery",
             checked: true
           },{
-            value: "Music"
+            value: "Music",
             checked: true
           },{
-            value: "War"
+            value: "War",
             checked: true
           },{
-            value: "Action"
+            value: "Action",
             checked: true
           },{
-            value: "Fantasy"
+            value: "Fantasy",
             checked: true
           },{
-            value: "History"
+            value: "History",
             checked: true
           },{
-            value: "Crime"
+            value: "Crime",
             checked: true
           },{
-            value: "Family"
+            value: "Family",
             checked: true
           },{
-            value: "Western"
+            value: "Western",
             checked: true
           }
         ],
@@ -245,40 +245,42 @@ export default class Layout extends React.Component {
       var imdb_min = 'imdb_max=' + this.state.filters.imdb.max;
       var from_year = 'from_year=' + this.state.filters.released.min;
       var to_year = 'to_year=' + this.state.filters.released.max;
-      var languages = [];
-      for (var i = 0; i < this.state.filters.languages.length; i++) {
-          if (this.state.filters.languages[i]['checked'] == true) {
-              languages.push(this.state.filters.languages[i]['value'])
+
+      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min, to_year, from_year].join('&')
+
+      if (!this.allFiltersChecked('languages')){
+          var languages = [];
+          for (var i = 0; i < this.state.filters.languages.length; i++) {
+              if (this.state.filters.languages[i]['checked'] == true) {
+                  languages.push(this.state.filters.languages[i]['value'])
+              }
           }
-      }
-      var language;
-      if (languages.length > 0) {
-          language = 'language=' + languages.join(',')
-      }
-      var streams = [];
-      for (var i = 0; i < this.state.filters.streams.length; i++) {
-          if (this.state.filters.streams[i]['checked'] == true) {
-              streams.push(this.state.filters.streams[i]['value'])
-          }
-      }
-      var stream;
-      if (streams.length > 0) {
-          stream = 'source=' + streams.join(',')
-      }
-      var genres = [];
-      for (var i = 0; i < this.state.filters.genres.length; i++) {
-          if (this.state.filters.genres[i]['checked'] == true) {
-              genres.push(this.state.filters.genres[i]['value'])
-          }
-      }
-      var genre;
-      if (genres.length > 0) {
-          genre = 'genre=' + genres.join(',')
+          url_params = url_params + '&language=' + languages.join(',')
       }
 
-      var seen = 'seen=' + this.watched.join(',')
-      // missing to_year, from_year, languages, streams, genres from list
-      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min, to_year, from_year, language, stream, genre, seen].join('&')
+      if (!this.allFiltersChecked('streams')){
+          var streams = [];
+          for (var i = 0; i < this.state.filters.streams.length; i++) {
+              if (this.state.filters.streams[i]['checked'] == true) {
+                  streams.push(this.state.filters.streams[i]['value'])
+              }
+          }
+          url_params = url_params + '&streams=' + streams.join(',')
+      }
+
+      if (!this.allFiltersChecked('streams')){
+          var genres = [];
+          for (var i = 0; i < this.state.filters.genres.length; i++) {
+              if (this.state.filters.genres[i]['checked'] == true) {
+                  genres.push(this.state.filters.genres[i]['value'])
+              }
+          }
+          url_params = url_params + '&genres=' + genres.join(',')
+      }
+
+      if (this.watched.length > 0) {
+            url_params = url_params + '&seen=' + this.watched.join(',')
+      }
 
       return url_params
   }
