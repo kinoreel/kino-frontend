@@ -8,60 +8,41 @@ import Filters from "./filters";
 export default class Skin extends React.Component {
 
   constructor(props) {
-    super(props);
-    this.state = {
-      searchHidden : true,
-    }
+      super(props);
   }
 
-  toggleSearch = () => {
-    this.setState({searchHidden: !this.state.searchHidden});
-    this.props.hideSkin();
+  renderButtons() {
+      return(
+          <div>
+            <Buttons getNextMovie={this.props.getNextMovie}
+                     getPreviousMovie={this.props.getPreviousMovie}/>
+          </div>
+      )
   }
 
-  renderInfo(){
+  renderMovieInfo(){
     return(
-      <div className={!this.props.videoHidden ? "info2" : "info2 hidden"}>
-        <div class="LeftInfo" >
-          < Ratings ratings={this.props.ratings}/>
-          < MovieInfo
-              released={this.props.released}
-              runtime={this.props.runtime}
-              language={this.props.language}
-              director={this.props.director}
-              writer={this.props.writer}
-          />
-        </div>
-        <div class="RightInfo">
-          < Streams streams={this.props.streams}/>
-        </div>
-      </div>
-    )
-  }
-
-  renderFilters(){
-    return(
-      <div>
-        < Filters filters={this.props.filters}
-            toggle={this.props.toggle}
-            toggleAll={this.props.toggleAll}
-            allFiltersChecked={this.props.allFiltersChecked}
-            updateRange={this.props.updateRange}
-        />
-      </div>
+       <div>
+         < MovieInfo
+            title={this.props.title}
+            released={this.props.released}
+            runtime={this.props.runtime}
+            language={this.props.language}
+            director={this.props.director}
+            writer={this.props.writer}
+            ratings={this.props.ratings}
+            streams={this.props.streams}
+         />
+       </div>
     )
   }
 
   render() {
     return (
-      <div>
-        < Buttons search={this.toggleSearch} next={this.props.next} previous={this.props.previous}/>
-        <h1 className={!this.props.videoHidden ? "Title" : "Title hidden"}>{this.props.title}</h1>
-        <div class='Info'>
-          {this.state.searchHidden ? this.renderInfo() : null}
-          {!this.state.searchHidden ? this.renderFilters() : null}
+        <div>
+          {this.renderButtons()}
+          {this.props.movieFound ? this.renderMovieInfo() : null}
         </div>
-      </div>
     );
   }
 }

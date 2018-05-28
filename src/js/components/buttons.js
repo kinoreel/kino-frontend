@@ -33,13 +33,11 @@ export default class Buttons extends React.Component {
   }
 
   render() {
-
     return (
-      <div class="ButtonsDiv" onClick={this.stopPropagation.bind(this)}>
-        <button class="Buttons" onClick={this.props.previous}><i class="large material-icons buttonIcon">navigate_before</i></button>
-        <button class="Buttons" onClick={this.props.search}> <i class="medium material-icons buttonIcon">search</i></button>
-        <button class="Buttons" onClick={this.fullscreen.bind(this)}><i class="large material-icons buttonIcon">fullscreen</i></button>
-        <button class="Buttons" onClick={this.props.next}><i class="large material-icons buttonIcon">navigate_next</i></button>
+      <div onClick={this.stopPropagation.bind(this)}>
+        <button onClick={this.props.getPreviousMovie}><i class="large material-icons buttonIcon">navigate_before</i></button>
+        <button onClick={this.fullscreen.bind(this)}><i class="large material-icons buttonIcon">fullscreen</i></button>
+        <button onClick={this.props.getNextMovie}><i class="large material-icons buttonIcon">navigate_next</i></button>
       </div>
     );
   }
