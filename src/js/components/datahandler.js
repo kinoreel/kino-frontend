@@ -210,6 +210,65 @@ export default class DataHandler extends React.Component {
        });
   }
 
+  /**
+  * FILTER FUNCTIONS
+  *
+  * These functions set the state for the filters. They must be kept here as their state
+  * must be visible to function that gets data from the API.
+  * They are split into function controlling checkboxes and ranges.
+  */
+
+  /**
+  * CHECKBOX FUNCTIONS
+  */
+
+  // Sets all filters to checked or unchecked
+  // If all filters checked, set all uncheck all filters.
+  // Otherwise set all filters to checked.
+  toggleAllCheckboxes = (filter_id) => {
+    const filters = Object.assign({}, this.state.filters);
+    var all_checked = this.allFiltersChecked(filter_id);
+    this.state.filters[filter_id].map(function(i) {
+       i.checked = !all_checked
+    })
+    // Reassign value
+    this.setState({filters});
+  }
+
+  // Toggles a filter based on filter_id (genres, streams, etc.)
+  // and the filter value.
+  toggleCheckbox = (filter_id, value) => {
+    const filters = Object.assign({}, this.state.filters);
+    this.state.filters[filter_id].map(function(a) {
+      if ( a.value == value ) {
+          a.checked = !a.checked
+      }
+    })
+    this.setState({filters});
+  }
+
+  // Determines if all the values for filter are checked.
+  allCheckboxesChecked = (filter_id) => {
+    var all_checked = true
+    this.state.filters[filter_id].map(function(a) {
+      if ( !a.checked ) {
+          all_checked = false;
+      }
+    })
+    return all_checked
+  }
+
+  /**
+  * RANGE FUNCTIONS
+  */
+
+  // Updates the range filter
+  updateRange = (range_id, min, max) => {
+    // Copy our object
+    this.state.filters[range_id].min = min
+    this.state.filters[range_id].max = max
+  }
+
   render() {
       return (
           <div>
@@ -225,7 +284,11 @@ export default class DataHandler extends React.Component {
                 getNextMovie={this.getNextMovie.bind(this)}
                 getPreviousMovie={this.getPreviousMovie.bind(this)}
                 movieFound={this.state.movieFound}
-                movieNotFound={this.state.movieNotFound}/>
+                movieNotFound={this.state.movieNotFound}
+                updateRange={this.updateRange.bind(this)}
+                allCheckboxesChecked={this.allCheckboxesChecked.bind(this)}
+                toggleCheckbox={this.toggleCheckbox.bind(this)}
+                toggleAllCheckboxes={this.toggleAllCheckboxes.bind(this)}/>
           </div>
       );
   }

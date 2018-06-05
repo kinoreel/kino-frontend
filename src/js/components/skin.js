@@ -9,13 +9,22 @@ export default class Skin extends React.Component {
 
   constructor(props) {
       super(props);
+      this.state = {
+        searchVisible : false,
+      }
+  }
+
+  toggleSearch = () => {
+    this.setState({searchVisible: !this.state.searchVisible});
+    this.props.hideSkin();
   }
 
   renderButtons() {
       return(
           <div>
             <Buttons getNextMovie={this.props.getNextMovie}
-                     getPreviousMovie={this.props.getPreviousMovie}/>
+                     getPreviousMovie={this.props.getPreviousMovie}
+                     search={this.toggleSearch} />
           </div>
       )
   }
@@ -37,11 +46,25 @@ export default class Skin extends React.Component {
     )
   }
 
+  renderFilters(){
+    return(
+      <div>
+        < Filters filters={this.props.filters}
+            toggleCheckbox={this.props.toggleCheckbox}
+            toggleAllCheckboxes={this.props.toggleAllCheckboxes}
+            allCheckboxesChecked={this.props.allCheckboxesChecked}
+            updateRange={this.props.updateRange}
+        />
+      </div>
+    )
+  }
+
   render() {
     return (
         <div>
           {this.renderButtons()}
-          {this.props.movieFound ? this.renderMovieInfo() : null}
+          {this.props.movieFound && !this.state.searchVisible ? this.renderMovieInfo() : null}
+          {this.state.searchVisible ? this.renderFilters() : null}
         </div>
     );
   }

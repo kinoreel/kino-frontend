@@ -59,8 +59,8 @@ export default class Layout extends React.Component {
   }
 
   onVideoReady = (event) => {
+      event.target.playVideo();
       this.player = event.target;
-      this.player.playVideo();
   }
 
   onPlay = () => {
@@ -72,15 +72,15 @@ export default class Layout extends React.Component {
   }
 
   togglePlayingVideo = () => {
-     /*
-     If the video is playing then the video is paused.
-     If the video is paused then the video is played.
-     */
-     if (this.player.getPlayerState() == 2) {
-         this.player.playVideo();
-     } else {
-         this.player.pauseVideo();
-     }
+      /*
+      If the video is playing then the video is paused.
+      If the video is paused then the video is played.
+      */
+      if (this.player.getPlayerState() == 2) {
+          this.player.playVideo();
+      } else {
+          this.player.pauseVideo();
+      }
   }
 
   render() {
@@ -101,7 +101,11 @@ export default class Layout extends React.Component {
                     getNextMovie={this.props.getNextMovie}
                     getPreviousMovie={this.props.getPreviousMovie}
                     movieFound={this.props.movieFound}
-                    movieNotFound={this.props.movieNotFound}/>
+                    movieNotFound={this.props.movieNotFound}
+                    updateRange={this.props.updateRange}
+                    allCheckboxesChecked={this.props.allCheckboxesChecked}
+                    toggleCheckbox={this.props.toggleCheckbox}
+                    toggleAllCheckboxes={this.props.toggleAllCheckboxes}/>
             </div>
           </div>
       );
