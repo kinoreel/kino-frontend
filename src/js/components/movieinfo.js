@@ -30,7 +30,7 @@ export default class MovieInfo extends React.Component{
   render() {
     return (
       <div>
-        <div className="Info">
+        <div>
           <h1 className="Title">{this.props.title}</h1>
           <div class="LeftInfo" >
             <Ratings ratings={this.props.ratings}/>

@@ -32,6 +32,7 @@ export default class Buttons extends React.Component {
     }
   }
 
+
   render() {
     return (
       <div className="buttonsDiv" onClick={this.stopPropagation.bind(this)}>

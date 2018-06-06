@@ -5,6 +5,12 @@ import Layout from './layout'
 export default class DataHandler extends React.Component {
   constructor() {
     super();
+    /*
+    #todo toggle search when search is shown and next or back our clicked
+    #todo add spinner
+    #todo add no data visible
+    #todo css on filters
+    #todo add loader
 
     // Production namespace = https://api.kino-project.tech
     this.namespace = 'https://api.kino-project.tech'
@@ -33,8 +39,8 @@ export default class DataHandler extends React.Component {
       player: true,
 
       /*
-      These a variables that relate to the specific movie information
-      These are set when a response from the API is recieved.
+      Below are variables that relate to the specific movie information
+      These are set using the response from the API.
       */
 
       title: null,
@@ -51,6 +57,42 @@ export default class DataHandler extends React.Component {
         itunes: { url: null, price: null },
         googleplay: { url: null, price: null },
         amazon: { url: null, price: null }
+      },
+
+      /*
+      Filter values that determine the api request.
+      They are seperated in checkboxes and ranges. Represented in filters.js
+      */
+
+      filters: {
+        streams: [
+            { value: "GooglePlay", checked: true}, {value: "YouTube", checked: true},
+            { value: "iTunes", checked: true}, {value: "Amazon",checked: true}
+        ],
+        languages: [
+          {value: "English",checked: true}, {value: "French",checked: true},
+          {value: "Korean",checked: true},{value: "Persian",checked: true},
+          {value: "Spanish",checked: true},{value: "Danish",checked: true},
+          {value: "German",checked: true},{value: "Hebrew",checked: true},
+          {value: "Hungarian",checked: true},{value: "Italian",checked: true},
+          {value: "Japanese",checked: true},{value: "Portuguese",checked: true},
+          {value: "Romanian",checked: true},{value: "Thai",checked: true}
+        ],
+        genres: [
+          { value: "Drama", checked: true },{ value: "Thriller", checked: true },
+          { value: "Comedy", checked: true }, { value: "Science Fiction", checked: true },
+          { value: "Documentary", checked: true },{ value: "Adventure", checked: true },
+          { value: "Animation", checked: true },{ value: "Romance", checked: true },
+          { value: "Horror", checked: true }, { value: "Mystery", checked: true },
+          { value: "Music", checked: true },{ value: "War", checked: true },
+          { value: "Action", checked: true },{ value: "Fantasy", checked: true },
+          { value: "History", checked: true },{ value: "Crime", checked: true },
+          { value: "Family", checked: true },{ value: "Western", checked: true }
+        ],
+        released: { 'min': "2000", 'max': "2018" },
+        runtime: { 'min': "20", 'max': "180"},
+        imdb: {'min': "5",'max': "10"},
+        rottentomatoes: {'min': "10", 'max': "100"}
       }
     }
   }
@@ -195,6 +237,8 @@ export default class DataHandler extends React.Component {
       }
       writer = writer.join(', ');
 
+      console.log(this.state.filters)
+
        // Update the React state with the new movie information.
        this.setState({
            imdb_id: movie.imdb_id,
@@ -288,7 +332,9 @@ export default class DataHandler extends React.Component {
                 updateRange={this.updateRange.bind(this)}
                 allCheckboxesChecked={this.allCheckboxesChecked.bind(this)}
                 toggleCheckbox={this.toggleCheckbox.bind(this)}
-                toggleAllCheckboxes={this.toggleAllCheckboxes.bind(this)}/>
+                toggleAllCheckboxes={this.toggleAllCheckboxes.bind(this)}
+                filters={this.state.filters}
+            />
           </div>
       );
   }

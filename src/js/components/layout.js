@@ -19,6 +19,8 @@ export default class Layout extends React.Component {
       /*
       Shows the skin, then after a timeout hides the skin
       */
+      console.log('showskin')
+      console.log(this.props.filters)
       /* Set state to show skin */
       this.setState({skinVisible: true})
       /* Reset the any previous timeouts on the skin.
@@ -102,10 +104,12 @@ export default class Layout extends React.Component {
                     getPreviousMovie={this.props.getPreviousMovie}
                     movieFound={this.props.movieFound}
                     movieNotFound={this.props.movieNotFound}
+                    filters={this.props.filters}
                     updateRange={this.props.updateRange}
                     allCheckboxesChecked={this.props.allCheckboxesChecked}
                     toggleCheckbox={this.props.toggleCheckbox}
-                    toggleAllCheckboxes={this.props.toggleAllCheckboxes}/>
+                    toggleAllCheckboxes={this.props.toggleAllCheckboxes}
+              />
             </div>
           </div>
       );
