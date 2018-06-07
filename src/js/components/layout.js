@@ -19,8 +19,6 @@ export default class Layout extends React.Component {
       /*
       Shows the skin, then after a timeout hides the skin
       */
-      console.log('showskin')
-      console.log(this.props.filters)
       /* Set state to show skin */
       this.setState({skinVisible: true})
       /* Reset the any previous timeouts on the skin.

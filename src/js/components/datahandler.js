@@ -5,12 +5,6 @@ import Layout from './layout'
 export default class DataHandler extends React.Component {
   constructor() {
     super();
-    /*
-    #todo toggle search when search is shown and next or back our clicked
-    #todo add spinner
-    #todo add no data visible
-    #todo css on filters
-    #todo add loader
 
     // Production namespace = https://api.kino-project.tech
     this.namespace = 'https://api.kino-project.tech'
@@ -63,31 +57,30 @@ export default class DataHandler extends React.Component {
       Filter values that determine the api request.
       They are seperated in checkboxes and ranges. Represented in filters.js
       */
-
       filters: {
         streams: [
-            { value: "GooglePlay", checked: true}, {value: "YouTube", checked: true},
-            { value: "iTunes", checked: true}, {value: "Amazon",checked: true}
+            { value: "GooglePlay", checked: false}, {value: "YouTube", checked: false},
+            { value: "iTunes", checked: false}, {value: "Amazon",checked: false}
         ],
         languages: [
-          {value: "English",checked: true}, {value: "French",checked: true},
-          {value: "Korean",checked: true},{value: "Persian",checked: true},
-          {value: "Spanish",checked: true},{value: "Danish",checked: true},
-          {value: "German",checked: true},{value: "Hebrew",checked: true},
-          {value: "Hungarian",checked: true},{value: "Italian",checked: true},
-          {value: "Japanese",checked: true},{value: "Portuguese",checked: true},
-          {value: "Romanian",checked: true},{value: "Thai",checked: true}
+          {value: "English",checked: false}, {value: "French",checked: false},
+          {value: "Korean",checked: false},{value: "Persian",checked: false},
+          {value: "Spanish",checked: false},{value: "Danish",checked: false},
+          {value: "German",checked: false},{value: "Hebrew",checked: false},
+          {value: "Hungarian",checked: false},{value: "Italian",checked: false},
+          {value: "Japanese",checked: false},{value: "Portuguese",checked: false},
+          {value: "Romanian",checked: false},{value: "Thai",checked: false}
         ],
         genres: [
-          { value: "Drama", checked: true },{ value: "Thriller", checked: true },
-          { value: "Comedy", checked: true }, { value: "Science Fiction", checked: true },
-          { value: "Documentary", checked: true },{ value: "Adventure", checked: true },
-          { value: "Animation", checked: true },{ value: "Romance", checked: true },
-          { value: "Horror", checked: true }, { value: "Mystery", checked: true },
-          { value: "Music", checked: true },{ value: "War", checked: true },
-          { value: "Action", checked: true },{ value: "Fantasy", checked: true },
-          { value: "History", checked: true },{ value: "Crime", checked: true },
-          { value: "Family", checked: true },{ value: "Western", checked: true }
+          { value: "Drama", checked: false },{ value: "Thriller", checked: false },
+          { value: "Comedy", checked: false }, { value: "Science Fiction", checked: false },
+          { value: "Documentary", checked: false },{ value: "Adventure", checked: false },
+          { value: "Animation", checked: false },{ value: "Romance", checked: false },
+          { value: "Horror", checked: false }, { value: "Mystery", checked: false },
+          { value: "Music", checked: false },{ value: "War", checked: false },
+          { value: "Action", checked: false },{ value: "Fantasy", checked: false },
+          { value: "History", checked: false },{ value: "Crime", checked: false },
+          { value: "Family", checked: false },{ value: "Western", checked: false }
         ],
         released: { 'min': "2000", 'max': "2018" },
         runtime: { 'min': "20", 'max': "180"},
@@ -125,11 +118,55 @@ export default class DataHandler extends React.Component {
      })
   }
 
+    getUrlParameters = () => {
+      var rotten_min = 'rotten_min=' + this.state.filters.rottentomatoes.min;
+      var rotten_max = 'rotten_max=' + this.state.filters.rottentomatoes.max;
+      var imdb_max = 'imdb_min=' + this.state.filters.imdb.min;
+      var imdb_min = 'imdb_max=' + this.state.filters.imdb.max;
+      var from_year = 'from_year=' + this.state.filters.released.min;
+      var to_year = 'to_year=' + this.state.filters.released.max;
+
+      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min, to_year, from_year].join('&')
+
+      var languages = [];
+      for (var i = 0; i < this.state.filters.languages.length; i++) {
+          if (this.state.filters.languages[i]['checked'] == true) {
+              languages.push(this.state.filters.languages[i]['value'])
+          }
+      }
+      url_params = url_params + '&language=' + languages.join(',')
+
+      var streams = [];
+      for (var i = 0; i < this.state.filters.streams.length; i++) {
+          if (this.state.filters.streams[i]['checked'] == true) {
+              streams.push(this.state.filters.streams[i]['value'])
+          }
+      }
+      url_params = url_params + '&streams=' + streams.join(',')
+
+      var genres = [];
+      for (var i = 0; i < this.state.filters.genres.length; i++) {
+          if (this.state.filters.genres[i]['checked'] == true) {
+              genres.push(this.state.filters.genres[i]['value'])
+          }
+      }
+      url_params = url_params + '&genres=' + genres.join(',')
+
+      if (this.watched.length > 0) {
+            url_params = url_params + '&seen=' + this.watched.join(',')
+      }
+
+      return url_params
+  }
+
+
+
   getNextMovie = () => {
       /**
       * Gets the next movie from the API, and sets the state of the
       * film elements from the response.
       */
+      var url_params = this.getUrlParameters()
       this.setMovieLoading()
       var url = this.namespace + "/movies/random_movie/"
       Request.get(url).then((response) => {
@@ -236,8 +273,6 @@ export default class DataHandler extends React.Component {
           writer.length = 3;
       }
       writer = writer.join(', ');
-
-      console.log(this.state.filters)
 
        // Update the React state with the new movie information.
        this.setState({

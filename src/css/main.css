@@ -18,7 +18,7 @@ body{
 .skin {
   position: fixed;
   width: 100%;
-  height: 100%;
+  height: 90%;
 }
 .transparent {
   opacity: 0;
@@ -70,10 +70,6 @@ body{
   bottom: 8%;
   width: 100%;
   height: 38%;
-}
-}
-.info2{
-  opacity: 1;
 }
 .LeftInfo{
   display:inline-block;
@@ -145,7 +141,7 @@ body{
 .checkboxes{
   display:inline-block;
   vertical-align:top;
-  width: 34%;
+  width: 40%;
 }
 .checkboxDiv{
   display:inline-block;
@@ -164,7 +160,7 @@ body{
 }
 input[type='checkbox']{
   -webkit-appearance: none;
-    border:1px solid;
+  border:1px solid;
   color:white;
   cursor:pointer;
   height:10px;
@@ -178,6 +174,7 @@ input[type='checkbox']:focus{
   outline: 0;
 }
 .checkbox span{
+  padding-left: 7px;
   font-size: 12px;
   vertical-align: middle;
   position: relative;
@@ -193,7 +190,7 @@ input[type='checkbox']:focus{
 .ranges{
   position: relative;
   display: inline-block;
-  width:66%;
+  width:60%;
   vertical-align: top;
 }
 .leftRanges{
@@ -226,7 +223,7 @@ input[type='checkbox']:focus{
   font-size:13px;
   position:relative;
   top:-5px;
-  }
+}
 .rangeKey{
   font-family: Josefin Sans;
   letter-spacing:1px;

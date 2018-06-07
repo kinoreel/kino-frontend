@@ -23,13 +23,14 @@ export default class Skin extends React.Component {
           <div>
             <Buttons getNextMovie={this.props.getNextMovie}
                      getPreviousMovie={this.props.getPreviousMovie}
-                     search={this.toggleSearch} />
+                     toggleSearch={this.toggleSearch}
+                     searchVisible={this.state.searchVisible}
+            />
           </div>
       )
   }
 
   renderMovieInfo(){
-    console.log(this.props.filters)
     return(
        <div>
          < MovieInfo
