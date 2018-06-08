@@ -76,7 +76,7 @@ export default class Layout extends React.Component {
       If the video is playing then the video is paused.
       If the video is paused then the video is played.
       */
-      if (this.player.getPlayerState() == 2) {
+      if (this.player && this.player.getPlayerState() == 2) {
           this.player.playVideo();
       } else {
           this.player.pauseVideo();

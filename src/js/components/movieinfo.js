@@ -10,8 +10,8 @@ export default class MovieInfo extends React.Component{
   renderInfo = (key, value) => {
     return (
       <p>
-        <span class="MovieInfoKey">{key}</span>
-        <span class="MovieInfoValue">{value} </span>
+        <span class="movieInfoKey">{key}</span>
+        <span class="movieInfoValue">{value} </span>
       </p>
   )}
 

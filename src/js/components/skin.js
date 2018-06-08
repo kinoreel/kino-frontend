@@ -31,6 +31,7 @@ export default class Skin extends React.Component {
   }
 
   renderMovieInfo(){
+    console.log('something to see')
     return(
        <div>
          < MovieInfo

@@ -1,5 +1,5 @@
-import React from "react";
-import Request from 'superagent';
+import React from "react"
+import Request from 'superagent'
 import Layout from './layout'
 
 export default class DataHandler extends React.Component {
@@ -168,7 +168,8 @@ export default class DataHandler extends React.Component {
       */
       var url_params = this.getUrlParameters()
       this.setMovieLoading()
-      var url = this.namespace + "/movies/random_movie/"
+      var url = this.namespace + "/movies/random_movie/?" + url_params
+      console.log(url)
       Request.get(url).then((response) => {
         var movie_data = JSON.parse(response["text"])
         if (movie_data=="No data found"){
