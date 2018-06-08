@@ -15,9 +15,9 @@ export default class Filters extends React.Component{
         < CheckboxTable
               filters={filters}
               CheckboxTable={title}
-              toggle={this.props.toggle}
-              toggleAll={this.props.toggleAll}
-              allFiltersChecked={this.props.allFiltersChecked}
+              toggle={this.props.toggleCheckbox}
+              toggleAll={this.props.toggleAllCheckboxes}
+              allFiltersChecked={this.props.allCheckboxesChecked}
         />
       </div>
   )}

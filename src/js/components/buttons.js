@@ -32,14 +32,27 @@ export default class Buttons extends React.Component {
     }
   }
 
-  render() {
+  next () {
+      this.props.getNextMovie()
+      if (this.props.searchVisible) {
+        this.props.toggleSearch()
+      }
+  }
 
+  previous () {
+      this.props.getPreviousMovie()
+      if (this.props.searchVisible) {
+        this.props.toggleSearch()
+      }
+  }
+
+  render() {
     return (
-      <div class="ButtonsDiv" onClick={this.stopPropagation.bind(this)}>
-        <button class="Buttons" onClick={this.props.previous}><i class="large material-icons buttonIcon">navigate_before</i></button>
-        <button class="Buttons" onClick={this.props.search}> <i class="medium material-icons buttonIcon">search</i></button>
-        <button class="Buttons" onClick={this.fullscreen.bind(this)}><i class="large material-icons buttonIcon">fullscreen</i></button>
-        <button class="Buttons" onClick={this.props.next}><i class="large material-icons buttonIcon">navigate_next</i></button>
+      <div className="buttonsDiv" onClick={this.stopPropagation.bind(this)}>
+        <button className="buttons" onClick={this.previous.bind(this)}><i class="large material-icons buttonIcon">navigate_before</i></button>
+        <button className="buttons" onClick={this.props.toggleSearch}> <i class="medium material-icons buttonIcon">search</i></button>
+        <button className="buttons" onClick={this.fullscreen.bind(this)}><i class="large material-icons buttonIcon">fullscreen</i></button>
+        <button className="buttons" onClick={this.next.bind(this)}><i class="large material-icons buttonIcon">navigate_next</i></button>
       </div>
     );
   }

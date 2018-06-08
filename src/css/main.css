@@ -1,3 +1,9 @@
+body{
+  background: black;
+}
+p {
+  margin-bottom: 7px;
+}
 #app {
   position: relative;
   height: 100%;
@@ -6,13 +12,13 @@
   color: white;
   overflow:hidden;
 }
-.loader{
-    position:absolute;
+#loader{
+    position:fixed;
     height: 100%;
     width:100%;
-    background-color: #870000;
+    background: white !important;
 }
-.loaderTitle{
+#loader p{
   font-family: Josefin Sans;
   letter-spacing:4px;
   font-size: 100px;
@@ -20,90 +26,52 @@
   transform: translateX(-50%) translateY(-50%);
   top: 50%;
   left: 50%;
-  color:white;
   opacity: 1;
   -webkit-transition: opacity 2s ease-in-out;
   -moz-transition: opacity 2s ease-in-out;
   -ms-transition: opacity 2s ease-in-out;
   -o-transition: opacity 2s ease-in-out;
 }
-.loaderTitle.hiddenTitle{
-    opacity: 0;
-}
-loader.hidden {
-    opacity: 0;
-}
-.video{
-  position:fixed;
-  width: 100%;
-  height: 100%;
-}
-.spinner{
-  position: absolute;
-  top:40%;
-  left:45%;
-}
-.noMovie{
-  font-family: Josefin Sans;
-  letter-spacing:1px;
-  font-size: 16px;
-  position:absolute;
-  transform: translateX(-50%) translateY(-50%);
-  top: 40%;
-  left: 50%;
-}
-.videoContainer{
-  position:fixed;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-}
-.hidden{
-   opacity: 0;
-}
-.Skin{
+.video {
   position: fixed;
-  cursor:none;
   width: 100%;
-  height: 94%;
-  padding-top: 3%;
-  padding-left: 9%;
-  padding-right: 8%;
-  padding-bottom: 8%;
-  opacity:0;
+  height: 100%;
+  z-index: -1;
 }
-.Skin.shown{
-  opacity:1;
-  cursor: default;
-  -webkit-transition: opacity 0.1s ease;
-  -moz-transition: opacity 0.1s ease;
-  -ms-transition: opacity 0.1s ease;
-  -o-transition: opacity 0.1s ease;
+.skin {
+  position: fixed;
+  width: 100%;
+  height: 90%;
 }
-.ButtonsDiv{
+.transparent {
+  opacity: 0;
+}
+.buttonsDiv{
   display: block;
   position:fixed;
   right:8%;
+  padding-top: 3%;
 }
-.Buttons{
+.buttons{
   height: 40px;
   width: 40px;
   margin: 10px;
   border-radius: 0px;
+  color: white;
   background-color: transparent;
   border-style: solid;
   border-color: white;
   border-width: 3px;
-  border-radius: 50%; 
+  border-radius: 50%;
   pointer-events: auto;
 }
-.Buttons:hover{
+.buttons:hover{
   background-color: white;
   color: black;
   transition: 0.4s;
 }
-.Buttons:focus{
-  outline: none; 
+.buttons:focus{
+  outline: none;
 }
 .buttonIcon{
   position:relative;
@@ -115,22 +83,19 @@ loader.hidden {
   font-size: 3.8em;
   position: fixed;
   bottom:48%;
-  left: 8%;
+
   opacity: 1;
 }
 .Info{
   display:block;
   position: fixed;
+  left: 8%;
   bottom: 8%;
   width: 100%;
   height: 38%;
 }
-}
-.info2{
-  opacity: 1;
-}
 .LeftInfo{
-  display:inline-block; 
+  display:inline-block;
   width:50%;
 }
 .RightInfo{
@@ -147,7 +112,7 @@ loader.hidden {
 .Rating{
   font-size:15px;
   display:inline-block;
-  width: 240px; 
+  width: 240px;
   padding-right: 30px;
   padding-bottom: 3px;
 }
@@ -169,19 +134,19 @@ loader.hidden {
 }
 .Stream a {
   color: white;
-  text-decoration: none; 
+  text-decoration: none;
   display:block;
   padding-bottom: 3px;
   pointer-events: auto;
 
 }
-.MovieInfoKey {
+.movieInfoKey {
    font-family: Josefin Sans;
    letter-spacing:2px;
-   font-size: 11px; 
-   padding-right: 10px;   
+   font-size: 11px;
+   padding-right: 10px;
 }
-.MovieInfoValue {
+.movieInfoValue {
   font-size: 13px;
 }
 .filterTitle{
@@ -199,7 +164,7 @@ loader.hidden {
 .checkboxes{
   display:inline-block;
   vertical-align:top;
-  width: 34%;
+  width: 40%;
 }
 .checkboxDiv{
   display:inline-block;
@@ -208,8 +173,8 @@ loader.hidden {
 }
 .checkboxTable{
   height: 150px;
-  overflow-y: scroll; 
-  direction:rtl; 
+  overflow-y: scroll;
+  direction:rtl;
 }
 .checkbox{
   margin-top:0px;
@@ -218,11 +183,11 @@ loader.hidden {
 }
 input[type='checkbox']{
   -webkit-appearance: none;
-    border:1px solid;
+  border:1px solid;
   color:white;
   cursor:pointer;
   height:10px;
-  width:10px; 
+  width:10px;
 }
 input[type='checkbox']:checked{
   border: 1px solid white;
@@ -232,13 +197,14 @@ input[type='checkbox']:focus{
   outline: 0;
 }
 .checkbox span{
+  padding-left: 7px;
   font-size: 12px;
   vertical-align: middle;
   position: relative;
 }
 ::-webkit-scrollbar {
   width: 6px;
-} 
+}
 ::-webkit-scrollbar-thumb {
   background-color: white;
   height: 6px;
@@ -247,7 +213,7 @@ input[type='checkbox']:focus{
 .ranges{
   position: relative;
   display: inline-block;
-  width:66%;
+  width:60%;
   vertical-align: top;
 }
 .leftRanges{
@@ -280,7 +246,7 @@ input[type='checkbox']:focus{
   font-size:13px;
   position:relative;
   top:-5px;
-  }
+}
 .rangeKey{
   font-family: Josefin Sans;
   letter-spacing:1px;
@@ -289,13 +255,13 @@ input[type='checkbox']:focus{
   top:-5px;
 }
 input[type=range] {
-  position: absolute;   
+  position: absolute;
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
   width: 100%; /* Specific width is required for Firefox. */
   background: transparent; /* Otherwise white in Chrome */
 }
 input[type=range]:focus {
-  outline: none; 
+  outline: none;
 }
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
