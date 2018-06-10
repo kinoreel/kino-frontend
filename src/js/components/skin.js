@@ -25,13 +25,13 @@ export default class Skin extends React.Component {
                      getPreviousMovie={this.props.getPreviousMovie}
                      toggleSearch={this.toggleSearch}
                      searchVisible={this.state.searchVisible}
+                     hideVideo={this.props.hideVideo}
             />
           </div>
       )
   }
 
   renderMovieInfo(){
-    console.log('something to see')
     return(
        <div>
          < MovieInfo
