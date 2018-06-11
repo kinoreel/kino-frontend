@@ -3,7 +3,6 @@ import Ratings from "./ratings";
 import MovieInfo from "./movieinfo";
 import {Streams} from "./streams";
 import Buttons from "./buttons";
-import PlayButton from "./playbutton";
 import Filters from "./filters";
 
 export default class Skin extends React.Component {
@@ -72,7 +71,6 @@ export default class Skin extends React.Component {
   render() {
     return (
         <div>
-          {this.renderPlayButton()}
           {this.renderButtons()}
           <div className="Info">
               {this.props.movieFound && !this.state.searchVisible ? this.renderMovieInfo() : null}
