@@ -10,7 +10,7 @@ export default class Layout extends React.Component {
       The skin is all information - buttons, information, filters - that sits on top of the video.
       */
       skinVisible: true,
-      videoVisible: true,
+      videoVisible: false,
     }
   }
 
