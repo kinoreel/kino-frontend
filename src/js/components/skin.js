@@ -3,6 +3,7 @@ import Ratings from "./ratings";
 import MovieInfo from "./movieinfo";
 import {Streams} from "./streams";
 import Buttons from "./buttons";
+import PlayButton from "./playbutton";
 import Filters from "./filters";
 
 export default class Skin extends React.Component {
@@ -18,6 +19,12 @@ export default class Skin extends React.Component {
     this.setState({searchVisible: !this.state.searchVisible});
   }
 
+  renderPlayButton () {
+      return(
+        <PlayButton playVideo={this.props.playVideo} />
+      )
+  }
+
   renderButtons() {
       return(
           <div>
@@ -25,13 +32,13 @@ export default class Skin extends React.Component {
                      getPreviousMovie={this.props.getPreviousMovie}
                      toggleSearch={this.toggleSearch}
                      searchVisible={this.state.searchVisible}
+                     hideVideo={this.props.hideVideo}
             />
           </div>
       )
   }
 
   renderMovieInfo(){
-    console.log('something to see')
     return(
        <div>
          < MovieInfo
@@ -65,6 +72,7 @@ export default class Skin extends React.Component {
   render() {
     return (
         <div>
+          {this.renderPlayButton()}
           {this.renderButtons()}
           <div className="Info">
               {this.props.movieFound && !this.state.searchVisible ? this.renderMovieInfo() : null}

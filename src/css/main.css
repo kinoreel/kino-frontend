@@ -46,6 +46,11 @@ p {
 .transparent {
   opacity: 0;
 }
+.playButton{
+  position: absolute;
+  top:40%;
+  left:45%;
+}
 .buttonsDiv{
   display: block;
   position:fixed;

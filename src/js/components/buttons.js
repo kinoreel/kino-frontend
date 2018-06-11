@@ -33,6 +33,7 @@ export default class Buttons extends React.Component {
   }
 
   next () {
+      this.props.hideVideo()
       this.props.getNextMovie()
       if (this.props.searchVisible) {
         this.props.toggleSearch()
@@ -40,6 +41,7 @@ export default class Buttons extends React.Component {
   }
 
   previous () {
+      this.props.hideVideo()
       this.props.getPreviousMovie()
       if (this.props.searchVisible) {
         this.props.toggleSearch()

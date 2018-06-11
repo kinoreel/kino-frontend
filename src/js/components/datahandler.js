@@ -25,12 +25,10 @@ export default class DataHandler extends React.Component {
       movieNotFound: false,
 
       /*
-      The YouTube player is assigned to the state variable 'player' on load time.
-      We use this variable to determine the state of the video - paused, playing, loading -
-      which other elements react to accordingly.
+      The visibility of the video
       */
 
-      player: true,
+      videoVisible: true,
 
       /*
       Below are variables that relate to the specific movie information

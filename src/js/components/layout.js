@@ -1,7 +1,5 @@
 import React from "react";
-import Request from 'superagent';
 import YouTube from 'react-youtube'
-import Buttons from './buttons'
 import Skin from './skin'
 
 export default class Layout extends React.Component {
@@ -12,6 +10,7 @@ export default class Layout extends React.Component {
       The skin is all information - buttons, information, filters - that sits on top of the video.
       */
       skinVisible: true,
+      videoVisible: true,
     }
   }
 
@@ -59,16 +58,34 @@ export default class Layout extends React.Component {
   }
 
   onVideoReady = (event) => {
-      event.target.playVideo();
       this.player = event.target;
+  }
+
+  playVideo = () => {
+      this.player.playVideo()
   }
 
   onPlay = () => {
       this.showSkin();
+      this.showVideo();
   }
 
   onPause = () => {
       this.showSkin();
+  }
+
+  hideVideo = () => {
+    this.setState({videoVisible: false})
+    if (this.player) {
+      this.player.mute()
+    }
+  }
+
+  showVideo = () => {
+    this.setState({videoVisible: true})
+    if (this.player) {
+      this.player.unMute()
+    }
   }
 
   togglePlayingVideo = () => {
@@ -86,7 +103,9 @@ export default class Layout extends React.Component {
   render() {
       return (
           <div>
-            {this.props.movieFound ? this.renderVideo() : null }
+            <div className={this.props.movieFound && this.state.videoVisible ? "" : "transparent"}>
+                {this.renderVideo()}
+            </div>
             <div className={this.state.skinVisible ? "skin" : "skin transparent"}
                  onMouseMove={this.showSkin.bind(this)}
                  onClick={this.togglePlayingVideo.bind(this)}>
@@ -98,6 +117,8 @@ export default class Layout extends React.Component {
                     writer={this.props.writer}
                     streams={this.props.streams}
                     ratings={this.props.ratings}
+                    hideVideo={this.hideVideo.bind(this)}
+                    playVideo={this.playVideo.bind(this)}
                     getNextMovie={this.props.getNextMovie}
                     getPreviousMovie={this.props.getPreviousMovie}
                     movieFound={this.props.movieFound}
