@@ -1,7 +1,5 @@
 import React from "react";
-import Request from 'superagent';
 import YouTube from 'react-youtube'
-import Buttons from './buttons'
 import Skin from './skin'
 
 export default class Layout extends React.Component {
@@ -60,8 +58,11 @@ export default class Layout extends React.Component {
   }
 
   onVideoReady = (event) => {
-      event.target.playVideo();
       this.player = event.target;
+  }
+
+  playVideo = () => {
+      this.player.playVideo()
   }
 
   onPlay = () => {
@@ -117,6 +118,7 @@ export default class Layout extends React.Component {
                     streams={this.props.streams}
                     ratings={this.props.ratings}
                     hideVideo={this.hideVideo.bind(this)}
+                    playVideo={this.playVideo.bind(this)}
                     getNextMovie={this.props.getNextMovie}
                     getPreviousMovie={this.props.getPreviousMovie}
                     movieFound={this.props.movieFound}
