@@ -47,6 +47,14 @@ export default class Layout extends React.Component {
       }, 3000)
   }
 
+  renderNoMovieFound() {
+     return(
+       <div className="noMovie">
+         <p> NO FILM FOUND THAT MATCHED THE SEARCH CRITERIA </p>
+       </div>
+     )
+   }
+
   renderVideo(){
       const opts = {
         playerVars: { // https://developers.google.com/youtube/player_parameters
@@ -75,6 +83,7 @@ export default class Layout extends React.Component {
   }
 
   onVideoReady = (event) => {
+      console.log('hello')
       this.player = event.target
       this.setState({playerLoaded: true})
   }
@@ -128,6 +137,7 @@ export default class Layout extends React.Component {
       return (
           <div>
             {!this.state.loaded ? this.renderLoader() : null}
+            {this.props.movieNotFound ? this.renderNoMovieFound() : null}
             <div className={this.props.movieFound && this.state.videoVisible ? "" : "transparent"}>
                 {this.renderVideo()}
             </div>
