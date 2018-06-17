@@ -10,7 +10,7 @@ service:
   name: kino-frontend
   type: ClusterIP
   externalPort: 80
-  internalPort: 3000
+  internalPort: 5000
 resources:
   limits:
     cpu: 100m
