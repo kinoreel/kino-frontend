@@ -11,7 +11,23 @@ export default class Layout extends React.Component {
       */
       skinVisible: true,
       videoVisible: false,
+
+      playerLoaded: false,
     }
+  }
+
+  removeLoader () {
+    this.setState({loaded: true})
+    this.playVideo()
+  }
+
+  renderLoader() {
+    return (
+      <div id="loader">
+        <p>KINO</p>
+        {this.state.playerLoaded ? <button className="startButton" onClick={this.removeLoader.bind(this)}><i class="material-icons md-48">play_arrow</i></button> : null}
+      </div>
+    );
   }
 
   showSkin() {
@@ -34,7 +50,7 @@ export default class Layout extends React.Component {
   renderVideo(){
       const opts = {
         playerVars: { // https://developers.google.com/youtube/player_parameters
-          autoplay: 1,
+          //autoplay: 1,
           color: 'white',
           controls: 1,
           fs: 0,
@@ -53,25 +69,33 @@ export default class Layout extends React.Component {
            onPlay={this.onPlay.bind(this)}
            onPause={this.onPause.bind(this)}
            onEnd={this.props.getNextMovie}
+           onStateChange={this.videoStateChange.bind(this)}
          />
       )
   }
 
   onVideoReady = (event) => {
-      this.player = event.target;
+      this.player = event.target
+      this.setState({playerLoaded: true})
+  }
+
+  videoStateChange = () => {
+      if (this.player.getPlayerState() == 5 && this.state.loaded  ) {
+         this.playVideo()
+      }
   }
 
   playVideo = () => {
-      this.player.playVideo()
+     this.player.playVideo()
   }
 
   onPlay = () => {
-      this.showSkin();
-      this.showVideo();
+    this.showSkin();
+    this.showVideo();
   }
 
   onPause = () => {
-      this.showSkin();
+    this.showSkin();
   }
 
   hideVideo = () => {
@@ -103,6 +127,7 @@ export default class Layout extends React.Component {
   render() {
       return (
           <div>
+            {!this.state.loaded ? this.renderLoader() : null}
             <div className={this.props.movieFound && this.state.videoVisible ? "" : "transparent"}>
                 {this.renderVideo()}
             </div>

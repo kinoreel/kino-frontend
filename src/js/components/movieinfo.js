@@ -15,17 +15,6 @@ export default class MovieInfo extends React.Component{
       </p>
   )}
 
-  render() {
-    return (
-      <div>
-        {this.renderInfo('RUNTIME:', this.props.runtime)}
-        {this.renderInfo('LANGUAGE:', this.props.language)}
-        {this.renderInfo('DIRECTOR:', this.props.director)}
-        {this.renderInfo('RELEASED:', this.props.released)}
-        {this.props.writer ? this.renderInfo('WRITER:', this.props.writer) : null}
-      </div>
-    );
-  }
 
   render() {
     return (

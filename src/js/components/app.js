@@ -4,18 +4,18 @@ import DataHandler from './datahandler'
 
 export default class App extends React.Component {
 
-  componentDidMount() {
-    this.removeLoader()
-  }
 
   removeLoader () {
-    const loader = document.getElementById('loader')
-    setTimeout(() => {
-      loader.classList.add('hidden')
-      setTimeout(() => {
-        loader.outerHTML = ''
-      }, 1000)
-    }, 2000)
+    this.setState({loaded: true})
+  }
+
+  renderLoader() {
+    return (
+      <div id="loader">
+        <p>KINO</p>
+        <button className="startButton" onClick={this.removeLoader.bind(this)}><i class="material-icons md-48">play_arrow</i></button>
+      </div>
+    );
   }
 
   render() {
