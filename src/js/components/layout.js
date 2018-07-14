@@ -83,7 +83,6 @@ export default class Layout extends React.Component {
   }
 
   onVideoReady = (event) => {
-      console.log('hello')
       this.player = event.target
       this.setState({playerLoaded: true})
   }

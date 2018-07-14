@@ -35,6 +35,7 @@ export default class DataHandler extends React.Component {
       These are set using the response from the API.
       */
 
+      imdb_id: null,
       title: null,
       language: null,
       year: null,
@@ -116,15 +117,17 @@ export default class DataHandler extends React.Component {
      })
   }
 
-    getUrlParameters = () => {
+  getUrlParameters = () => {
       var rotten_min = 'rotten_min=' + this.state.filters.rottentomatoes.min;
       var rotten_max = 'rotten_max=' + this.state.filters.rottentomatoes.max;
       var imdb_max = 'imdb_min=' + this.state.filters.imdb.min;
       var imdb_min = 'imdb_max=' + this.state.filters.imdb.max;
+      var runtime_min = 'runtime_min=' + this.state.filters.runtime.min;
+      var runtime_max = 'runtime_max=' + this.state.filters.runtime.max;
       var from_year = 'from_year=' + this.state.filters.released.min;
       var to_year = 'to_year=' + this.state.filters.released.max;
 
-      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min, to_year, from_year].join('&')
+      var url_params = [rotten_min, rotten_max, imdb_max, imdb_min, to_year, from_year, runtime_min, runtime_max].join('&')
 
       var languages = [];
       for (var i = 0; i < this.state.filters.languages.length; i++) {
@@ -132,7 +135,9 @@ export default class DataHandler extends React.Component {
               languages.push(this.state.filters.languages[i]['value'])
           }
       }
-      url_params = url_params + '&language=' + languages.join(',')
+      if (languages.length > 0) {
+          url_params = url_params + '&language=' + languages.join(',')
+      }
 
       var streams = [];
       for (var i = 0; i < this.state.filters.streams.length; i++) {
@@ -140,7 +145,9 @@ export default class DataHandler extends React.Component {
               streams.push(this.state.filters.streams[i]['value'])
           }
       }
-      url_params = url_params + '&streams=' + streams.join(',')
+      if (streams.length > 0) {
+          url_params = url_params + '&streams=' + streams.join(',')
+      }
 
       var genres = [];
       for (var i = 0; i < this.state.filters.genres.length; i++) {
@@ -148,7 +155,9 @@ export default class DataHandler extends React.Component {
               genres.push(this.state.filters.genres[i]['value'])
           }
       }
-      url_params = url_params + '&genres=' + genres.join(',')
+      if (genres.length > 0) {
+          url_params = url_params + '&genres=' + genres.join(',')
+      }
 
       if (this.watched.length > 0) {
             url_params = url_params + '&seen=' + this.watched.join(',')
@@ -156,8 +165,6 @@ export default class DataHandler extends React.Component {
 
       return url_params
   }
-
-
 
   getNextMovie = () => {
       /**
