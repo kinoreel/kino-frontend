@@ -50,11 +50,13 @@ export default class Buttons extends React.Component {
 
   render() {
     return (
-      <div className="buttonsDiv" onClick={this.stopPropagation.bind(this)}>
-        <button className="buttons" onClick={this.previous.bind(this)}><i class="large material-icons buttonIcon">navigate_before</i></button>
-        <button className="buttons" onClick={this.props.toggleSearch}> <i class="medium material-icons buttonIcon">search</i></button>
-        <button className="buttons" onClick={this.fullscreen.bind(this)}><i class="large material-icons buttonIcon">fullscreen</i></button>
-        <button className="buttons" onClick={this.next.bind(this)}><i class="large material-icons buttonIcon">navigate_next</i></button>
+      <div class="container-flex fixed-top pt-5">
+        <div class="row float-right" onClick={this.stopPropagation.bind(this)}>
+          <button className="btn-circular main-buttons button-icon d-flex align-items-center" onClick={this.previous.bind(this)}><i class="material-icons">navigate_before</i></button>
+          <button className="btn-circular main-buttons button-icon d-flex align-items-center" onClick={this.props.toggleSearch}><i class="material-icons">search</i></button>
+          <button className="btn-circular main-buttons button-icon d-flex align-items-center" onClick={this.fullscreen.bind(this)}><i class="material-icons">fullscreen</i></button>
+          <button className="btn-circular main-buttons button-icon d-flex align-items-center" onClick={this.next.bind(this)}><i class="material-icons">navigate_next</i></button>
+        </div>
       </div>
     );
   }

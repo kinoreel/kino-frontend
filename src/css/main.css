@@ -1,8 +1,17 @@
 body{
   background: black;
 }
-p {
-  margin-bottom: 7px;
+.pb-6{
+  padding-bottom: 5rem !important;
+}
+.pr-6 {
+  padding-right: 5rem !important;
+}
+.pr-7{
+  padding-right: 7rem !important;
+}
+.pl-7 {
+  padding-left: 7rem !important;
 }
 #app {
   position: relative;
@@ -89,109 +98,6 @@ p {
 }
 .transparent {
   opacity: 0;
-}
-.buttonsDiv{
-  display: block;
-  position:fixed;
-  right:8%;
-  padding-top: 3%;
-}
-.buttons{
-  height: 40px;
-  width: 40px;
-  margin: 10px;
-  border-radius: 0px;
-  color: white;
-  background-color: transparent;
-  border-style: solid;
-  border-color: white;
-  border-width: 3px;
-  border-radius: 50%;
-  pointer-events: auto;
-}
-.buttons:hover{
-  background-color: white;
-  color: black;
-  transition: 0.4s;
-}
-.buttons:focus{
-  outline: none;
-}
-.buttonIcon{
-  position:relative;
-  left:0px;
-  top:3px;
-}
-.Title{
-  font-family: Josefin Sans;
-  font-size: 3.8em;
-  position: fixed;
-  bottom:48%;
-
-  opacity: 1;
-}
-.Info{
-  display:block;
-  position: fixed;
-  left: 8%;
-  bottom: 8%;
-  width: 100%;
-  height: 38%;
-}
-.LeftInfo{
-  display:inline-block;
-  width:50%;
-}
-.RightInfo{
-  display:inline-block;
-  position: fixed;
-  right: 8%;
-  width:50%;
-}
-.RatingDiv{
-  font-family: Josefin Sans;
-  letter-spacing:1px;
-  padding-bottom: 20px;
-}
-.Rating{
-  font-size:15px;
-  display:inline-block;
-  width: 240px;
-  padding-right: 30px;
-  padding-bottom: 3px;
-}
-.Rating span{
-  display: block;
-}
-.StreamDiv{
-  text-align: right;
-}
-.Stream{
-  display:inline-block;
-  font-family: Josefin Sans;
-  letter-spacing:1px;
-  padding-right: 15px;
-  width: 160px;
-}
-.Stream a:hover {
-  text-decoration: underline;
-}
-.Stream a {
-  color: white;
-  text-decoration: none;
-  display:block;
-  padding-bottom: 3px;
-  pointer-events: auto;
-
-}
-.movieInfoKey {
-   font-family: Josefin Sans;
-   letter-spacing:2px;
-   font-size: 11px;
-   padding-right: 10px;
-}
-.movieInfoValue {
-  font-size: 13px;
 }
 .filterTitle{
   font-family: Josefin Sans;
