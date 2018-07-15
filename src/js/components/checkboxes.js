@@ -40,7 +40,7 @@ export class Checkbox extends React.Component{
 
   render() {
     return (
-      <div class="col-12">
+      <div class="col-12 checkbox">
         <label>
            <input type="checkbox" checked={this.props.checked} value={this.props.value}
                   onChange={e => this.props.toggle(this.props.id, this.props.value)}/>

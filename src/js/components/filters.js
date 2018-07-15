@@ -133,7 +133,7 @@ export default class Filters extends React.Component{
   render() {
     return (
       <div class="container-flex fixed-bottom h-50">
-        <div class="row">
+        <div class="row ">
             <div class="col-5">
               {this.renderCheckboxes()}
             </div>

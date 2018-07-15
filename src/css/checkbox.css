@@ -20,7 +20,7 @@
 .checkbox-form input:focus{
   outline: 0;
 }
-.checkbox-form span{
+.checkbox span{
   padding-left: 1rem;
   font-size: 2rem;
 }

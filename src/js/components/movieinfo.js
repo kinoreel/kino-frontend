@@ -101,12 +101,14 @@ export default class MovieInfo extends React.Component{
                   <h1 class="title">{this.props.title}</h1>
               </div>
           </div>
-          <div class="row justify-content-between">
-              {this.renderRatings()}
-              {this.renderStreams()}
-          </div>
-          <div class="d-none d-lg-block">
-              {this.renderInfo()}
+          <div class="fixed-bottom h-50">
+              <div class="row justify-content-between">
+                  {this.renderRatings()}
+                  {this.renderStreams()}
+              </div>
+              <div class="d-none d-lg-block">
+                  {this.renderInfo()}
+              </div>
           </div>
       </div>
     );
