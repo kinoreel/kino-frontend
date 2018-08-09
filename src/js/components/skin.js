@@ -70,12 +70,10 @@ export default class Skin extends React.Component {
 
   render() {
     return (
-        <div>
+        <div className="container-flex pt-5 pr-5 pl-5 skin">
           {this.renderButtons()}
-          <div className="Info">
-              {this.props.movieFound && !this.state.searchVisible ? this.renderMovieInfo() : null}
-              {this.state.searchVisible ? this.renderFilters() : null}
-          </div>
+          {this.props.movieFound && !this.state.searchVisible ? this.renderMovieInfo() : null}
+          {this.state.searchVisible ? this.renderFilters() : null}
         </div>
     );
   }

@@ -95,22 +95,22 @@ export default class MovieInfo extends React.Component{
 
   render() {
     return (
-      <div class="container-flex movie-info">
-          <div class="row pb-3">
-              <div class="col-12">
-                  <h1 class="title">{this.props.title}</h1>
+       <div className="movie-info row">
+          <div className="col-12">
+              <div className="row">
+                  <div className="col-12">
+                      <h1 className="title">{this.props.title}</h1>
+                  </div>
               </div>
-          </div>
-          <div class="fixed-bottom h-50">
-              <div class="row justify-content-between">
+              <div className="row justify-content-between">
                   {this.renderRatings()}
                   {this.renderStreams()}
               </div>
-              <div class="d-none d-lg-block">
+              <div className="d-none d-lg-block">
                   {this.renderInfo()}
               </div>
           </div>
-      </div>
+       </div>
     );
   }
 }    

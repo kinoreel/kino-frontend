@@ -1,7 +1,7 @@
-.checkbox-form{
-  height: 50px;
+.checkbox-container{
+  height: 170px;
   overflow-y: scroll;
-  direction:rtl;
+  direction: rtl;
 }
 .checkbox-form input{
   -moz-appearance: none;
@@ -20,9 +20,9 @@
 .checkbox-form input:focus{
   outline: 0;
 }
-.checkbox span{
-  padding-left: 1rem;
-  font-size: 2rem;
+.checkbox-form span{
+  padding-left: 0.4rem;
+  font-size: 0.7rem;
 }
 .checkbox-form label{
   margin-bottom: 0px;

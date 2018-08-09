@@ -1,0 +1,15 @@
+.noMovie {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+}
+.noMovie p{
+  color: white;
+  font-family: Josefin Sans;
+  letter-spacing:4px;
+  font-size: 18px;
+  padding-bottom: 30px;
+}

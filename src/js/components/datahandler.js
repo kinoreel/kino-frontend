@@ -323,7 +323,6 @@ export default class DataHandler extends React.Component {
   // Toggles a filter based on filter_id (genres, streams, etc.)
   // and the filter value.
   toggleCheckbox = (filter_id, value) => {
-    console.log(filter_id);
     const filters = Object.assign({}, this.state.filters);
     this.state.filters[filter_id].map(function(a) {
       if ( a.value == value ) {

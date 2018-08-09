@@ -1,3 +1,10 @@
+.movie-info {
+  display:block;
+  position: fixed;
+  bottom: 10%;
+  width: 95%;
+  height: 50%
+}
 .movie-info a{color:white;}
 .movie-info a:hover {text-decoration:underline;color:white;}
 .title{
@@ -10,7 +17,6 @@
   letter-spacing:0.2rem;
   font-size: 0.7rem;
 }
-
 .movieinfo-dd{
   font-family: Josefin Sans;
   letter-spacing:0.15rem;

@@ -6,13 +6,14 @@ export default class Layout extends React.Component {
   constructor() {
     super();
     this.state = {
+
       /*
       The skin is all information - buttons, information, filters - that sits on top of the video.
       */
       skinVisible: true,
       videoVisible: false,
-
       playerLoaded: false,
+
     }
   }
 
@@ -23,9 +24,13 @@ export default class Layout extends React.Component {
 
   renderLoader() {
     return (
-      <div id="loader">
-        <p>KINO</p>
-        {this.state.playerLoaded ? <button className="startButton" onClick={this.removeLoader.bind(this)}><i class="material-icons md-48">play_arrow</i></button> : null}
+      <div className="container-flex loader">
+        <div className="row h-100 justify-content-center align-items-center">
+            <div className="col-12 text-center">
+                <h1>KINO</h1>
+                 {this.state.playerLoaded ? <button className="btn-loader" onClick={this.removeLoader.bind(this)}><i class="material-icons md-48">play_arrow</i></button> : null }
+            </div>
+        </div>
       </div>
     );
   }
@@ -140,7 +145,7 @@ export default class Layout extends React.Component {
             <div className={this.props.movieFound && this.state.videoVisible ? "" : "transparent"}>
                 {this.renderVideo()}
             </div>
-            <div className={this.state.skinVisible ? "skin" : "skin transparent"}
+            <div className={this.state.skinVisible ? "" : "transparent"}
                  onMouseMove={this.showSkin.bind(this)}
                  onClick={this.togglePlayingVideo.bind(this)}>
               <Skin title={this.props.title}
