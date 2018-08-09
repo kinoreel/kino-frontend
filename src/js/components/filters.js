@@ -49,7 +49,7 @@ export default class Filters extends React.Component{
             <div className="col-6 pb-5">
               <div className="row">
                 <span className="col-12 filter-title"> IMDB </span>
-                <div className="col-10 pt-2">
+                <div className="col-10 pt-4">
                    <RangeSlider start={this.props.filters.imdb.min} end={this.props.filters.imdb.max}
                                 min="0" max="10" step="0.1" rangeType="imdb"
                                 range={this.props.filters.imdb} updateRange={this.props.updateRange}/>
@@ -59,7 +59,7 @@ export default class Filters extends React.Component{
             <div className="col-6 pb-5">
               <div className="row">
                 <span className="col-12 filter-title"> ROTTEN TOMATOES </span>
-                <div className="col-10 pt-2">
+                <div className="col-10 pt-4">
                    <RangeSlider start={this.props.filters.rottentomatoes.min} end={this.props.filters.rottentomatoes.max}
                                 min="0" max="100" step="1" rangeType="rottentomatoes"
                                 range={this.props.filters.rottentomatoes} updateRange={this.props.updateRange}/>
@@ -108,9 +108,9 @@ export default class Filters extends React.Component{
   render() {
     return (
       <div className="filters">
-        <div className="row pb-3 h-50">
+        <div className="row">
             <div className="col-12">
-                <h1 className="title">Title</h1>
+                <h1 className="title transparent">SEARCH BAR</h1>
             </div>
         </div>
         <div className="row">

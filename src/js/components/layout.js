@@ -28,7 +28,10 @@ export default class Layout extends React.Component {
         <div className="row h-100 justify-content-center align-items-center">
             <div className="col-12 text-center">
                 <h1>KINO</h1>
-                 {this.state.playerLoaded ? <button className="btn-loader" onClick={this.removeLoader.bind(this)}><i class="material-icons md-48">play_arrow</i></button> : null }
+                <button className={this.state.playerLoaded ? "btn-loader" : "btn-loader transparent"}
+                        disabled={!this.state.playerLoaded}
+                        onClick={this.removeLoader.bind(this)}><i class="material-icons md-48">play_arrow</i>
+                </button>
             </div>
         </div>
       </div>
@@ -139,7 +142,7 @@ export default class Layout extends React.Component {
 
   render() {
       return (
-          <div>
+          <div className="app">
             {!this.state.loaded ? this.renderLoader() : null}
             {this.props.movieNotFound ? this.renderNoMovieFound() : null}
             <div className={this.props.movieFound && this.state.videoVisible ? "" : "transparent"}>
