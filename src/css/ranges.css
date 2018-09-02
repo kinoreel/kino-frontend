@@ -1,0 +1,41 @@
+.range-form .value{
+  font-family: Josefin Sans;
+  letter-spacing:1px;
+  font-size:0.7rem;
+  position:relative;
+  top:-0.3rem;
+}
+.range-form .key{
+  font-family: Josefin Sans;
+  letter-spacing:1px;
+  position:relative;
+  font-size:0.6rem;
+  top:-0.3rem;  
+}
+.range-form input {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  width: 100%; /* Specific width is required for Firefox. */
+  background: transparent; /* Otherwise white in Chrome */
+}
+.range-form input:focus {
+  outline: none;
+}
+.range-form input::-webkit-slider-thumb {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 1rem;
+  width: 0.2rem;
+  background: white;
+  position: relative;
+  cursor: pointer;
+}
+.range-form input::-webkit-slider-runnable-track {
+  height: 0.2rem;
+  cursor: pointer;
+  background: white;
+  position: relative;
+}

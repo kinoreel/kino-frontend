@@ -1,0 +1,42 @@
+.loader{
+    position:fixed;
+    height: 100%;
+    width:100%;
+    background: white !important;
+    z-index: 5;
+}
+.loader h1{
+  color: black;
+  font-family: Josefin Sans;
+  letter-spacing:4px;
+  font-size: 100px;
+}
+.btn-loader{
+  position:relative;
+  background-color: transparent;
+  color: black;
+  height: 3.5rem;
+  width: 3.5rem;
+  margin: 0.5rem;
+  border-style: solid;
+  border-color: black;
+  border-width: 0.12rem;
+  pointer-events: auto;
+}
+.btn-loader:hover{
+  background-color: black;
+  color: white;
+  transition: 0.4s;
+}
+.btn-loader:focus{
+  outline: none;
+}
+.material-icons{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem !important;
+  height: 1.5rem !important;
+  width: 1.5rem !important;
+}

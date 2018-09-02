@@ -1,0 +1,20 @@
+.movie-info a{color:white;}
+.movie-info a:hover {text-decoration:underline;color:white;}
+.title{
+  font-family: Josefin Sans;
+  font-size: 3.8rem;
+}
+.movie-info dd, dt {
+  font-weight:normal;
+  font-family:Josefin Sans;
+  letter-spacing:0.2rem;
+  font-size: 0.7rem;
+}
+.movieinfo-dd{
+  font-family: Josefin Sans;
+  letter-spacing:0.15rem;
+  font-size: 0.65rem;
+
+}.movieinfo-dt{
+  font-size:0.8rem;
+}

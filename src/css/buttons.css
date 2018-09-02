@@ -1,0 +1,33 @@
+.btn-circular{
+  position:relative;
+  height: 3rem;
+  width: 3rem;
+  margin: 0.5rem;
+  border-radius: 0px;
+  border-style: solid;
+  border-color: white;
+  border-width: 0.12rem;
+  border-radius: 50%;
+  pointer-events: auto;
+}
+.material-icons{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem !important;
+  height: 1.5rem !important;
+  width: 1.5rem !important;
+}
+.main-buttons{
+  background-color: transparent; 
+  color: white;
+}
+.main-buttons:hover{
+  background-color: white;
+  color: black;
+  transition: 0.4s;
+}
+.main-buttons:focus{
+  outline: none;
+}

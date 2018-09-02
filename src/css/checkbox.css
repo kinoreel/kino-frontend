@@ -1,0 +1,38 @@
+.checkbox-container{
+  height: 170px;
+  overflow-y: scroll;
+  direction: rtl;
+}
+.checkbox-form input{
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  border:0.05rem solid;
+  color:white;
+  cursor:pointer;
+  height:10px;
+  width:10px;
+}
+.checkbox-form input:checked{
+  border: 0.05rem solid white;
+  background: white;
+}
+.checkbox-form input:focus{
+  outline: 0;
+}
+.checkbox-form span{
+  padding-left: 0.4rem;
+  font-size: 0.7rem;
+}
+.checkbox-form label{
+  margin-bottom: 0px;
+  direction:ltr;
+}
+::-webkit-scrollbar {
+  -moz-appearance: none;
+  width: 0.3rem;
+}
+::-webkit-scrollbar-thumb {
+  background-color: white;
+  height: 0.3rem;
+}

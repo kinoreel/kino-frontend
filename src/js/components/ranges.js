@@ -33,30 +33,18 @@ export class RangeSlider extends React.Component{
 
   render() {
     return (
-        <div class="range">
-          <span class="rangeKey">FROM: </span>
-          <span class="rangeValues">{this.props.range.min}</span>
-          <span class="rangeKey"> TO: </span>
-          <span class="rangeValues">{this.props.range.max}</span>
-          <div>
-              <input
-                type="range"
-                min={this.props.min} max={this.props.max}
-                value={this.state.sliderOne}
-                id = "sliderOne"
-                step={this.props.step}
-                onChange={this.moveSlider}
-              />
-              <input
-                type="range"
-                min={this.props.min} max={this.props.max}
-                value={this.state.sliderTwo}
-                id="sliderTwo"
-                step={this.props.step}
-                onChange={this.moveSlider}
-              />
-          </div>
-        </div>
+         <div class="range-form">
+             <span class="key">FROM: </span>
+             <span class="value">{this.props.range.min}</span>
+             <span class="key"> TO: </span>
+             <span class="value">{this.props.range.max}</span>
+             <div>
+               <input type="range" min={this.props.min} max={this.props.max} value={this.state.sliderOne}
+                      id="sliderOne" step={this.props.step} onChange={this.moveSlider}/>
+               <input type="range" min={this.props.min} max={this.props.max} value={this.state.sliderTwo}
+                      id="sliderTwo" step={this.props.step} onChange={this.moveSlider}/>
+             </div>
+         </div>
     );
   }
 };
