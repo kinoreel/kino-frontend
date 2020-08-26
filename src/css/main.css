@@ -23,7 +23,8 @@ body{
 }
 .skin {
   position:fixed;
-  height: 92%;
+  background-color: rgba(0,0,0,0.65);
+  height: 100%;
   width:100%;
 }
 .lower-skin {
@@ -31,8 +32,9 @@ body{
   position: fixed;
   bottom: 10%;
   width: 86%;
-  height: 50%
+  height: 50%;
 }
 .transparent {
   opacity: 0;
 }
+

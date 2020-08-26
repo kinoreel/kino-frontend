@@ -7,7 +7,7 @@ export default class DataHandler extends React.Component {
     super();
 
     // Production namespace = https://api.kino-project.tech
-    this.namespace = 'https://api.kino-project.tech'
+    this.namespace = 'https://api.unruffled-nightingale.com/'
 
     // List that contains all imdb_ids of films shown to user
     this.watched = [];
@@ -59,7 +59,7 @@ export default class DataHandler extends React.Component {
       filters: {
         streams: [
             { value: "GooglePlay", checked: false}, {value: "YouTube", checked: false},
-            { value: "iTunes", checked: false}, {value: "Amazon",checked: false}
+            { value: "iTunes", checked: false}
         ],
         languages: [
           {value: "English",checked: false}, {value: "French",checked: false},
@@ -171,12 +171,14 @@ export default class DataHandler extends React.Component {
       * Gets the next movie from the API, and sets the state of the
       * film elements from the response.
       */
+      console.log('a')
       var url_params = this.getUrlParameters()
       this.setMovieLoading()
-      var url = this.namespace + "/movies/random_movie/?" + url_params
+      var url = this.namespace + "movies/random/?" + url_params
       console.log(url)
       Request.get(url).then((response) => {
         var movie_data = JSON.parse(response["text"])
+          console.log(movie_data)
         if (movie_data=="No data found"){
           this.setMovieNotFound()
         } else {

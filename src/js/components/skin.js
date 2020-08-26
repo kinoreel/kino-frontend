@@ -18,12 +18,6 @@ export default class Skin extends React.Component {
     this.setState({searchVisible: !this.state.searchVisible});
   }
 
-  renderPlayButton () {
-      return(
-        <PlayButton playVideo={this.props.playVideo} />
-      )
-  }
-
   renderButtons() {
       return(
           <div>

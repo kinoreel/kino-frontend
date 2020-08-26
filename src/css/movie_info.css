@@ -3,6 +3,7 @@
 .title{
   font-family: Josefin Sans;
   font-size: 3.8rem;
+  padding-bottom: 30px;
 }
 .movie-info dd, dt {
   font-weight:normal;

@@ -71,7 +71,7 @@ export default class Filters extends React.Component{
    }
 
    renderCheckboxes = () => {
-     return(
+       return(
       <div className="row" onClick={this.stopPropagation.bind(this)}>
         <div className="col-4">
           <div className="row">
