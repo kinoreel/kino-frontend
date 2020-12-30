@@ -10,6 +10,7 @@ export default class Layout extends React.Component {
             videoVisible: false,
             playerLoaded: false,
             pause: false,
+            mute: false,
         }
     }
 
@@ -120,41 +121,59 @@ export default class Layout extends React.Component {
 
     showVideo = () => {
         this.setState({videoVisible: true})
-        if (this.player) {
+        if (this.player && !this.state.mute) {
             this.player.unMute()
         }
+    }
+
+    toggleMute = () => {
+        let mute = this.state.mute;
+        if (mute) {
+            this.player.unMute()
+            console.log('unmuting')
+        } else {
+            console.log('muting')
+            this.player.mute()
+        }
+        this.setState({
+            mute: !mute
+        })
     }
 
     render() {
         return (
             <div className="app">
                 {!this.state.loaded ? this.renderLoader() : null}
-                {this.props.movieNotFound ? this.renderNoMovieFound() : null}
-                <div className={this.props.movieFound && this.state.videoVisible ? "" : "transparent"}>
-                    {this.renderVideo()}
-                </div>
-                <div className={this.state.skinVisible ? "" : "transparent"}
-                     onMouseMove={this.showSkin.bind(this)}>
-                    <Skin title={this.props.title}
-                          released={this.props.released}
-                          runtime={this.props.runtime}
-                          language={this.props.language}
-                          director={this.props.director}
-                          writer={this.props.writer}
-                          streams={this.props.streams}
-                          ratings={this.props.ratings}
-                          hideVideo={this.hideVideo.bind(this)}
-                          playVideo={this.playVideo.bind(this)}
-                          getNextMovie={this.props.getNextMovie}
-                          getPreviousMovie={this.props.getPreviousMovie}
-                          movieFound={this.props.movieFound}
-                          movieNotFound={this.props.movieNotFound}
-                          filters={this.props.filters}
-                          updateRange={this.props.updateRange}
-                          allCheckboxesChecked={this.props.allCheckboxesChecked}
-                          toggleCheckbox={this.props.toggleCheckbox}
-                          toggleAllCheckboxes={this.props.toggleAllCheckboxes}
-                    />
+                <div onClick={this.toggleMute.bind(this)}>
+                    <div className={this.props.movieFound && this.state.videoVisible ? "" : "transparent"}>
+                        {this.renderVideo()}
+                    </div>
+                        <div className={this.state.skinVisible ? "" : "transparent"}
+                             onMouseMove={this.showSkin.bind(this)}>
+                            <Skin title={this.props.title}
+                                  released={this.props.released}
+                                  runtime={this.props.runtime}
+                                  language={this.props.language}
+                                  director={this.props.director}
+                                  writer={this.props.writer}
+                                  streams={this.props.streams}
+                                  ratings={this.props.ratings}
+                                  hideVideo={this.hideVideo.bind(this)}
+                                  playVideo={this.playVideo.bind(this)}
+                                  getNextMovie={this.props.getNextMovie}
+                                  getPreviousMovie={this.props.getPreviousMovie}
+                                  movieFound={this.props.movieFound}
+                                  movieNotFound={this.props.movieNotFound}
+                                  filters={this.props.filters}
+                                  updateRange={this.props.updateRange}
+                                  allCheckboxesChecked={this.props.allCheckboxesChecked}
+                                  toggleCheckbox={this.props.toggleCheckbox}
+                                  toggleAllCheckboxes={this.props.toggleAllCheckboxes}
+                                  toggleMute={this.toggleMute.bind(this)}
+                                  mute={this.state.mute}
+
+                            />
+                        </div>
                 </div>
             </div>
         );

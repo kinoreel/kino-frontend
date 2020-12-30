@@ -32,9 +32,18 @@ body{
   position: fixed;
   bottom: 10%;
   width: 86%;
-  height: 50%;
+  height: 42%;
 }
 .transparent {
   opacity: 0;
 }
-
+.noMovie {
+  margin-top:15%;
+}
+.noMovie p{
+  color: white;
+  font-family: Josefin Sans;
+  letter-spacing:4px;
+  font-size: 30px;
+  margin-bottom: 5px;
+}

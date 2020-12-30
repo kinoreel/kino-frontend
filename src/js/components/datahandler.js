@@ -81,10 +81,10 @@ export default class DataHandler extends React.Component {
           { value: "History", checked: false },{ value: "Crime", checked: false },
           { value: "Family", checked: false },{ value: "Western", checked: false }
         ],
-        released: { 'min': "2000", 'max': "2018" },
-        runtime: { 'min': "20", 'max': "180"},
-        imdb: {'min': "5",'max': "10"},
-        rottentomatoes: {'min': "10", 'max': "100"}
+        released: { 'min': "2000", 'max': "2021" },
+        runtime: { 'min': "60", 'max': "240"},
+        imdb: {'min': "7",'max': "10"},
+        rottentomatoes: {'min': "70", 'max': "100"}
       }
     }
   }
@@ -171,7 +171,6 @@ export default class DataHandler extends React.Component {
       * Gets the next movie from the API, and sets the state of the
       * film elements from the response.
       */
-      console.log('a')
       var url_params = this.getUrlParameters()
       this.setMovieLoading()
       var url = this.namespace + "movies/random/?" + url_params

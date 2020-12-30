@@ -10,7 +10,7 @@
   letter-spacing:1px;
   position:relative;
   font-size:0.6rem;
-  top:-0.3rem;  
+  top:-0.3rem;
 }
 .range-form input {
   -moz-appearance: none;
@@ -27,8 +27,8 @@
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  height: 1rem;
-  width: 0.2rem;
+  height: 1.2rem;
+  width: 0.7rem;
   background: white;
   position: relative;
   cursor: pointer;

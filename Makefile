@@ -8,3 +8,5 @@ push-image:
 	docker tag kino unrufflednightingale/kino:latest
 	docker push unrufflednightingale/kino:latest
 
+run-locally:
+	npm run dev

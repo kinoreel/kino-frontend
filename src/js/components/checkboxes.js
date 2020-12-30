@@ -20,14 +20,12 @@ export class CheckboxForm extends React.Component {
 
   render() {
     return (
-      <div className="pl-3">
       <div className="checkbox-form checkbox-container">
         {
           this.props.filters.map(a => {
             return <Checkbox value={a.value} checked={a.checked} id={this.props.id} toggle={this.props.toggle}/>
           })
         }
-      </div>
       </div>
     )
   }
