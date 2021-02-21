@@ -4,6 +4,8 @@ import MovieInfo from "./movieinfo";
 import {Streams} from "./streams";
 import Buttons from "./buttons";
 import Filters from "./filters";
+import Report from "./report";
+import Recommend from "./recommend";
 
 export default class Skin extends React.Component {
 
@@ -11,29 +13,32 @@ export default class Skin extends React.Component {
         super(props);
         this.state = {
             searchVisible: false,
-            menuVisible: false,
+            reportingVisible: false,
+            recommendVisible: false,
         }
     }
 
     toggleSearch = () => {
         this.setState({
             searchVisible: !this.state.searchVisible,
-            menuVisible: false
+            reportingVisible: false,
+            recommendVisible: false,
         });
     }
 
-    toggleMenu = () => {
+    toggleReporting = () => {
         this.setState({
-            menuVisible: !this.state.menuVisible,
-            searchVisible: false
+            reportingVisible: !this.state.reportingVisible,
+            searchVisible: false,
+            recommendVisible: false
         });
     }
 
-    toggleMenu = () => {
-        let a = this.state.menuVisible;
+    toggleRecommend = () => {
         this.setState({
-            menuVisible: !a,
-            searchVisible: false
+            recommendVisible: !this.state.recommendVisible,
+            searchVisible: false,
+            reportingVisible: false
         });
     }
 
@@ -68,6 +73,26 @@ export default class Skin extends React.Component {
         )
     }
 
+    renderReportWindow() {
+        return (
+            <div>
+               <Report
+                   toggleReporting={this.toggleReporting.bind(this)}
+                   getNextMovie={this.props.getNextMovie}
+               />
+            </div>
+        )
+    }
+
+    renderRecommendWindow(){
+        return (
+            <div>
+                <Recommend
+                    toggleRecommend={this.toggleRecommend.bind(this)}
+                />
+            </div>
+        )
+    }
 
     render() {
         return (
@@ -77,13 +102,18 @@ export default class Skin extends React.Component {
                          toggleSearch={this.toggleSearch}
                          toggleMute={this.props.toggleMute}
                          mute={this.props.mute}
-                         toggleMenu={this.toggleMenu.bind(this)}
+                         toggleReporting={this.toggleReporting.bind(this)}
+                         toggleRecommend={this.toggleRecommend.bind(this)}
                          searchVisible={this.state.searchVisible}
+                         reportingVisible={this.state.reportingVisible}
+                         recommendVisible={this.state.reportingVisible}
                          hideVideo={this.props.hideVideo}
+                         movieFound={this.props.movieFound}
                 />
-                {this.state.menuVisible && !this.state.searchVisible ? <div>Hello</div> : null}
+                {this.state.reportingVisible ? this.renderReportWindow() : null}
+                {this.state.recommendVisible ? this.renderRecommendWindow() : null}
                 {this.state.searchVisible ? this.renderFilters() : null}
-                {this.props.movieFound && !this.state.menuVisible && !this.state.searchVisible ?
+                {this.props.movieFound && !this.state.reportingVisible && !this.state.searchVisible && !this.state.recommendVisible  ?
                     <div className="row lower-skin">
                         <div>
                             <MovieInfo
@@ -100,7 +130,7 @@ export default class Skin extends React.Component {
                         </div>
                     </div>
                     : null}
-                    {this.props.movieNotFound && !this.state.menuVisible && !this.state.searchVisible ?
+                    {this.props.movieNotFound && !this.state.reportingVisible && !this.state.searchVisible && !this.state.recommendVisible  ?
                             <div className="noMovie">
                                 <p className={"text-center align-middle"}> WE COULD NOT FIND A FILM THAT MATCHES <br/> THE SEARCH CRITERIA </p>
                             </div>

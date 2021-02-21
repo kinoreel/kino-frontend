@@ -38,6 +38,9 @@ export default class Buttons extends React.Component {
         if (this.props.searchVisible) {
             this.props.toggleSearch()
         }
+        if (this.props.reportingVisible) {
+            this.props.toggleReporting()
+        }
     }
 
     previous() {
@@ -45,6 +48,9 @@ export default class Buttons extends React.Component {
         this.props.getPreviousMovie()
         if (this.props.searchVisible) {
             this.props.toggleSearch()
+        }
+        if (this.props.reportingVisible) {
+            this.props.toggleReporting()
         }
     }
 
@@ -55,14 +61,24 @@ export default class Buttons extends React.Component {
                 {/*        onClick={this.previous.bind(this)}><i className="material-icons">navigate_before</i></button>*/}
                 <button className="btn-circular main-buttons button-icon d-flex align-items-center"
                         onClick={this.next.bind(this)}><i className="material-icons">navigate_next</i></button>
-                {/*<button className="btn-circular main-buttons button-icon d-flex align-items-center"*/}
-                {/*        onClick={this.props.toggleMenu}><i className="material-icons">list</i></button>*/}
+
                 <button className="btn-circular main-buttons button-icon d-flex align-items-center"
                         onClick={this.props.toggleSearch}><i className="material-icons">search</i></button>
                 <button className="btn-circular main-buttons button-icon d-flex align-items-center"
                         onClick={this.fullscreen.bind(this)}><i className="material-icons">fullscreen</i></button>
                 <button className="btn-circular main-buttons button-icon d-flex align-items-center"
-                        onClick={this.props.toggleMute}><i className="material-icons">{this.props.mute ? "volume_off" : "volume_up"}</i></button>
+                        onClick={this.props.toggleMute}><i
+                    className="material-icons">{this.props.mute ? "volume_off" : "volume_up"}</i></button>
+                {/*{this.props.movieFound ?*/}
+                {/*        <button className="btn-circular main-buttons button-icon d-flex align-items-center"*/}
+                {/*                onClick={this.props.toggleReporting}><i className="material-icons">error_outline</i>*/}
+                {/*        </button>*/}
+                {/*    : null}*/}
+                {/*{this.props.movieFound ?*/}
+                {/*        <button className="btn-circular main-buttons button-icon d-flex align-items-center"*/}
+                {/*                onClick={this.props.toggleRecommend}><i className="material-icons">star_outline</i>*/}
+                {/*        </button>*/}
+                {/*    : null}*/}
             </div>
         );
     }

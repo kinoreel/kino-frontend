@@ -1,49 +1,91 @@
-body{
-  background: white;
-  color:white;
+body {
+    background: white;
+    color: white;
 }
-.pr-7{
-  padding-right: 7rem !important;
+
+.pr-7 {
+    padding-right: 7rem !important;
 }
+
 .pl-7 {
-  padding-left: 7rem !important;
+    padding-left: 7rem !important;
 }
-.app{
-  background: black;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -5;
+
+.app {
+    background: black;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -5;
 }
+
 .video {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
+
 .skin {
-  position:fixed;
-  background-color: rgba(0,0,0,0.65);
-  height: 100%;
-  width:100%;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.65);
+    height: 100%;
+    width: 100%;
 }
+
 .lower-skin {
-  display: block;
-  position: fixed;
-  bottom: 10%;
-  width: 86%;
-  height: 42%;
+    display: block;
+    position: fixed;
+    bottom: 10%;
+    width: 86%;
+    height: 42%;
 }
+
 .transparent {
-  opacity: 0;
+    opacity: 0;
 }
+
 .noMovie {
-  margin-top:15%;
+    margin-top: 18%;
 }
-.noMovie p{
-  color: white;
-  font-family: Josefin Sans;
-  letter-spacing:4px;
-  font-size: 30px;
-  margin-bottom: 5px;
+
+.noMovie p {
+    color: white;
+    font-family: Josefin Sans, serif;
+    letter-spacing: 4px;
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.report {
+    margin-top: 18%;
+}
+
+.report-title {
+    color: white;
+    font-family: Josefin Sans, serif;
+    letter-spacing: 4px;
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.report-submit {
+    color: white;
+    font-family: Josefin Sans, serif;
+    letter-spacing: 4px;
+    font-size: 0.6em;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.report-submit:hover {
+    font-weight: bold;
+}
+
+.mobile {
+    color: black;
+    font-family: Josefin Sans, serif;
+    letter-spacing: 5px;
+    font-size: 2em;
+    margin-bottom: 5px;
 }

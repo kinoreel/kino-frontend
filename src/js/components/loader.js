@@ -16,6 +16,7 @@ export class Loader extends React.Component{
                         disabled="true"
                         onClick={this.props.onRunApp}><i class="material-icons md-48">play_arrow</i>
                 </button>
+
             </div>
         </div>
       </div>

@@ -11,6 +11,22 @@
   letter-spacing:4px;
   font-size: 100px;
 }
+.contributors{
+  font-family: Josefin Sans;
+  padding-top: 60px;
+  color: black
+}
+.contributors p{
+  margin: 0;
+}
+.contributor-title{
+  letter-spacing: 5px;
+  padding-bottom: 10px;
+  font-size: 0.9em;
+ }
+.contributor-name{
+  font-size: 0.7em
+}
 .btn-loader{
   position:relative;
   background-color: transparent;
@@ -20,7 +36,7 @@
   margin: 0.5rem;
   border-style: solid;
   border-color: black;
-  border-width: 0.12rem;
+  border-width: 0.5rem;
   pointer-events: auto;
 }
 .btn-loader:hover{

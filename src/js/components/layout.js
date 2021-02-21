@@ -1,6 +1,9 @@
 import React from "react";
 import YouTube from 'react-youtube'
 import Skin from './skin'
+import {
+    isBrowser
+} from "react-device-detect";
 
 export default class Layout extends React.Component {
     constructor() {
@@ -25,10 +28,21 @@ export default class Layout extends React.Component {
                 <div className="row h-100 justify-content-center align-items-center">
                     <div className="col-12 text-center">
                         <h1>KINO</h1>
-                        <button className={this.state.playerLoaded ? "btn-loader" : "btn-loader transparent"}
-                                disabled={!this.state.playerLoaded}
-                                onClick={this.removeLoader.bind(this)}><i class="material-icons md-48">play_arrow</i>
-                        </button>
+                        {isBrowser ?
+                            <div>
+                                <button className={this.state.playerLoaded ? "btn-loader" : "btn-loader transparent"}
+                                        disabled={!this.state.playerLoaded}
+                                        onClick={this.removeLoader.bind(this)}><i
+                                    class="material-icons md-48">play_arrow</i>
+                                </button>
+                                <div className={"contributors"}>
+                                    <p className={"contributor-title"}>CONTRIBUTORS</p>
+                                    <p className={"contributor-name"}>ROBERT MANTEGHI</p>
+                                    <p className={"contributor-name"}>SUZI SIMMS</p>
+                                    <p className={"contributor-name"}>JOE DODD</p>
+                                </div>
+                            </div>
+                            : <p className={"mobile"}>NOT AVAILABLE ON MOBILE</p>}
                     </div>
                 </div>
             </div>
@@ -41,6 +55,8 @@ export default class Layout extends React.Component {
         */
         /* Set state to show skin */
         this.setState({skinVisible: true})
+        document.querySelector("body").style.cursor = "auto"
+
         /* Reset the any previous timeouts on the skin.
            This prevents the skin timing out/disappearing early*/
         clearTimeout(this.skinTimeout);
@@ -48,6 +64,7 @@ export default class Layout extends React.Component {
         this.skinTimeout = setTimeout(() => {
             if (this.player.getPlayerState() == 1 || this.player.getPlayerState() === undefined) {
                 this.setState({skinVisible: false})
+                document.querySelector("body").style.cursor = "none"
             }
         }, 3000)
     }
@@ -140,7 +157,15 @@ export default class Layout extends React.Component {
         })
     }
 
+    videoIsVisible = () => {
+        if (this.player) {
+            return this.props.movieFound && this.state.videoVisible && this.player.getPlayerState() == 1
+        }
+        return false;
+    }
+
     render() {
+
         return (
             <div className="app">
                 {!this.state.loaded ? this.renderLoader() : null}
@@ -148,32 +173,32 @@ export default class Layout extends React.Component {
                     <div className={this.props.movieFound && this.state.videoVisible ? "" : "transparent"}>
                         {this.renderVideo()}
                     </div>
-                        <div className={this.state.skinVisible ? "" : "transparent"}
-                             onMouseMove={this.showSkin.bind(this)}>
-                            <Skin title={this.props.title}
-                                  released={this.props.released}
-                                  runtime={this.props.runtime}
-                                  language={this.props.language}
-                                  director={this.props.director}
-                                  writer={this.props.writer}
-                                  streams={this.props.streams}
-                                  ratings={this.props.ratings}
-                                  hideVideo={this.hideVideo.bind(this)}
-                                  playVideo={this.playVideo.bind(this)}
-                                  getNextMovie={this.props.getNextMovie}
-                                  getPreviousMovie={this.props.getPreviousMovie}
-                                  movieFound={this.props.movieFound}
-                                  movieNotFound={this.props.movieNotFound}
-                                  filters={this.props.filters}
-                                  updateRange={this.props.updateRange}
-                                  allCheckboxesChecked={this.props.allCheckboxesChecked}
-                                  toggleCheckbox={this.props.toggleCheckbox}
-                                  toggleAllCheckboxes={this.props.toggleAllCheckboxes}
-                                  toggleMute={this.toggleMute.bind(this)}
-                                  mute={this.state.mute}
+                    <div className={this.state.skinVisible ? "" : "transparent"}
+                         onMouseMove={this.showSkin.bind(this)}>
+                        <Skin title={this.props.title}
+                              released={this.props.released}
+                              runtime={this.props.runtime}
+                              language={this.props.language}
+                              director={this.props.director}
+                              writer={this.props.writer}
+                              streams={this.props.streams}
+                              ratings={this.props.ratings}
+                              hideVideo={this.hideVideo.bind(this)}
+                              playVideo={this.playVideo.bind(this)}
+                              getNextMovie={this.props.getNextMovie}
+                              getPreviousMovie={this.props.getPreviousMovie}
+                              movieFound={this.props.movieFound}
+                              movieNotFound={this.props.movieNotFound}
+                              filters={this.props.filters}
+                              updateRange={this.props.updateRange}
+                              allCheckboxesChecked={this.props.allCheckboxesChecked}
+                              toggleCheckbox={this.props.toggleCheckbox}
+                              toggleAllCheckboxes={this.props.toggleAllCheckboxes}
+                              toggleMute={this.toggleMute.bind(this)}
+                              mute={this.state.mute}
 
-                            />
-                        </div>
+                        />
+                    </div>
                 </div>
             </div>
         );
