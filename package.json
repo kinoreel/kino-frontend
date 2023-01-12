@@ -1,42 +1,48 @@
 {
-  "name": "kino-frontend",
-  "version": "0.0.0",
-  "description": "",
-  "main": "webpack.config.js",
+  "name": "kino",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "babel-core": "^6.17.0",
-    "babel-loader": "^6.2.0",
-    "babel-plugin-add-module-exports": "^0.1.2",
-    "babel-plugin-react-html-attrs": "^2.0.0",
-    "babel-plugin-transform-class-properties": "^6.3.13",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-react": "^6.3.13",
-    "babel-preset-stage-0": "^6.3.13",
-    "public-ip": "^4.0.3",
-    "react": "^16.13.1",
-    "react-autobind": "^1.0.6",
-    "react-device-detect": "^1.15.0",
-    "react-dom": "^16.13.1",
-    "react-player": "^2.6.0",
-    "react-scripts": "3.4.1",
-    "superagent": "^3.5.2",
-    "webpack": "^2.2.1",
-    "webpack-dev-server": "^1.14.1"
-  },
-  "devDependencies": {
-    "jquery": "^3.2.1",
-    "react-autobind": "^1.0.6",
-    "react-youtube": "^7.4.0",
-    "react-spinner-material": "^1.0.16",
-    "superagent": "^3.5.2",
-    "webpack": "^1.15.0"
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "react": "^18.2.0",
+    "react-device-detect": "^2.2.2",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "react-youtube": "^10.1.0",
+    "styled-components": "^5.3.6",
+    "superagent": "^8.0.6",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "dev": "webpack-dev-server --content-base src --inline --hot",
-    "build": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "docker:build": "docker build -t kino .",
+    "docker:run": "yarn run docker:build; docker run -p 3002:80 -d kino",
+    "docker:tag": "yarn run docker:build; docker tag kino unrufflednightingale/kino:latest",
+    "docker:push": "yarn run docker:tag; docker push unrufflednightingale/kino:latest",
+    "kube:apply": "yarn run docker:push; kubectl apply -f ./kube/deployment.yaml",
+    "kube:redeploy": "yarn run docker:push; kubectl rollout restart deploy kino"
   },
-  "author": "",
-  "license": "ISC"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

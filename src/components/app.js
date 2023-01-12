@@ -1,5 +1,4 @@
 import React from "react";
-import Request from 'superagent';
 import DataHandler from './datahandler'
 
 export default class App extends React.Component {

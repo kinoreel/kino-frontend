@@ -1,7 +1,7 @@
 import React from "react"
 import Request from 'superagent'
 import Layout from './layout'
-
+// import '../css/main.css'
 export default class DataHandler extends React.Component {
     constructor() {
         super();
@@ -75,9 +75,9 @@ export default class DataHandler extends React.Component {
                     {value: "History", checked: false}, {value: "Crime", checked: false},
                     {value: "Family", checked: false}, {value: "Western", checked: false}
                 ],
-                released: {'min': "2000", 'max': "2021"},
+                released: {'min': "2015", 'max': "2023"},
                 runtime: {'min': "60", 'max': "240"},
-                imdb: {'min': "6", 'max': "10"},
+                imdb: {'min': "8", 'max': "10"},
                 rottentomatoes: {'min': "70", 'max': "100"}
             }
         }
@@ -222,7 +222,7 @@ export default class DataHandler extends React.Component {
         /**
          * Sets the current state of the movie elements based on the response
          * from the API.
-         */
+         */ 
 
             // Get rotten tomatoes and imdb ratings from the API response.
         var ratings = {rottentomatoes: null, imdb: null};

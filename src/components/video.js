@@ -19,11 +19,14 @@ const Video = () => {
     };
 
     return (
-        <YouTube className="video"
+        <YouTube 
+            key="abc"
+            className="video"
                  videoId={this.props.trailer}
                  opts={opts}
                  onStateChange={this.videoStateChange.bind(this)}
         />
+    )
 };
 
 export default SearchBar;

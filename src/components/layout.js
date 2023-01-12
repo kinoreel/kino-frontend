@@ -5,6 +5,15 @@ import {
     isBrowser
 } from "react-device-detect";
 
+import '../css/main.css'
+import '../css/buttons.css'
+import '../css/video.css'
+import '../css/filters.css'
+import '../css/ranges.css'
+import '../css/checkbox.css'
+import '../css/movie_info.css'
+import '../css/loader.css'
+
 export default class Layout extends React.Component {
     constructor() {
         super();
@@ -38,6 +47,7 @@ export default class Layout extends React.Component {
                                 <div className={"contributors"}>
                                     <p className={"contributor-title"}>CONTRIBUTORS</p>
                                     <p className={"contributor-name"}>ROBERT MANTEGHI</p>
+                                    <p className={"contributor-name"}>TED JOHANSSON</p>
                                     <p className={"contributor-name"}>SUZI SIMMS</p>
                                     <p className={"contributor-name"}>JOE DODD</p>
                                 </div>
@@ -80,7 +90,7 @@ export default class Layout extends React.Component {
     renderVideo() {
         const opts = {
             playerVars: { // https://developers.google.com/youtube/player_parameters
-                //autoplay: 1,
+                autoplay: 1,
                 color: 'white',
                 controls: 1,
                 fs: 0,
@@ -92,7 +102,12 @@ export default class Layout extends React.Component {
         };
 
         return (
+            <div className={"youtube-wrapper"}>
+            <div className={"youtube-container"}>
             <YouTube className="video"
+            height="100%"
+            style={{height: "100%", width: "100%"}}
+                     key={this.props.trailer}
                      videoId={this.props.trailer}
                      opts={opts}
                      onReady={this.onVideoReady.bind(this)}
@@ -101,6 +116,8 @@ export default class Layout extends React.Component {
                      onEnd={this.props.getNextMovie}
                      onStateChange={this.videoStateChange.bind(this)}
             />
+            </div>
+            </div>
 
         )
     }
@@ -164,17 +181,29 @@ export default class Layout extends React.Component {
         return false;
     }
 
+    onSkinClick = (e) => {
+        // if(e.target !== e.currentTarget) return
+        if (this.player.getPlayerState() == 1) {
+            this.player.pauseVideo() 
+            // this.hideVideo()
+        } else if (this.player.getPlayerState() == 2) {
+            this.player.playVideo()
+            this.showSkin()
+        }
+    }
+
     render() {
 
         return (
             <div className="app">
                 {!this.state.loaded ? this.renderLoader() : null}
-                <div onClick={this.toggleMute.bind(this)}>
+                <div style={{height: "100%", wight: "100%", position: "fixed"}}>
                     <div className={this.props.movieFound && this.state.videoVisible ? "" : "transparent"}>
                         {this.renderVideo()}
                     </div>
-                    <div className={this.state.skinVisible ? "" : "transparent"}
-                         onMouseMove={this.showSkin.bind(this)}>
+                    <div style={{height: "100%", wight: "100%", position: "fixed", top: 0}}className={this.state.skinVisible ? "" : "transparent"} 
+                         onMouseMove={this.showSkin.bind(this)}
+                         onMouseDown={this.onSkinClick.bind(this)}>
                         <Skin title={this.props.title}
                               released={this.props.released}
                               runtime={this.props.runtime}

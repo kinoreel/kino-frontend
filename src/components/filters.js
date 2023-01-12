@@ -6,6 +6,7 @@ export default class Filters extends React.Component {
 
     stopPropagation = (e) => {
         e.stopPropagation();
+        // e.preventDefault();
     }
 
     renderRange = () => {
@@ -25,13 +26,13 @@ export default class Filters extends React.Component {
 
     renderRanges = () => {
         return (
-            <div className="row" onClick={this.stopPropagation.bind(this)}>
-                <div className="col-12 pb-5">
+            <div className="row"  onClick={this.stopPropagation.bind(this)}  onMouseDown={this.stopPropagation.bind(this)}>
+                <div className="col-12 pb-5" >
                     <div className="row">
                         <span className="col-12 filter-title"> RELEASED </span>
                         <div className="col-10 pt-2">
                             <RangeSlider start={this.props.filters.released.min} end={this.props.filters.released.max}
-                                         min="1950" max="2021" step="1" rangeType="released"
+                                         min="1950" max="2023" step="1" rangeType="released"
                                          range={this.props.filters.released} updateRange={this.props.updateRange}/>
                         </div>
                     </div>
@@ -74,8 +75,8 @@ export default class Filters extends React.Component {
 
     renderCheckboxes = () => {
         return (
-            <div className="row" onClick={this.stopPropagation.bind(this)}>
-                <div className="col-4">
+            <div className="row" onClick={this.stopPropagation.bind(this)}  onMouseDown={this.stopPropagation.bind(this)}>
+                {/* <div className="col-4">
                     <div className="row">
                         <span className="col-12 pb-2 filter-title">STREAM</span>
                         <CheckboxForm
@@ -83,8 +84,8 @@ export default class Filters extends React.Component {
                             id='streams'
                             toggle={this.props.toggleCheckbox}/>
                     </div>
-                </div>
-                <div className="col-4">
+                </div> */}
+                <div className="col-6">
                     <div className="row">
                         <span className="col-12 pb-2 filter-title">GENRE</span>
                         <CheckboxForm
@@ -93,7 +94,7 @@ export default class Filters extends React.Component {
                             toggle={this.props.toggleCheckbox}/>
                     </div>
                 </div>
-                <div className="col-4">
+                <div className="col-6">
                     <div className="row">
                         <span className="col-12 pb-2 filter-title">LANGUAGE</span>
                         <CheckboxForm
@@ -109,12 +110,12 @@ export default class Filters extends React.Component {
 
     render() {
         return (
-            <div>
+            <div >
                 <div className="row pt-3">
-                    <div className="col-6 pt-5">
+                    <div className="col-4 pt-5">
                         {this.renderCheckboxes()}
                     </div>
-                    <div className="col-6 pt-5 pb-2">
+                    <div className="col-5 pt-5 pb-2">
                         {this.renderRanges()}
                     </div>
                 </div>

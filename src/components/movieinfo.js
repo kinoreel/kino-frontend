@@ -31,36 +31,36 @@ export default class MovieInfo extends React.Component {
     }
 
     renderStreams() {
-        return (
-            <div class="col-7 d-inline-block pb-lg-3 pb-4">
-                <div class="row justify-content-end">
-                    {this.props.streams.youtube.url ?
-                        <div class="d-inline-block col-lg-3 col-4 pb-2 text-center" onClick={this.stopPropagation.bind(this)}>
-                            <dt><a href={this.props.streams.youtube.url} target="_blank">YOUTUBE</a></dt>
-                            {/*<dd>{this.props.streams.youtube.price}</dd>*/}
-                        </div>
-                        : null}
-                    {this.props.streams.itunes.url ?
-                        <div class="d-inline-block col-lg-3 col-4 pb-2 text-center">
-                            <dt><a href={this.props.streams.itunes.url} target="_blank">ITUNES</a></dt>
-                            {/*<dd>{this.props.streams.itunes.price}</dd>*/}
-                        </div>
-                        : null}
-                    {this.props.streams.googleplay.url ?
-                        <div class="d-inline-block col-lg-3 col-4 pb-2 text-right">
-                            <dt><a href={this.props.streams.googleplay.url} target="_blank">GOOGLEPLAY</a></dt>
-                            {/*<dd>{this.props.streams.googleplay.price}</dd>*/}
-                        </div>
-                        : null}
-                    {this.props.streams.amazon.url ?
-                        <div class="d-inline-block col-lg-3 col-4 pb-2 text-center">
-                            <dt><a href={this.props.streams.amazon.url} target="_blank">AMAZON</a></dt>
-                            {/*<dd>{this.props.streams.amazon.price}</dd>*/}
-                        </div>
-                        : null}
-                </div>
-            </div>
-        )
+        // return (
+        //     <div class="col-7 d-inline-block pb-lg-3 pb-4">
+        //         <div class="row justify-content-end">
+        //             {this.props.streams.youtube.url ?
+        //                 <div class="d-inline-block col-lg-3 col-4 pb-2 text-center" onClick={this.stopPropagation.bind(this)}>
+        //                     <dt><a href={this.props.streams.youtube.url} target="_blank">YOUTUBE</a></dt>
+        //                     {/*<dd>{this.props.streams.youtube.price}</dd>*/}
+        //                 </div>
+        //                 : null}
+        //             {/* {this.props.streams.itunes.url ? */}
+        //                 {/* <div class="d-inline-block col-lg-3 col-4 pb-2 text-center"> */}
+        //                     {/* <dt><a href={this.props.streams.itunes.url} target="_blank">ITUNES</a></dt> */}
+        //                     {/*<dd>{this.props.streams.itunes.price}</dd>*/}
+        //                 {/* </div> */}
+        //                 {/* : null} */}
+        //             {/* {this.props.streams.googleplay.url ? */}
+        //                 {/* <div class="d-inline-block col-lg-3 col-4 pb-2 text-right"> */}
+        //                     {/* <dt><a href={this.props.streams.googleplay.url} target="_blank">GOOGLEPLAY</a></dt> */}
+        //                     {/* <dd>{this.props.streams.googleplay.price}</dd> */}
+        //                 {/* </div> */}
+        //                 {/* : null} */}
+        //             {/* {this.props.streams.amazon.url ? */}
+        //                 {/* <div class="d-inline-block col-lg-3 col-4 pb-2 text-center"> */}
+        //                     {/* <dt><a href={this.props.streams.amazon.url} target="_blank">AMAZON</a></dt> */}
+        //                     {/*<dd>{this.props.streams.amazon.price}</dd>*/}
+        //                 {/* </div> */}
+        //                 {/* : null} */}
+        //         </div>
+        //     </div>
+        // )
     }
 
     renderInfo() {
