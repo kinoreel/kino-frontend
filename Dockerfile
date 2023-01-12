@@ -1,15 +1,8 @@
-FROM node:latest
+FROM node:18-alpine
 
-# Install and configure `serve`.
-RUN npm install -g serve
-CMD serve -s src
-EXPOSE 5000
-
-# Install all dependencies of the current project.
-COPY package.json package.json
-RUN npm install
-
-# Copy all local files into the image.
+WORKDIR /app
 COPY . .
 
-RUN npm run build
+RUN yarn run build
+RUN yarn global add serve
+CMD ["serve", "-p", "80", "-s", "build"]

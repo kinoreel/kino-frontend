@@ -20,4 +20,4 @@ spec:
           image: unrufflednightingale/kino:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 5000
+            - containerPort: 80
