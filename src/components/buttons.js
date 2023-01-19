@@ -1,9 +1,7 @@
 import React from "react";
 
-const admin = false
-export default class Buttons extends React.Component {
-
-    
+const admin = true
+export default class Buttons extends React.Component {    
 
     stopPropagation = (e) => {
         e.stopPropagation();
@@ -85,15 +83,9 @@ export default class Buttons extends React.Component {
                     className="material-icons">{this.props.mute ? "volume_off" : "volume_up"}</i></button>
                     {admin ? 
                     <>
-                    <button className="btn-circular main-buttons button-icon d-flex align-items-center"
-                                onClick={() => console.log("error")}><i className="material-icons">error_outline</i>
-                        </button>
                         <button className="btn-circular main-buttons button-icon d-flex align-items-center"
-                                onClick={() => console.log("broken")}><i className="material-icons">thumb_up_off_alt</i>
+                                onClick={this.props.toggleRecommend}><i className="material-icons">star_outline</i>
                         </button>
-                        <button className="btn-circular main-buttons button-icon d-flex align-items-center"
-                                onClick={() => console.log("broken")}><i className="material-icons">thumb_down_off_alt</i>
-                        </button> 
                         </>: null }
                 {/*{this.props.movieFound ?*/}
                 {/*        <button className="btn-circular main-buttons button-icon d-flex align-items-center"*/}

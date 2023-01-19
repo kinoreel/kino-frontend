@@ -2,12 +2,15 @@ import React from "react"
 import Request from 'superagent'
 import Layout from './layout'
 // import '../css/main.css'
+import { NAMEPSACE, RATING } from "./globals";
+
+
 export default class DataHandler extends React.Component {
     constructor() {
         super();
 
     // Production namespace = https://api.kino-project.tech
-    this.namespace = 'https://api.unruffled-nightingale.com/'
+    
 
         // List that contains all imdb_ids of films shown to user
         this.watched = [];
@@ -167,7 +170,9 @@ export default class DataHandler extends React.Component {
          */
         var url_params = this.getUrlParameters()
         this.setMovieLoading()
-        var url = this.namespace + "movies/random/?" + url_params
+        var url = NAMEPSACE + "movies/random/?" + url_params
+        if (RATING) url = url + "&unrated=true"
+        console.log(url)
         Request.get(url).then((response) => {
             var movie_data = JSON.parse(response["text"])
             if (movie_data == "No data found") {
@@ -363,6 +368,7 @@ export default class DataHandler extends React.Component {
                         runtime={this.state.runtime}
                         language={this.state.language}
                         director={this.state.director}
+                        imdb_id={this.state.imdb_id}
                         writer={this.state.writer}
                         streams={this.state.streams}
                         ratings={this.state.ratings}

@@ -206,6 +206,7 @@ export default class Layout extends React.Component {
                          onMouseDown={this.onSkinClick.bind(this)}>
                         <Skin title={this.props.title}
                               released={this.props.released}
+                              imdb_id={this.props.imdb_id}
                               runtime={this.props.runtime}
                               language={this.props.language}
                               director={this.props.director}

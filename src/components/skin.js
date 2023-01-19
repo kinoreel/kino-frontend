@@ -85,10 +85,12 @@ export default class Skin extends React.Component {
     }
 
     renderRecommendWindow(){
+
         return (
             <div>
                 <Recommend
                     toggleRecommend={this.toggleRecommend.bind(this)}
+                    imdb_id={this.props.imdb_id}
                 />
             </div>
         )
